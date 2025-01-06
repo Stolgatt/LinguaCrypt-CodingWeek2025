@@ -86,7 +86,7 @@ public class Game {
     }
 
     public String hintToString(){
-        if (turn == 2){
+        if (turnStep == 2){
             return currentHint + " en " + currentNumberWord;
         }
         else{
