@@ -17,7 +17,7 @@ public class Game {
 
     public void setUpGame(){
         turn = random.nextInt(2);
-        grid.initGrid();
+        grid.initGrid(turn);
     }
 
     public GameConfiguration getgConfig() {
