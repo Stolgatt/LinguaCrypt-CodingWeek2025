@@ -3,3 +3,7 @@
 *.log
 /.gradle
 /build/
+gradle/
+gradlew
+gradlew.bat
+.idea/

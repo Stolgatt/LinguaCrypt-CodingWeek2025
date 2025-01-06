@@ -3,12 +3,16 @@ package linguacrypt.model;
 public class GameConfiguration {
     private static GameConfiguration configuration = null;
     static boolean firstThread = true;
-    private int difficultyLevel;
-    private int maxTeamMember;
-    private int gridSize;
-    private String theme;
-    private int nbPlayer;
-    private int timeTurn;
+    private int difficultyLevel;                            // For the AI
+    private int maxDiffLevel = 3;
+    private int minDiffLevel = 1;
+    private int maxTeamMember;                              // Number of players in each team
+    private int gridSize;                                   // size of the grid of words (gridSize * gridSize words)
+    private int maxGridSize = 15;
+    private String theme;                                   // Themes the players want to use
+    private int nbPlayer;                                   // Total number of player
+    private int timeTurn;                                   // Maximum chosen time allowed to play
+    private int maxTimeTurn = 300;                          // Maximum time allowed to play
 
     private GameConfiguration() {
         difficultyLevel = 1;
@@ -88,5 +92,26 @@ public class GameConfiguration {
     public void setTimeTurn(int timeTurn) {
         this.timeTurn = timeTurn;
     }
+
+    public int getMaxDiffLevel() {return maxDiffLevel;}
+
+    public int getMinDiffLevel() {
+        return minDiffLevel;
+    }
+
+    public int getMaxTimeTurn(){
+        return maxTimeTurn;
+    }
+
+    public int getMaxGridSize(){
+        return maxGridSize;
+    }
+
+    /**
+    // POUR TESTS UNIQUEMENT (avec utilisation de MOCK)
+    public static void setInstance(GameConfiguration configuration) {
+        GameConfiguration.configuration = configuration;
+    }
+    */
 }
 
