@@ -4,6 +4,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import linguacrypt.model.Game;
+import linguacrypt.model.GameConfiguration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -12,7 +14,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        URL fxmlURL = getClass().getResource("/main.fxml");
+        URL fxmlURL = getClass().getResource("/FXML/mainMenuView.fxml");
         if (fxmlURL == null) {
             System.err.println("Could not find main.fxml");
             System.exit(1);
@@ -26,6 +28,10 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+        GameConfiguration gConfig = GameConfiguration.getInstance();
+        Game game = new Game(gConfig);
+
+
         launch();
     }
 
