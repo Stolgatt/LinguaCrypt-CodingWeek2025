@@ -15,6 +15,7 @@ public class GameController {
         this.view = view;
 
         view.setOnNextTurn(this::nextTurn);
+        view.setonCardClicked(this::CardClicked);
     }
 
     public Game getGame() {
@@ -25,6 +26,22 @@ public class GameController {
         int currentTurn = game.getTurn();
         game.setTurn((currentTurn + 1) % 2);
         game.setTurnBegin(true);
+        game.notifierObservateurs();
+    }
+
+    public void CardClicked(int row, int col) {
+        if (game.getGrid().getCard(row, col).isSelected()){return;}
+        game.flipCard(row,col);
+        int turn = game.getTurn();
+        int color = game.getGrid().getCard(row, col).getCouleur();
+        if (turn + 1 != color){
+            nextTurn();
+        }
+        game.increaseTryCounter();
+        if (game.getCurrentTryCount() == game.getCurrentNumberWord() +1){
+            nextTurn();
+            game.setCurrentTryCount(0);
+        }
         game.notifierObservateurs();
     }
 }

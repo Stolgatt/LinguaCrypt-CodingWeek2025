@@ -10,6 +10,7 @@ import linguacrypt.model.Card;
 import linguacrypt.model.Grid;
 import linguacrypt.model.Game;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class GameView implements Observer {
@@ -21,6 +22,7 @@ public class GameView implements Observer {
 
     private Game game;
     private Runnable onNextTurn;
+    private BiConsumer<Integer, Integer> onCardClicked;
 
     @FXML
     private void initialize() {
@@ -48,7 +50,7 @@ public class GameView implements Observer {
                 // Ajout d'un événement clic
                 int finalRow = row;
                 int finalCol = col;
-                cardButton.setOnAction(e -> handleCardClick(finalRow, finalCol));
+                cardButton.setOnAction(e -> {if (onCardClicked != null) onCardClicked.accept(finalRow, finalCol);});
 
                 gameGrid.add(cardButton, col, row);
             }
@@ -56,16 +58,13 @@ public class GameView implements Observer {
         game.notifierObservateurs();
     }
 
-    private void handleCardClick(int row, int col) {
-        Card card = game.getGrid().getCard(row, col);
 
-        // Simule la révélation de la carte (affichage différent dans l'UI)
-        game.flipCard(row,col);
-        game.notifierObservateurs();
-    }
 
     public void setOnNextTurn(Runnable onNextTurn) {
         this.onNextTurn = onNextTurn;
+    }
+    public void setonCardClicked(BiConsumer<Integer, Integer> onCardClicked) {
+        this.onCardClicked = onCardClicked;
     }
 
     public void reagir(){
@@ -132,8 +131,7 @@ public class GameView implements Observer {
         dialog.getDialogPane().setContent(grid);
 
         ButtonType okButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
-        ButtonType cancelButtonType = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
-        dialog.getDialogPane().getButtonTypes().addAll(okButtonType, cancelButtonType);
+        dialog.getDialogPane().getButtonTypes().addAll(okButtonType);
 
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == okButtonType) {

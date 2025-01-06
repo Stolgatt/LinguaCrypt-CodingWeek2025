@@ -13,6 +13,8 @@ public class Game {
     private String currentHint;
     private int currentNumberWord;
     private ArrayList<Observer> obs = new ArrayList<>(10);
+    private int currentTryCount = 0;
+
     Random random = new Random();
 
     public Game(GameConfiguration gConfig) {
@@ -37,6 +39,10 @@ public class Game {
     public void notifierObservateurs() {
         for (Observer o : this.obs) o.reagir() ;
     }
+    public boolean isTurnBegin() {return turnBegin;}
+    public void setTurnBegin(boolean turnBegin) {this.turnBegin = turnBegin;}
+    public int getCurrentTryCount() {return currentTryCount;}
+    public void setCurrentTryCount(int currentTryCount) {this.currentTryCount = currentTryCount;}
 
     //Init Game
     public void setUpGame(){
@@ -49,12 +55,10 @@ public class Game {
         grid.getCard(row,col).flipCard();
     }
 
-
-    public boolean isTurnBegin() {
-        return turnBegin;
+    public void increaseTryCounter(){
+        currentTryCount++;
     }
 
-    public void setTurnBegin(boolean turnBegin) {
-        this.turnBegin = turnBegin;
-    }
+
+
 }
