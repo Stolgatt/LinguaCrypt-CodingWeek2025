@@ -21,7 +21,7 @@ public class Main extends Application {
         }
         Parent root = FXMLLoader.load(fxmlURL);
 
-        Scene scene = new Scene(root, 1000, 1000);
+        Scene scene = new Scene(root, 800, 800);
         primaryStage.setScene(scene);
         primaryStage.setTitle("LinguaCrypt");
         primaryStage.show();

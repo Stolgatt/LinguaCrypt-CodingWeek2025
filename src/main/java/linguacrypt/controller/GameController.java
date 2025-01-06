@@ -16,6 +16,7 @@ public class GameController {
 
         view.setOnNextTurn(this::nextTurn);
         view.setonCardClicked(this::CardClicked);
+        view.setOnGiveHint(this::giveHint);
     }
 
     public Game getGame() {
@@ -25,23 +26,39 @@ public class GameController {
     public void nextTurn() {
         int currentTurn = game.getTurn();
         game.setTurn((currentTurn + 1) % 2);
-        game.setTurnBegin(true);
+        game.setTurnBegin(0);
         game.notifierObservateurs();
     }
 
     public void CardClicked(int row, int col) {
+        if (game.isTurnBegin()!=2){return;}
         if (game.getGrid().getCard(row, col).isSelected()){return;}
         game.flipCard(row,col);
-        int turn = game.getTurn();
-        int color = game.getGrid().getCard(row, col).getCouleur();
-        if (turn + 1 != color){
-            nextTurn();
+
+        if (game.isWinning() == -1){
+            int turn = game.getTurn();
+            int color = game.getGrid().getCard(row, col).getCouleur();
+            if (color == 3){
+                game.setIsWin(2);
+            }
+            else {
+                if (turn + 1 != color){
+                    nextTurn();
+                }
+                game.increaseTryCounter();
+                if (game.getCurrentTryCount() == game.getCurrentNumberWord() +1){
+                    nextTurn();
+                    game.setCurrentTryCount(0);
+                }
+            }
+
         }
-        game.increaseTryCounter();
-        if (game.getCurrentTryCount() == game.getCurrentNumberWord() +1){
-            nextTurn();
-            game.setCurrentTryCount(0);
-        }
+
+        game.notifierObservateurs();
+    }
+
+    public void giveHint(){
+        game.setTurnBegin(1);
         game.notifierObservateurs();
     }
 }
