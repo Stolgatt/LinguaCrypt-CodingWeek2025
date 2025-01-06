@@ -24,6 +24,7 @@ public class GameController {
     public void nextTurn() {
         int currentTurn = game.getTurn();
         game.setTurn((currentTurn + 1) % 2);
+        game.setTurnBegin(true);
         game.notifierObservateurs();
     }
 }

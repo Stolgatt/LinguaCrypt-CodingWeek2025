@@ -9,6 +9,7 @@ public class Game {
     private GameConfiguration gConfig;
     private Grid grid;
     private int turn; // 0 : Blue team to play / 1 : Red team to play
+    private boolean turnBegin = true;
     private String currentHint;
     private int currentNumberWord;
     private ArrayList<Observer> obs = new ArrayList<>(10);
@@ -49,4 +50,11 @@ public class Game {
     }
 
 
+    public boolean isTurnBegin() {
+        return turnBegin;
+    }
+
+    public void setTurnBegin(boolean turnBegin) {
+        this.turnBegin = turnBegin;
+    }
 }

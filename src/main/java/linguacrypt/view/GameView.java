@@ -1,7 +1,8 @@
 package linguacrypt.view;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import linguacrypt.controller.GameController;
@@ -71,7 +72,6 @@ public class GameView implements Observer {
         int turn = game.getTurn();
         Grid grid = game.getGrid();
         BorderPane root = (BorderPane) gameGrid.getScene().getRoot(); // Récupérer le BorderPane racine de la scène
-
         switch (turn) {
             case 0:
                 root.setStyle("-fx-background-color: rgba(173, 216, 230, 0.5);");  // LightBlue avec alpha 0.5
@@ -102,10 +102,73 @@ public class GameView implements Observer {
                             break;
                     }
                 }
-
             }
+        }
+        if (game.isTurnBegin()){
+            drawSpyDialogueBox();
         }
     }
 
+    public void drawSpyDialogueBox() {
+        Dialog<Void> dialog = new Dialog<>();
+        dialog.setTitle("Spy Dialogue");
 
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setAlignment(Pos.CENTER);
+
+        TextField wordField = new TextField();
+        wordField.setPromptText("Entrez un mot");
+
+        TextField numberField = new TextField();
+        numberField.setPromptText("Entrez un entier positif");
+
+        grid.add(new Label("Mot:"), 0, 0);
+        grid.add(wordField, 1, 0);
+        grid.add(new Label("Entier positif:"), 0, 1);
+        grid.add(numberField, 1, 1);
+
+        dialog.getDialogPane().setContent(grid);
+
+        ButtonType okButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancelButtonType = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        dialog.getDialogPane().getButtonTypes().addAll(okButtonType, cancelButtonType);
+
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == okButtonType) {
+                String word = wordField.getText();
+                String numberText = numberField.getText();
+                try {
+                    int number = Integer.parseInt(numberText);
+                    if (word.trim().isEmpty() || word.contains(" ")) {
+                        showError("Le mot doit être unique et sans espaces.");
+                        return null;
+                    }
+                    if (number > 0) {
+                        game.setCurrentHint(word);
+                        game.setCurrentNumberWord(number);
+                        game.setTurnBegin(false);
+                        return null;
+                    } else {
+                        showError("Le nombre doit être un entier positif.");
+                        return null;
+                    }
+                } catch (NumberFormatException e) {
+                    showError("Veuillez entrer un entier valide.");
+                }
+            }
+            return null;
+        });
+        dialog.showAndWait();
+        game.notifierObservateurs();
+    }
+
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }
