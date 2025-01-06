@@ -19,6 +19,8 @@ public class GameView implements Observer {
     private GridPane gameGrid; // Lié à game_view.fxml
     @FXML
     private Button btnNextTurn;
+    @FXML
+    private Label labelHint;
 
     private Game game;
     private Runnable onNextTurn;
@@ -104,6 +106,8 @@ public class GameView implements Observer {
                 }
             }
         }
+        String message = game.hintToString();
+        labelHint.setText("Indice pour ce tour : " + message);
         if (game.getIsWin() != -1 && game.getIsWin() != 2){
             drawWinningDialogueBox();
             return;

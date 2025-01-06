@@ -84,4 +84,8 @@ public class Game {
         }
         return isWin;
     }
+
+    public String hintToString(){
+        return currentHint + " en " + currentNumberWord;
+    }
 }
