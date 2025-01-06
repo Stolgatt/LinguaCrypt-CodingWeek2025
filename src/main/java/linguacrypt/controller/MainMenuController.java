@@ -13,6 +13,9 @@ public class MainMenuController {
     @FXML
     public void handleCreateGame(ActionEvent event) {
         try {
+
+
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/gameView.fxml"));
             Scene gameScene = new Scene(loader.load(), 1000, 1000);
 
