@@ -5,10 +5,12 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.fxml.FXMLLoader;
 import linguacrypt.controller.GameController;
 import linguacrypt.model.Card;
 import linguacrypt.model.Grid;
 import linguacrypt.model.Game;
+import linguacrypt.controller.MenuBarController;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -23,6 +25,8 @@ public class GameView implements Observer {
     private Label labelHint;
     @FXML
     private Button btnGuess;
+    @FXML
+    private MenuBarView menuBarController;
 
     private Game game;
     private Runnable onNextTurn;
@@ -40,11 +44,19 @@ public class GameView implements Observer {
             if (OnGiveHint != null) OnGiveHint.run();
         });
     }
+
     public void setGame(Game game) {
         this.game = game;
         game.ajouterObservateur(this);
+        
+        try {
+            MenuBarController menuBarController = new MenuBarController(game);
+            this.menuBarController.setController(menuBarController);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
         initializeGrid();
-
     }
 
     private void initializeGrid() {
@@ -83,18 +95,18 @@ public class GameView implements Observer {
     public void reagir(){
         int turn = game.getTurn();
         Grid grid = game.getGrid();
-        BorderPane root = (BorderPane) gameGrid.getScene().getRoot(); // Récupérer le BorderPane racine de la scène
+        BorderPane root = (BorderPane) gameGrid.getScene().getRoot();
 
         //BACKGROUND COLOR
         switch (turn) {
             case 0:
-                root.setStyle("-fx-background-color: rgba(173, 216, 230, 0.5);");  // LightBlue avec alpha 0.5
+                root.setStyle("-fx-background-color: rgba(173, 216, 230, 0.5);");
                 break;
             case 1:
-                root.setStyle("-fx-background-color: rgba(240, 128, 128, 0.5);");  // LightCoral avec alpha 0.5
+                root.setStyle("-fx-background-color: rgba(240, 128, 128, 0.5);");
                 break;
             default:
-                root.setStyle("-fx-background-color: rgba(211, 211, 211, 0.5);");  // LightGray avec alpha 0.5
+                root.setStyle("-fx-background-color: rgba(211, 211, 211, 0.5);");
                 break;
         }
 
@@ -102,19 +114,22 @@ public class GameView implements Observer {
         for (int row = 0; row < grid.getGrid().length; row++) {
             for (int col = 0; col < grid.getGrid()[row].length; col++) {
                 Button cardButton = (Button) gameGrid.getChildren().get(row * grid.getGrid().length + col);
-                if (grid.getCard(row,col).isSelected() || game.isTurnBegin()==0){//check si déjà retourner ou si c'est le tour de l'espion
+                // Update button text with loaded word
+                cardButton.setText(grid.getCard(row, col).getWord());
+                
+                if (grid.getCard(row,col).isSelected() || game.isTurnBegin()==0){
                     switch (grid.getCard(row,col).getCouleur()){
                         case 0:
-                            cardButton.setStyle("-fx-background-color: #F5DEB3;");  // White
+                            cardButton.setStyle("-fx-background-color: #F5DEB3;");
                             break;
                         case 1:
-                            cardButton.setStyle("-fx-background-color: lightblue;");   // Blue
+                            cardButton.setStyle("-fx-background-color: lightblue;");
                             break;
                         case 2:
-                            cardButton.setStyle("-fx-background-color: lightcoral;");    // Red
+                            cardButton.setStyle("-fx-background-color: lightcoral;");
                             break;
                         case 3:
-                            cardButton.setStyle("-fx-background-color: darkgray;");  // Black
+                            cardButton.setStyle("-fx-background-color: darkgray;");
                             break;
                     }
                 }
