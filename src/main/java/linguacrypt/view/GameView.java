@@ -5,10 +5,12 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.fxml.FXMLLoader;
 import linguacrypt.controller.GameController;
 import linguacrypt.model.Card;
 import linguacrypt.model.Grid;
 import linguacrypt.model.Game;
+import linguacrypt.controller.MenuBarController;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -29,6 +31,16 @@ public class GameView implements Observer {
         btnNextTurn.setOnAction(e -> {
             if (onNextTurn != null) onNextTurn.run();
         });
+        
+        // Initialize menu bar controller
+        try {
+            FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/FXML/menuBar.fxml"));
+            MenuBarView menuBarView = menuLoader.getController();
+            MenuBarController menuBarController = new MenuBarController(game);
+            menuBarView.setController(menuBarController);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     public void setGame(Game game) {
         this.game = game;
