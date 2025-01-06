@@ -21,15 +21,23 @@ public class GameView implements Observer {
     private Button btnNextTurn;
     @FXML
     private Label labelHint;
+    @FXML
+    private Button btnGuess;
 
     private Game game;
     private Runnable onNextTurn;
+    private Runnable OnGiveHint;
     private BiConsumer<Integer, Integer> onCardClicked;
 
     @FXML
     private void initialize() {
         btnNextTurn.setOnAction(e -> {
+            btnNextTurn.setVisible(false);
             if (onNextTurn != null) onNextTurn.run();
+        });
+        btnGuess.setOnAction(e -> {
+            btnGuess.setVisible(false);
+            if (OnGiveHint != null) OnGiveHint.run();
         });
     }
     public void setGame(Game game) {
@@ -65,12 +73,14 @@ public class GameView implements Observer {
     public void setOnNextTurn(Runnable onNextTurn) {
         this.onNextTurn = onNextTurn;
     }
+    public void setOnGiveHint(Runnable OnGiveHint) {
+        this.OnGiveHint = OnGiveHint;
+    }
     public void setonCardClicked(BiConsumer<Integer, Integer> onCardClicked) {
         this.onCardClicked = onCardClicked;
     }
 
     public void reagir(){
-
         int turn = game.getTurn();
         Grid grid = game.getGrid();
         BorderPane root = (BorderPane) gameGrid.getScene().getRoot(); // Récupérer le BorderPane racine de la scène
@@ -85,10 +95,11 @@ public class GameView implements Observer {
                 root.setStyle("-fx-background-color: rgba(211, 211, 211, 0.5);");  // LightGray avec alpha 0.5
                 break;
         }
+
         for (int row = 0; row < grid.getGrid().length; row++) {
             for (int col = 0; col < grid.getGrid()[row].length; col++) {
                 Button cardButton = (Button) gameGrid.getChildren().get(row * grid.getGrid().length + col);
-                if (grid.getCard(row,col).isSelected()){
+                if (grid.getCard(row,col).isSelected() || game.isTurnBegin()==0){
                     switch (grid.getCard(row,col).getCouleur()){
                         case 0:
                             cardButton.setStyle("-fx-background-color: #F5DEB3;");  // White
@@ -104,7 +115,21 @@ public class GameView implements Observer {
                             break;
                     }
                 }
+                else{
+                    cardButton.setStyle("");
+                }
             }
+        }
+        if (game.isTurnBegin()==1){
+            drawSpyDialogueBox();
+        }
+        else if (game.isTurnBegin()==2){
+            btnGuess.setVisible(false);
+            btnNextTurn.setVisible(true);
+        }
+        else{
+            btnNextTurn.setVisible(false);
+            btnGuess.setVisible(true);
         }
         String message = game.hintToString();
         labelHint.setText("Indice pour ce tour : " + message);
@@ -114,11 +139,8 @@ public class GameView implements Observer {
         }
         if (game.getIsWin() == 2){
             drawLoosingDialogueBox();
-            return;
         }
-        if (game.isTurnBegin()){
-            drawSpyDialogueBox();
-        }
+
     }
 
     public void drawSpyDialogueBox() {
@@ -159,7 +181,7 @@ public class GameView implements Observer {
                     if (number > 0) {
                         game.setCurrentHint(word);
                         game.setCurrentNumberWord(number);
-                        game.setTurnBegin(false);
+                        game.setTurnBegin(2);
                         return null;
                     } else {
                         showError("Le nombre doit être un entier positif.");

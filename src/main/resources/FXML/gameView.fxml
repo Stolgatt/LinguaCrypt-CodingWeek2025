@@ -23,6 +23,8 @@
     <bottom>
         <HBox alignment="CENTER" style="-fx-padding: 20;">
             <Button fx:id="btnNextTurn" text="Tour Suivant" />
+            <Button fx:id="btnGuess" text="Donner l'indice" />
         </HBox>
+
     </bottom>
 </BorderPane>

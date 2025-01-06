@@ -9,7 +9,7 @@ public class Game {
     private GameConfiguration gConfig;
     private Grid grid;
     private int turn; // 0 : Blue team to play / 1 : Red team to play
-    private boolean turnBegin = true;
+    private int turnStep = 0;
     private String currentHint;
     private int currentNumberWord;
     private ArrayList<Observer> obs = new ArrayList<>(10);
@@ -39,8 +39,8 @@ public class Game {
     public void notifierObservateurs() {
         for (Observer o : this.obs) o.reagir() ;
     }
-    public boolean isTurnBegin() {return turnBegin;}
-    public void setTurnBegin(boolean turnBegin) {this.turnBegin = turnBegin;}
+    public int isTurnBegin() {return turnStep;}
+    public void setTurnBegin(int turnBegin) {this.turnStep = turnBegin;}
     public int getCurrentTryCount() {return currentTryCount;}
     public void setCurrentTryCount(int currentTryCount) {this.currentTryCount = currentTryCount;}
     public void setIsWin(int isWin) {this.isWin = isWin;}
@@ -86,6 +86,11 @@ public class Game {
     }
 
     public String hintToString(){
-        return currentHint + " en " + currentNumberWord;
+        if (turn == 2){
+            return currentHint + " en " + currentNumberWord;
+        }
+        else{
+            return "";
+        }
     }
 }

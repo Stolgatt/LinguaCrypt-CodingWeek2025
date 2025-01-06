@@ -16,6 +16,7 @@ public class GameController {
 
         view.setOnNextTurn(this::nextTurn);
         view.setonCardClicked(this::CardClicked);
+        view.setOnGiveHint(this::giveHint);
     }
 
     public Game getGame() {
@@ -25,11 +26,12 @@ public class GameController {
     public void nextTurn() {
         int currentTurn = game.getTurn();
         game.setTurn((currentTurn + 1) % 2);
-        game.setTurnBegin(true);
+        game.setTurnBegin(0);
         game.notifierObservateurs();
     }
 
     public void CardClicked(int row, int col) {
+        if (game.isTurnBegin()!=2){return;}
         if (game.getGrid().getCard(row, col).isSelected()){return;}
         game.flipCard(row,col);
 
@@ -52,6 +54,11 @@ public class GameController {
 
         }
 
+        game.notifierObservateurs();
+    }
+
+    public void giveHint(){
+        game.setTurnBegin(1);
         game.notifierObservateurs();
     }
 }
