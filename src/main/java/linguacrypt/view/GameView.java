@@ -84,6 +84,8 @@ public class GameView implements Observer {
         int turn = game.getTurn();
         Grid grid = game.getGrid();
         BorderPane root = (BorderPane) gameGrid.getScene().getRoot(); // Récupérer le BorderPane racine de la scène
+
+        //BACKGROUND COLOR
         switch (turn) {
             case 0:
                 root.setStyle("-fx-background-color: rgba(173, 216, 230, 0.5);");  // LightBlue avec alpha 0.5
@@ -96,10 +98,11 @@ public class GameView implements Observer {
                 break;
         }
 
+        //DRAW GRID
         for (int row = 0; row < grid.getGrid().length; row++) {
             for (int col = 0; col < grid.getGrid()[row].length; col++) {
                 Button cardButton = (Button) gameGrid.getChildren().get(row * grid.getGrid().length + col);
-                if (grid.getCard(row,col).isSelected() || game.isTurnBegin()==0){
+                if (grid.getCard(row,col).isSelected() || game.isTurnBegin()==0){//check si déjà retourner ou si c'est le tour de l'espion
                     switch (grid.getCard(row,col).getCouleur()){
                         case 0:
                             cardButton.setStyle("-fx-background-color: #F5DEB3;");  // White
@@ -120,6 +123,8 @@ public class GameView implements Observer {
                 }
             }
         }
+
+        //Check if button can be visible or not
         if (game.isTurnBegin()==1){
             drawSpyDialogueBox();
         }
@@ -131,8 +136,12 @@ public class GameView implements Observer {
             btnNextTurn.setVisible(false);
             btnGuess.setVisible(true);
         }
+
+        //draw the actual hint
         String message = game.hintToString();
         labelHint.setText("Indice pour ce tour : " + message);
+
+        //check if game is over
         if (game.getIsWin() != -1 && game.getIsWin() != 2){
             drawWinningDialogueBox();
             return;
