@@ -13,6 +13,7 @@ public class BankCard {
         loadWordsFromFile(getClass().getResourceAsStream("/codenames.txt"));
     }
 
+    //Load a txt file
     public void loadWordsFromFile(InputStream inputStream) {
         if (inputStream == null) {
             System.err.println("Le fichier n'a pas été trouvé.");
@@ -29,7 +30,5 @@ public class BankCard {
         }
     }
 
-    public ArrayList<String> getWordsDefault() {
-        return wordsDefault;
-    }
+    public ArrayList<String> getWordsDefault() {return wordsDefault;}
 }

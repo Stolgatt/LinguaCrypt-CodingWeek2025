@@ -35,58 +35,23 @@ public class GameConfiguration {
         return configuration;
     }
 
-
-
     public static void resetInstance() {
         configuration = null;
         firstThread = true;
     }
-    public int getDifficultyLevel() {
-        return difficultyLevel;
-    }
 
-    public void setDifficultyLevel(int difficultyLevel) {
-        this.difficultyLevel = difficultyLevel;
-    }
-
-    public int getMaxTeamMember() {
-        return maxTeamMember;
-    }
-
-    public void setMaxTeamMember(int maxTeamMember) {
-        this.maxTeamMember = maxTeamMember;
-    }
-
-    public int getGridSize() {
-        return gridSize;
-    }
-
-    public void setGridSize(int gridSize) {
-        this.gridSize = gridSize;
-    }
-
-    public String getTheme() {
-        return theme;
-    }
-
-    public void setTheme(String theme) {
-        this.theme = theme;
-    }
-
-    public int getNbPlayer() {
-        return nbPlayer;
-    }
-
-    public void setNbPlayer(int nbPlayer) {
-        this.nbPlayer = nbPlayer;
-    }
-
-    public int getTimeTurn() {
-        return timeTurn;
-    }
-
-    public void setTimeTurn(int timeTurn) {
-        this.timeTurn = timeTurn;
-    }
+    //SETTER AND GETTER
+    public int getDifficultyLevel() {return difficultyLevel;}
+    public void setDifficultyLevel(int difficultyLevel) {this.difficultyLevel = difficultyLevel;}
+    public int getMaxTeamMember() {return maxTeamMember;}
+    public void setMaxTeamMember(int maxTeamMember) {this.maxTeamMember = maxTeamMember;}
+    public int getGridSize() {return gridSize;}
+    public void setGridSize(int gridSize) {this.gridSize = gridSize;}
+    public String getTheme() {return theme;}
+    public void setTheme(String theme) {this.theme = theme;}
+    public int getNbPlayer() {return nbPlayer;}
+    public void setNbPlayer(int nbPlayer) {this.nbPlayer = nbPlayer;}
+    public int getTimeTurn() {return timeTurn;}
+    public void setTimeTurn(int timeTurn) {this.timeTurn = timeTurn;}
 }
 
