@@ -1,6 +1,10 @@
 package linguacrypt.model;
 
-public class Card {
+import java.io.Serializable;
+
+public class Card implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
     private String word;
     private String urlImage;
     private int couleur; // 0 : white / 1 : blue / 2 : red / 3 : black

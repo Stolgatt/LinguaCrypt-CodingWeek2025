@@ -1,21 +1,25 @@
 package linguacrypt.model;
 
 import linguacrypt.view.Observer;
-
+import java.io.Serializable;
+import java.io.ObjectInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Game {
+public class Game implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
     private GameConfiguration gConfig;
     private Grid grid;
     private int turn; // 0 : Blue team to play / 1 : Red team to play
     private int turnStep = 0;
     private String currentHint;
     private int currentNumberWord;
-    private ArrayList<Observer> obs = new ArrayList<>(10);
+    private transient ArrayList<Observer> obs = new ArrayList<>();
     private int currentTryCount = 0;
     private int isWin = -1;
-    Random random = new Random();
+    private transient Random random = new Random();
 
     public Game(GameConfiguration gConfig) {
         this.gConfig = gConfig;
@@ -37,7 +41,12 @@ public class Game {
         this.obs.add(o) ;
     }
     public void notifierObservateurs() {
-        for (Observer o : this.obs) o.reagir() ;
+        if (obs == null) {
+            obs = new ArrayList<>();
+        }
+        for (Observer o : obs) {
+            o.reagir();
+        }
     }
     public int isTurnBegin() {return turnStep;}
     public void setTurnBegin(int turnBegin) {this.turnStep = turnBegin;}
@@ -45,6 +54,13 @@ public class Game {
     public void setCurrentTryCount(int currentTryCount) {this.currentTryCount = currentTryCount;}
     public void setIsWin(int isWin) {this.isWin = isWin;}
     public int getIsWin(){return isWin;}
+    public void setGrid(Grid loadedGrid) {
+        if (this.grid == null) {
+            this.grid = new Grid(loadedGrid.getGrid().length);
+        }
+        this.grid.copyFrom(loadedGrid);
+    }
+
     //Init Game
     public void setUpGame(){
         turn = random.nextInt(2);
@@ -93,4 +109,20 @@ public class Game {
             return "";
         }
     }
+
+    // Add these methods to manage observers
+    public ArrayList<Observer> getObservateurs() {
+        return new ArrayList<>(obs);
+    }
+
+    public void clearObservateurs() {
+        obs.clear();
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        obs = new ArrayList<>();  // Reinitialize the observers list
+    }
+
+    
 }
