@@ -11,25 +11,23 @@ import linguacrypt.model.GameConfiguration;
 
 import java.io.IOException;
 
-public class MainView {
+public class MainMenuView {
 
     @FXML
     public void handleCreateGame(ActionEvent event) {
         try {
-            // Crée un jeu à partir de la configuration
             GameConfiguration config = GameConfiguration.getInstance();
             Game game = new Game(config);
             GameController gameController = new GameController(game);
 
-            // Charge la vue de la grille
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/gameView.fxml"));
             Scene gameScene = new Scene(loader.load(), 1000, 1000);
 
-            // Passe le jeu au GameViewController
+
             GameView gameView = loader.getController();
             gameView.setGame(gameController.getGame());
 
-            // Change la scène
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setScene(gameScene);
         } catch (IOException e) {

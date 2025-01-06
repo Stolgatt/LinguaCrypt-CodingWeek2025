@@ -14,7 +14,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        URL fxmlURL = getClass().getResource("/FXML/main.fxml");
+        URL fxmlURL = getClass().getResource("/FXML/mainMenuView.fxml");
         if (fxmlURL == null) {
             System.err.println("Could not find main.fxml");
             System.exit(1);
