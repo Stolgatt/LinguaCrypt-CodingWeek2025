@@ -1,6 +1,10 @@
-# CodingWeek 2025
-**TELECOM Nancy - 06/01 au 10/01**
+# LinguaCrypt
 
+## Prérequis
+- Java 17+
+- Gradle
 
-Les instructions sur l'organisation et les attendus de la semaine se trouve dans le fichier [INSTRUCTIONS.md](./INSTRUCTIONS.md).
-
+## Installation
+1. Clonez le dépôt : `git clone <url>`
+2. Compilez le projet : `gradle build`
+3. Exécutez l'application : `gradle run`
