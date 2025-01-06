@@ -2,6 +2,29 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.Button?>
 
-<GridPane fx:id="gameGrid" xmlns:fx="http://javafx.com/fxml" fx:controller="linguacrypt.view.GameView" hgap="10" vgap="10" alignment="CENTER">
-    <!-- Everything will be added dynamically -->
-</GridPane>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="linguacrypt.view.GameView">
+    <top>
+        <HBox alignment="CENTER" style="-fx-padding: 20;">
+            <Label fx:id="labelHint" text="" />
+        </HBox>
+    </top>
+    <center>
+        <GridPane fx:id="gameGrid"
+                  hgap="10"
+                  vgap="10"
+                  alignment="CENTER"
+                  >
+            <!-- Everything will be added dynamically -->
+        </GridPane>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER" style="-fx-padding: 20;">
+            <Button fx:id="btnNextTurn" text="Tour Suivant" />
+            <Button fx:id="btnGuess" text="Donner l'indice" />
+        </HBox>
+
+    </bottom>
+</BorderPane>

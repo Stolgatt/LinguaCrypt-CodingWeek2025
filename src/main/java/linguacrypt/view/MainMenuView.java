@@ -3,6 +3,7 @@ package linguacrypt.view;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import linguacrypt.controller.GameController;
@@ -11,14 +12,13 @@ import linguacrypt.model.GameConfiguration;
 
 import java.io.IOException;
 
-public class MainMenuView {
+public class MainMenuView implements Observer {
 
     @FXML
     public void handleCreateGame(ActionEvent event) {
         try {
             GameConfiguration config = GameConfiguration.getInstance();
             Game game = new Game(config);
-            GameController gameController = new GameController(game);
 
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/gameView.fxml"));
@@ -26,6 +26,7 @@ public class MainMenuView {
 
 
             GameView gameView = loader.getController();
+            GameController gameController = new GameController(game,gameView);
             gameView.setGame(gameController.getGame());
 
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
@@ -38,5 +39,9 @@ public class MainMenuView {
     @FXML
     public void handleExit(ActionEvent event) {
         System.exit(0);
+    }
+
+    public void reagir(){
+
     }
 }
