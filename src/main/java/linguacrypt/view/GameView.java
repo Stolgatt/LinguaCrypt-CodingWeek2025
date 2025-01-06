@@ -45,6 +45,7 @@ public class GameView implements Observer {
         // Initialize menu bar controller
         try {
             FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/FXML/menuBar.fxml"));
+            menuLoader.load();
             MenuBarView menuBarView = menuLoader.getController();
             MenuBarController menuBarController = new MenuBarController(game);
             menuBarView.setController(menuBarController);
@@ -55,8 +56,19 @@ public class GameView implements Observer {
     public void setGame(Game game) {
         this.game = game;
         game.ajouterObservateur(this);
+        
+        // Initialize menu bar controller
+        try {
+            FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/FXML/menuBar.fxml"));
+            menuLoader.load();
+            MenuBarView menuBarView = menuLoader.getController();
+            MenuBarController menuBarController = new MenuBarController(game);
+            menuBarView.setController(menuBarController);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
         initializeGrid();
-
     }
 
     private void initializeGrid() {

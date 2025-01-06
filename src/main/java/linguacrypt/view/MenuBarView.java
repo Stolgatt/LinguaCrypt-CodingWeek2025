@@ -1,28 +1,33 @@
 package linguacrypt.view;
 
 import javafx.fxml.FXML;
-import javafx.event.ActionEvent;
 import linguacrypt.controller.MenuBarController;
 
 public class MenuBarView {
     private MenuBarController controller;
 
+    @FXML
+    public void handleSaveGame() {
+        if (controller != null) {
+            controller.saveGame();
+        }
+    }
+
+    @FXML
+    public void handleLoadGame() {
+        if (controller != null) {
+            controller.loadGame();
+        }
+    }
+
+    @FXML
+    public void handleExit() {
+        if (controller != null) {
+            controller.exit();
+        }
+    }
+
     public void setController(MenuBarController controller) {
         this.controller = controller;
-    }
-
-    @FXML
-    public void handleSaveGame(ActionEvent event) {
-        controller.saveGame();
-    }
-
-    @FXML
-    public void handleLoadGame(ActionEvent event) {
-        controller.loadGame();
-    }
-
-    @FXML
-    public void handleExit(ActionEvent event) {
-        controller.exit();
     }
 } 

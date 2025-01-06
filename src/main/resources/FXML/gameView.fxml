@@ -4,12 +4,15 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="linguacrypt.view.GameView">
     <top>
-        <fx:include source="menuBar.fxml"/>
-        <HBox alignment="CENTER" style="-fx-padding: 20;">
-            <Label fx:id="labelHint" text="" />
-        </HBox>
+        <VBox>
+            <fx:include source="menuBar.fxml"/>
+            <HBox alignment="CENTER" style="-fx-padding: 20;">
+                <Label fx:id="labelHint" text="" />
+            </HBox>
+        </VBox>
     </top>
         
     <center>
