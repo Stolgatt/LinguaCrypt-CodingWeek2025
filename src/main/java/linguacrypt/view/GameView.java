@@ -43,7 +43,7 @@ public class GameView {
         Card card = game.getGrid().getCard(row, col);
 
         // Simule la révélation de la carte (affichage différent dans l'UI)
-        card.setSelected(true);
+        game.flipCard(row,col);
         System.out.println("Card clicked: " + card.getWord() + " - " + card.getCouleur());
     }
 }

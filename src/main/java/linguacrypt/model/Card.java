@@ -44,4 +44,7 @@ public class Card {
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
+    public void flipCard(){
+        this.selected = true;
+    }
 }
