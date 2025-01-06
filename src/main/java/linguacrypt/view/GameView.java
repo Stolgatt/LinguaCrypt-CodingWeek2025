@@ -68,6 +68,7 @@ public class GameView implements Observer {
     }
 
     public void reagir(){
+
         int turn = game.getTurn();
         Grid grid = game.getGrid();
         BorderPane root = (BorderPane) gameGrid.getScene().getRoot(); // Récupérer le BorderPane racine de la scène
@@ -102,6 +103,14 @@ public class GameView implements Observer {
                     }
                 }
             }
+        }
+        if (game.getIsWin() != -1 && game.getIsWin() != 2){
+            drawWinningDialogueBox();
+            return;
+        }
+        if (game.getIsWin() == 2){
+            drawLoosingDialogueBox();
+            return;
         }
         if (game.isTurnBegin()){
             drawSpyDialogueBox();
@@ -160,6 +169,50 @@ public class GameView implements Observer {
         });
         dialog.showAndWait();
         game.notifierObservateurs();
+    }
+
+    public void drawWinningDialogueBox() {
+        Dialog<Void> dialog = new Dialog<>();
+        dialog.setTitle("Winning Dialogue");
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setAlignment(Pos.CENTER);
+        String message = "";
+        if (game.isWinning() == 0){
+            message = "L'équipe bleue a gagné !";
+        }
+        else{
+            message = "L'équipe rouge a gagné !";
+        }
+        Label messageLabel = new Label(message);
+        grid.add(messageLabel, 0, 0);
+        dialog.getDialogPane().setContent(grid);
+        ButtonType okButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(okButtonType);
+        dialog.showAndWait();
+    }
+
+    public void drawLoosingDialogueBox() {
+        Dialog<Void> dialog = new Dialog<>();
+        dialog.setTitle("Loosing Dialogue");
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setAlignment(Pos.CENTER);
+        String message = "";
+        if (game.getTurn() == 0){
+            message = "L'équipe bleue a perdu ! Elle a trouvé l'assassin ...";
+        }
+        else{
+            message =  "L'équipe rouge a perdu ! Elle a trouvé l'assassin ...";
+        }
+        Label messageLabel = new Label(message);
+        grid.add(messageLabel, 0, 0);
+        dialog.getDialogPane().setContent(grid);
+        ButtonType okButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(okButtonType);
+        dialog.showAndWait();
     }
 
     private void showError(String message) {
