@@ -45,5 +45,5 @@ javafx {
 }
 
 application {
-    mainClass.set("Main")
+    mainClass.set("linguacrypt.Main")
 }
