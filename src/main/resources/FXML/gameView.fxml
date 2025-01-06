@@ -2,6 +2,21 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.Button?>
 
-<GridPane fx:id="gameGrid" xmlns:fx="http://javafx.com/fxml" fx:controller="linguacrypt.view.GameView" hgap="10" vgap="10" alignment="CENTER">
-    <!-- Everything will be added dynamically -->
-</GridPane>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="linguacrypt.view.GameView">
+    <center>
+        <GridPane fx:id="gameGrid"
+                  hgap="10"
+                  vgap="10"
+                  alignment="CENTER"
+                  >
+            <!-- Everything will be added dynamically -->
+        </GridPane>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER" style="-fx-padding: 20;">
+            <Button fx:id="btnNextTurn" text="Tour Suivant" />
+        </HBox>
+    </bottom>
+</BorderPane>

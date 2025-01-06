@@ -1,12 +1,20 @@
 package linguacrypt.controller;
 
 import linguacrypt.model.Game;
+import linguacrypt.view.GameView;
 
 public class GameController {
     private Game game;
-
-    public GameController(Game game) {
+    private GameView view;
+    public GameController(Game game,GameView view) {
         this.game = game;
+        setView(view);
+    }
+
+    public void setView(GameView view) {
+        this.view = view;
+
+        view.setOnNextTurn(this::nextTurn);
     }
 
     public Game getGame() {
@@ -15,7 +23,7 @@ public class GameController {
 
     public void nextTurn() {
         int currentTurn = game.getTurn();
-        game.setTurn((currentTurn + 1) % 2); 
-        System.out.println("Next turn: Team " + (game.getTurn() == 0 ? "Blue" : "Red"));
+        game.setTurn((currentTurn + 1) % 2);
+        game.notifierObservateurs();
     }
 }
