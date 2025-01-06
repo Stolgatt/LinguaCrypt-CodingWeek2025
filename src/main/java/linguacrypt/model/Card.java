@@ -13,35 +13,16 @@ public class Card {
         this.selected = false;
     }
 
-    public String getWord() {
-        return word;
-    }
+    //SETTER AND GETTER
+    public String getWord() {return word;}
+    public void setWord(String word) {this.word = word;}
+    public String getUrlImage() {return urlImage;}
+    public void setUrlImage(String urlImage) {this.urlImage = urlImage;}
+    public int getCouleur() {return couleur;}
+    public void setCouleur(int couleur) {this.couleur = couleur;}
+    public boolean isSelected() {return selected;}
+    public void setSelected(boolean selected) {this.selected = selected;}
 
-    public void setWord(String word) {
-        this.word = word;
-    }
-
-    public String getUrlImage() {
-        return urlImage;
-    }
-
-    public void setUrlImage(String urlImage) {
-        this.urlImage = urlImage;
-    }
-
-    public int getCouleur() {
-        return couleur;
-    }
-
-    public void setCouleur(int couleur) {
-        this.couleur = couleur;
-    }
-
-    public boolean isSelected() {
-        return selected;
-    }
-
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-    }
+    //Flip a card when someone try a guess
+    public void flipCard(){this.selected = true;}
 }
