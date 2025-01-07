@@ -38,4 +38,18 @@ public class Team {
         }
         return false;
     }
+
+    public boolean isValid(){
+        boolean hasSpy = false;
+        boolean hasAgent = false;
+        for (Player player : players) {
+            if (player.getIsSpy()){
+                hasSpy = true;
+            }
+            else{
+                hasAgent = true;
+            }
+        }
+        return hasSpy && hasAgent;
+    }
 }

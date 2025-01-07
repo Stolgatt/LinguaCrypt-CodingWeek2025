@@ -59,6 +59,10 @@ public class EditTeamView implements Observer {
     @FXML
     private void initialize() {
         launchGameButton.setOnAction(e -> {
+            if (!game.getBlueTeam().isValid() || !game.getRedTeam().isValid()) {
+                showError("Les 2 équipes doivent avoir au moins un Espion et un Agent.");
+                return;
+            }
             if (onStartGame != null) onStartGame.accept(e);
         });
         addPlayerBtn.setOnAction(e -> {
@@ -256,8 +260,6 @@ public class EditTeamView implements Observer {
             }
             return null;
         });
-
-        // Affiche la boîte de dialogue
         dialog.showAndWait();
     }
 
@@ -268,11 +270,5 @@ public class EditTeamView implements Observer {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
-    private File getDefaultImage() {
-        // Retourne une image par défaut si aucune image n'est choisie
-        return new File("path/to/default/image.png");
-    }
-
 
 }
