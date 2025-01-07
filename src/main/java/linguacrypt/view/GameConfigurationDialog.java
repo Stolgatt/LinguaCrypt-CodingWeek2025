@@ -8,6 +8,8 @@ import javafx.application.Platform;
 import linguacrypt.model.GameConfiguration;
 
 import java.util.Optional;
+import java.util.List;
+import linguacrypt.utils.ThemeLoader;
 
 /**
  * This class provides a dialog box for configuring game settings.
@@ -15,12 +17,14 @@ import java.util.Optional;
  */
 public class GameConfigurationDialog {
 
+    private ComboBox<String> themeComboBox;
+
     /**
      * Displays a dialog box to configure game settings.
      * The dialog pre-fills fields with default values from the GameConfiguration instance.
      * Users can edit the values, and the configuration is updated upon confirmation.
      */
-    public static boolean showGameConfigurationDialog() {
+    public boolean showGameConfigurationDialog() {
         // Retrieve the current configuration instance
         GameConfiguration config = GameConfiguration.getInstance();
 
@@ -29,7 +33,6 @@ public class GameConfigurationDialog {
             TextField difficultyField = new TextField(String.valueOf(config.getDifficultyLevel()));
             TextField maxTeamField = new TextField(String.valueOf(config.getMaxTeamMember()));
             TextField gridSizeField = new TextField(String.valueOf(config.getGridSize()));
-            TextField themeField = new TextField(config.getTheme());
             TextField nbPlayerField = new TextField(String.valueOf(config.getNbPlayer()));
             TextField timeTurnField = new TextField(String.valueOf(config.getTimeTurn()));
 
@@ -48,10 +51,20 @@ public class GameConfigurationDialog {
             grid.add(maxTeamField, 1, 2);
             grid.add(new Label("Grid Size:"), 0, 3);
             grid.add(gridSizeField, 1, 3);
-            grid.add(new Label("Theme:"), 0, 4);
-            grid.add(themeField, 1, 4);
-            grid.add(new Label("Time per Turn (s) [-1 for infinite]:"), 0, 5);
-            grid.add(timeTurnField, 1, 5);
+            grid.add(new Label("Time per Turn (s) [-1 for infinite]:"), 0, 4);
+            grid.add(timeTurnField, 1, 4);
+
+            // Create a ComboBox for themes
+            themeComboBox = new ComboBox<>();
+            List<Theme> themes = ThemeLoader.loadThemes();
+            for (Theme theme : themes) {
+                themeComboBox.getItems().add(theme.getName());
+                themeComboBox.getSelectionModel().selectFirst();
+            }
+
+            // Add ComboBox to the dialog layout
+            grid.add(new Label("Select Theme:"), 0, 5);
+            grid.add(themeComboBox, 1, 5);
 
             // Create a dialog box for input
             Dialog<ButtonType> dialog = new Dialog<>();
@@ -91,10 +104,7 @@ public class GameConfigurationDialog {
                 if (gridSize < 5 || gridSize > config.getMaxGridSize()) {
                     throw new IllegalArgumentException("Grid size must be between 5 and " + config.getMaxGridSize() +".");
                 }
-                if (!themeField.getText().isEmpty()) {
-                    throw new IllegalArgumentException("Themes are not implemented yet.");
-                }
-                if (timeTurn != -1 && (timeTurn < 0 || timeTurn > config.getMaxTimeTurn())) {
+                if (timeTurn != -1 && (timeTurn < 0 || timeTurn > config.getTimeTurn())) {
                     throw new IllegalArgumentException("Time per turn must be -1 or a positive value <= " + config.getMaxTimeTurn());
                 }
 
@@ -102,7 +112,7 @@ public class GameConfigurationDialog {
                 config.setDifficultyLevel(difficulty);
                 config.setMaxTeamMember(maxTeam);
                 config.setGridSize(gridSize);
-                config.setTheme(themeField.getText());
+                config.setTheme(themeComboBox.getValue());
                 config.setNbPlayer(nbPlayers);
                 config.setTimeTurn(timeTurn);
 
@@ -126,5 +136,10 @@ public class GameConfigurationDialog {
             }
         }
         return true;
+    }
+
+    // After user confirms, set the selected theme in the configuration
+    public String getSelectedTheme() {
+        return themeComboBox.getValue();
     }
 }

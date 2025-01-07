@@ -1,11 +1,14 @@
 package linguacrypt.model;
 
+import linguacrypt.utils.ThemeLoader;
 import linguacrypt.view.Observer;
 import java.io.Serializable;
 import java.io.ObjectInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.List;
+import linguacrypt.model.Theme;
 
 public class Game implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -20,12 +23,25 @@ public class Game implements Serializable {
     private int currentTryCount = 0;
     private int isWin = -1;
     private transient Random random = new Random();
+    private Team[] teams = new Team[2];
+    private List<String> themeWords;
 
     public Game(GameConfiguration gConfig) {
         this.gConfig = gConfig;
-        this.grid = new Grid(gConfig.getGridSize());
+        this.themeWords = loadThemeWords(gConfig.getTheme());
+        this.grid = new Grid(gConfig.getGridSize(), themeWords);
         setUpGame();
         grid.printGrid();
+    }
+
+    private List<String> loadThemeWords(String themeName) {
+        List<Theme> themes = ThemeLoader.loadThemes();
+        for (Theme theme : themes) {
+            if (theme.getName().equals(themeName)) {
+                return theme.getWords();
+            }
+        }
+        return List.of(); // Return an empty list if no theme found
     }
 
     //SETTER AND GETTER
@@ -37,6 +53,9 @@ public class Game implements Serializable {
     public void setCurrentHint(String currentHint) {this.currentHint = currentHint;}
     public int getCurrentNumberWord() {return currentNumberWord;}
     public void setCurrentNumberWord(int currentNumberWord) {this.currentNumberWord = currentNumberWord;}
+    public Team getBlueTeam(){return teams[0];}
+    public Team getRedTeam(){return teams[1];}
+
     public void ajouterObservateur(Observer o) {
         this.obs.add(o) ;
     }
@@ -56,7 +75,7 @@ public class Game implements Serializable {
     public int getIsWin(){return isWin;}
     public void setGrid(Grid loadedGrid) {
         if (this.grid == null) {
-            this.grid = new Grid(loadedGrid.getGrid().length);
+            this.grid = new Grid(loadedGrid.getGrid().length, List.of());
         }
         this.grid.copyFrom(loadedGrid);
     }
@@ -65,6 +84,8 @@ public class Game implements Serializable {
     public void setUpGame(){
         turn = random.nextInt(2);
         grid.initGrid(turn);
+        teams[0] = new Team("Equipe Bleue",gConfig.getMaxTeamMember(),this,0);
+        teams[1] = new Team("Equipe Rouge",gConfig.getMaxTeamMember(),this,1);
     }
 
     //Set a card visible

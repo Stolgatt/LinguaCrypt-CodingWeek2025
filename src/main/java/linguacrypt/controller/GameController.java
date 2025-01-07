@@ -25,6 +25,10 @@ public class GameController {
         return game;
     }
 
+    public void setGame(Game game){
+        this.game = game;
+    }
+
     public void nextTurn() {
         int currentTurn = game.getTurn();
         game.setTurn((currentTurn + 1) % 2);

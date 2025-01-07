@@ -2,10 +2,12 @@ package linguacrypt.view;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.fxml.FXMLLoader;
+import linguacrypt.ApplicationContext;
 import linguacrypt.controller.GameController;
 import linguacrypt.controller.TimerController;
 import linguacrypt.model.Card;
@@ -37,6 +39,7 @@ public class GameView implements Observer {
     private Dialog<Void> spyDialog;
 
     private Game game;
+    private ApplicationContext context = ApplicationContext.getInstance();
     private Runnable onNextTurn;
     private Runnable OnGiveHint;
     private BiConsumer<Integer, Integer> onCardClicked;
@@ -115,7 +118,7 @@ public class GameView implements Observer {
     public void reagir(){
         int turn = game.getTurn();
         Grid grid = game.getGrid();
-        BorderPane root = (BorderPane) gameGrid.getScene().getRoot();
+        Node root = context.getGameNode();
 
         //BACKGROUND COLOR
         switch (turn) {
@@ -186,7 +189,6 @@ public class GameView implements Observer {
             timerController.stopTimer();
             drawLoosingDialogueBox();
         }
-
     }
 
     public void drawSpyDialogueBox() {
@@ -288,6 +290,7 @@ public class GameView implements Observer {
         dialog.getDialogPane().getButtonTypes().addAll(okButtonType);
         dialog.showAndWait();
     }
+
 
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

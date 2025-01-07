@@ -3,6 +3,7 @@ package linguacrypt.model;
 import java.io.Serializable;
 import java.util.Random;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Grid implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -11,15 +12,16 @@ public class Grid implements Serializable {
     private Card[][] grid;
     private transient Random random = new Random();
     private ArrayList<String> gridWords;
+    private List<String> themeWords;
 
-    public Grid(int size) {
+    public Grid(int size, List<String> themeWords) {
         this.size = size;
         this.grid = new Card[size][size];
         this.gridWords = new ArrayList<>();
+        this.themeWords = themeWords;
     }
 
     public void initGrid(int turn) {
-        BankCard bankCard = new BankCard();
         gridWords = new ArrayList<>();
         int white = 0;
         int blue = 0;
@@ -27,24 +29,31 @@ public class Grid implements Serializable {
         int black = 0;
 
         int nbCard = size * size;
-        int maxBlue = nbCard/3 + 1 - turn;
-        int maxRed = nbCard/3 + turn;
+        int maxBlue = nbCard / 3 + 1 - turn;
+        int maxRed = nbCard / 3 + turn;
         int maxWhite = nbCard - maxBlue - maxRed - 1;
 
-        System.out.println(nbCard + " " + maxBlue + " " + maxRed + " " + maxWhite + "turn : " + turn);
+        System.out.println(nbCard + " " + maxBlue + " " + maxRed + " " + maxWhite + " turn: " + turn);
+
+        if (themeWords.isEmpty()) {
+            throw new IllegalArgumentException("Theme words list is empty. Cannot initialize grid.");
+        }
 
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                String randomWord = bankCard.getWordsDefault().get(random.nextInt(bankCard.getWordsDefault().size()));
+                String randomWord = themeWords.get(random.nextInt(themeWords.size()));
+                while(gridWords.contains(randomWord)){
+                    randomWord = themeWords.get(random.nextInt(themeWords.size()));
+                }
                 gridWords.add(randomWord);
                 grid[i][j] = new Card(randomWord, "url_to_image");
                 int color;
-                while (true){
+                while (true) {
                     color = random.nextInt(4);
-                    if (color == 3 && black == 0){black++;break;}
-                    if (color == 2 && red <maxRed){red++;break;}
-                    if (color == 1 && blue < maxBlue){blue++;break;}
-                    if (color == 0 && white < maxWhite){white++;break;}
+                    if (color == 3 && black == 0) { black++; break; }
+                    if (color == 2 && red < maxRed) { red++; break; }
+                    if (color == 1 && blue < maxBlue) { blue++; break; }
+                    if (color == 0 && white < maxWhite) { white++; break; }
                 }
                 grid[i][j].setCouleur(color);
             }
