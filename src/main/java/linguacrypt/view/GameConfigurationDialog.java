@@ -1,10 +1,11 @@
-package linguacrypt.model;
+package linguacrypt.view;
 
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.Alert.AlertType;
 import javafx.geometry.Insets;
 import javafx.application.Platform;
+import linguacrypt.model.GameConfiguration;
 
 import java.util.Optional;
 import java.util.List;
@@ -96,8 +97,9 @@ public class GameConfigurationDialog {
                 if (nbPlayers < 4) {
                     throw new IllegalArgumentException("Number of players must be at least 4.");
                 }
-                if (maxTeam < 2 || maxTeam >= (nbPlayers - 2)) {
-                    throw new IllegalArgumentException("Max team members must be between 2 and " + (nbPlayers - 2));
+                int playerPerTeam = (nbPlayers-1)/2 +1;
+                if (maxTeam < playerPerTeam || maxTeam >= (nbPlayers - 2)) {
+                    throw new IllegalArgumentException("Max team members must be between " + playerPerTeam +" and " + (nbPlayers - 2));
                 }
                 if (gridSize < 5 || gridSize > config.getMaxGridSize()) {
                     throw new IllegalArgumentException("Grid size must be between 5 and " + config.getMaxGridSize() +".");
