@@ -7,6 +7,16 @@
 <?import javafx.scene.layout.*?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="linguacrypt.view.ProfileMenuView">
-    <Label text = " COUCOU"/>
+    <center>
+        <VBox spacing="10" alignment="CENTER">
+            <ComboBox fx:id="comboBox" />
+            <VBox fx:id="statsBox" spacing="5" alignment="CENTER" />
+        </VBox>
+    </center>
+    <bottom>
+        <Button text="Menu Principal" fx:id="MainMenuBtn"
+                style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 1); -fx-pref-width: 200;"/>
+
+    </bottom>
 </BorderPane>
 

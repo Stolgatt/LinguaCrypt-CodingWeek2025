@@ -15,7 +15,7 @@ public class MainMenuView {
 
     private Consumer<ActionEvent> onCreateGame;
     private Runnable onAddCustomTheme;
-    private Runnable onProfileMenu;
+    private Consumer<ActionEvent> onProfileMenu;
     @FXML
     private Button createGameButton; // Button to create a new game
     @FXML
@@ -31,8 +31,8 @@ public class MainMenuView {
     @FXML
     public void initialize() {
         createGameButton.setOnAction(e -> {onCreateGame.accept(e);});
+        profileMenuBtn.setOnAction(e -> {onProfileMenu.accept(e);});
         addCustomThemeButton.setOnAction(e -> {onAddCustomTheme.run();});
-        profileMenuBtn.setOnAction(e -> {onProfileMenu.run();});
         addHoverEffect(createGameButton);
         addHoverEffect(profileMenuBtn);
         addHoverEffect(addCustomThemeButton);
@@ -46,9 +46,7 @@ public class MainMenuView {
     public void setOnCreateGame(Consumer<ActionEvent> onCreateGame){
         this.onCreateGame = onCreateGame;
     }
-    public void setOnProfileMenu(Runnable onprofileMenu){
-        this.onProfileMenu = onprofileMenu;
-    }
+    public void setOnProfileMenu(Consumer<ActionEvent> onprofileMenu){this.onProfileMenu = onprofileMenu;}
     public void setOnAddCustomTheme(Runnable onAddCustomTheme){
         this.onAddCustomTheme = onAddCustomTheme;
     }
@@ -91,8 +89,5 @@ public class MainMenuView {
         button.setOnMouseReleased((MouseEvent e) -> {
             button.setStyle("-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 1); -fx-pref-width: 200;");
         });
-    }
-
-    public void handlePofile(ActionEvent actionEvent) {
     }
 }

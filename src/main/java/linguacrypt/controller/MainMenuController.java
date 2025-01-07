@@ -22,9 +22,9 @@ public class MainMenuController {
         view.setOnProfileMenu(this::handleProfileMenu);
     }
 
-    private void handleProfileMenu() {
-        GameConfiguration.getInstance();
+    private void handleProfileMenu(ActionEvent event) {
         context.getRoot().setCenter(context.getProfileMenuNode());
+
 
     }
 

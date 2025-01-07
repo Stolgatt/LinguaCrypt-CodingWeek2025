@@ -119,7 +119,7 @@ public class ApplicationContext {
         ProfileMenuNode = profileMenuLoader.load();
         profileMenuView = profileMenuLoader.getController();
         profileMenuController = new ProfileMenuController(game, profileMenuView);
-            
+
         } catch (IOException e) {
             System.err.println("Erreur lors du chargement des composants de l'application : " + e.getMessage());
             //noinspection CallToPrintStackTrace
@@ -141,6 +141,7 @@ public class ApplicationContext {
         gameController.setGame(game);
         editTeamController.setGame(game);
         profileMenuController.setGame(game);
+        profileMenuView.setGame(game);
     }
 
     public Node getEditTeamNode(){
@@ -156,8 +157,7 @@ public class ApplicationContext {
         return GameNode;
     }
 
-    public Node getProfileMenuNode() {return ProfileMenuNode;
-    }
+    public Node getProfileMenuNode() {return ProfileMenuNode;}
 
     //endregion
 
