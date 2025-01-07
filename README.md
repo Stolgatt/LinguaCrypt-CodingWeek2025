@@ -18,8 +18,8 @@ LinguaCrypt est une implémentation en Java du jeu de société Codenames, const
 ## Introduction
 LinguaCrypt est un projet réalisé dans le cadre de la CodingWeek 2025. Il s’agit d’une adaptation du jeu de société **Codenames™**, mettant en avant des compétences en programmation orientée objet, en développement d’interfaces graphiques (JavaFX) et en conception logicielle (modèle MVC).
 
-Pour plus de détails sur la planification et l’avancement, consultez la [Feuille de route](roadmap.md).
-Pour une vue détaillée des versions et des changements, consultez le [Changelog](changelog.md).
+Pour plus de détails sur la planification et l’avancement, consultez la [Feuille de route](ROADMAP.md).
+Pour une vue détaillée des versions et des changements, consultez le [Changelog](CHANGELOG.md).
 
 ## Prérequis
 - Java 22 ou supérieur
@@ -125,8 +125,8 @@ LinguaCrypt repose sur des patterns clés :
    - Géré par `GameUtils`, qui utilise la sérialisation pour persister l’état actuel du jeu.
 
 ## Documentation supplémentaire
-- Voir la [Feuille de route](roadmap.md) pour le suivi des jalons.
-- Consulter le [Changelog](changelog.md) pour détails sur les versions.
+- Voir la [Feuille de route](ROADMAP.md) pour le suivi des jalons.
+- Consulter le [Changelog](CHANGELOG.md) pour détails sur les versions.
 - C'est tout
 
 ## Structure du projet
@@ -148,5 +148,5 @@ linguacrypt/
 ```
 
 ## Changelog
-Consultez le fichier [Changelog](changelog.md) pour une liste détaillée des versions, des changements et des évolutions.
+Consultez le fichier [Changelog](CHANGELOG.md) pour une liste détaillée des versions, des changements et des évolutions.
 
