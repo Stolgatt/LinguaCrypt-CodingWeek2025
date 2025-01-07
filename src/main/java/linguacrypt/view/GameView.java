@@ -164,7 +164,6 @@ public class GameView implements Observer {
         if (game.getIsWin() == 2){
             drawLoosingDialogueBox();
         }
-
     }
 
     public void drawSpyDialogueBox() {
@@ -264,6 +263,7 @@ public class GameView implements Observer {
         dialog.getDialogPane().getButtonTypes().addAll(okButtonType);
         dialog.showAndWait();
     }
+
 
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

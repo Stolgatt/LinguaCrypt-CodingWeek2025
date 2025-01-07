@@ -23,6 +23,7 @@ public class Game implements Serializable {
     private int currentTryCount = 0;
     private int isWin = -1;
     private transient Random random = new Random();
+    private Team[] teams = new Team[2];
     private List<String> themeWords;
 
     public Game(GameConfiguration gConfig) {
@@ -52,6 +53,9 @@ public class Game implements Serializable {
     public void setCurrentHint(String currentHint) {this.currentHint = currentHint;}
     public int getCurrentNumberWord() {return currentNumberWord;}
     public void setCurrentNumberWord(int currentNumberWord) {this.currentNumberWord = currentNumberWord;}
+    public Team getBlueTeam(){return teams[0];}
+    public Team getRedTeam(){return teams[1];}
+
     public void ajouterObservateur(Observer o) {
         this.obs.add(o) ;
     }
@@ -80,6 +84,8 @@ public class Game implements Serializable {
     public void setUpGame(){
         turn = random.nextInt(2);
         grid.initGrid(turn);
+        teams[0] = new Team("Equipe Bleue",gConfig.getMaxTeamMember(),this,0);
+        teams[1] = new Team("Equipe Rouge",gConfig.getMaxTeamMember(),this,1);
     }
 
     //Set a card visible
