@@ -7,6 +7,7 @@ import linguacrypt.model.Game;
 import linguacrypt.model.GameConfiguration;
 import linguacrypt.view.GameConfigurationDialog;
 import linguacrypt.view.MainMenuView;
+import linguacrypt.view.CustomThemeDialog;
 
 
 public class MainMenuController {
@@ -17,6 +18,7 @@ public class MainMenuController {
     public void setView(MainMenuView menuView){
         this.view = menuView;
         view.setOnCreateGame(this::handleCreateGame);
+        view.setOnAddCustomTheme(this::handleAddCustomTheme);
     }
 
     public void handleCreateGame(ActionEvent event) {
@@ -29,6 +31,11 @@ public class MainMenuController {
                 context.setGame(new Game(config));
                 context.getRoot().setCenter(context.getGameNode());
             }
+    }
+
+    public void handleAddCustomTheme() {
+        
+        new CustomThemeDialog();
     }
 
     @FXML
