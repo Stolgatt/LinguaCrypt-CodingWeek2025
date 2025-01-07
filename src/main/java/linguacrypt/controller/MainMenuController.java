@@ -33,7 +33,7 @@ public class MainMenuController {
 
                 // Load the game view from FXML
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/editTeam.fxml"));
-                Scene gameScene = new Scene(loader.load(), 1000, 1000);
+                Scene gameScene = new Scene(loader.load(), 800, 800);
 
                 // Set the game instance in the game view controller
                 EditTeamView editTeamView = loader.getController();
