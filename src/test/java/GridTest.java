@@ -14,7 +14,7 @@ public class GridTest {
     @BeforeEach
     public void setUp() {
         size = 5;
-        grid = new Grid(size);
+        grid = new Grid(size, null);
     }
 
     @Test
