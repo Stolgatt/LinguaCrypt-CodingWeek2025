@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="linguacrypt.view.EditTeamView">
+    <top>
+    </top>
+    <center>
+        <HBox spacing="20" prefHeight="200" alignment="CENTER">
+            <VBox style="-fx-background-color: lightBlue;" fx:id="BlueTeam" prefWidth="200" prefHeight="150">
+            </VBox>
+
+            <VBox style="-fx-background-color: lightCoral;" fx:id="RedTeam" prefWidth="200" prefHeight="150">
+            </VBox>
+        </HBox>
+    </center>
+    <bottom>
+        <Button text="Start" fx:id="launchGameButton"/>
+    </bottom>
+</BorderPane>

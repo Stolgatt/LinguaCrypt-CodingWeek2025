@@ -16,7 +16,7 @@ public class MainMenuController {
 
 
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/gameView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/editTeam.fxml"));
             Scene gameScene = new Scene(loader.load(), 1000, 1000);
 
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
