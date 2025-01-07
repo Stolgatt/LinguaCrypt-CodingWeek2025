@@ -1,10 +1,11 @@
-package linguacrypt.model;
+package linguacrypt.view;
 
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.Alert.AlertType;
 import javafx.geometry.Insets;
 import javafx.application.Platform;
+import linguacrypt.model.GameConfiguration;
 
 import java.util.Optional;
 
@@ -93,7 +94,7 @@ public class GameConfigurationDialog {
                 if (!themeField.getText().isEmpty()) {
                     throw new IllegalArgumentException("Themes are not implemented yet.");
                 }
-                if (timeTurn != -1 && (timeTurn < 0 || timeTurn > config.getTimeTurn())) {
+                if (timeTurn != -1 && (timeTurn < 0 || timeTurn > config.getMaxTimeTurn())) {
                     throw new IllegalArgumentException("Time per turn must be -1 or a positive value <= " + config.getMaxTimeTurn());
                 }
 

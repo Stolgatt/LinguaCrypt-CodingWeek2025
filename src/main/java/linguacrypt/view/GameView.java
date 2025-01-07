@@ -7,7 +7,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.fxml.FXMLLoader;
 import linguacrypt.controller.GameController;
+import linguacrypt.controller.TimerController;
 import linguacrypt.model.Card;
+import linguacrypt.model.GameConfiguration;
 import linguacrypt.model.Grid;
 import linguacrypt.model.Game;
 import linguacrypt.controller.MenuBarController;
@@ -27,6 +29,10 @@ public class GameView implements Observer {
     private Button btnGuess;
     @FXML
     private MenuBarView menuBarController;
+    @FXML
+    private Label timerLabel;
+
+    private TimerController timerController;
 
     private Game game;
     private Runnable onNextTurn;
@@ -38,24 +44,36 @@ public class GameView implements Observer {
         btnNextTurn.setOnAction(e -> {
             btnNextTurn.setVisible(false);
             if (onNextTurn != null) onNextTurn.run();
+
+            resetTimer();
         });
         btnGuess.setOnAction(e -> {
             btnGuess.setVisible(false);
             if (OnGiveHint != null) OnGiveHint.run();
         });
+
+        // initialize timer controller
+        int timeTurn = GameConfiguration.getInstance().getTimeTurn();
+        if (timeTurn > 0) {
+            timerController = new TimerController(timerLabel, timeTurn);
+            timerController.setOnTimerEnd(this::handleTimerEnd);
+            timerController.startTimer();
+        } else {
+            timerLabel.setText("∞"); // Prints infinity if time isn't limited
+        }
     }
 
     public void setGame(Game game) {
         this.game = game;
         game.ajouterObservateur(this);
-        
+
         try {
             MenuBarController menuBarController = new MenuBarController(game);
             this.menuBarController.setController(menuBarController);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         initializeGrid();
     }
 
@@ -116,7 +134,7 @@ public class GameView implements Observer {
                 Button cardButton = (Button) gameGrid.getChildren().get(row * grid.getGrid().length + col);
                 // Update button text with loaded word
                 cardButton.setText(grid.getCard(row, col).getWord());
-                
+
                 if (grid.getCard(row,col).isSelected() || game.isTurnBegin()==0){
                     switch (grid.getCard(row,col).getCouleur()){
                         case 0:
@@ -206,6 +224,8 @@ public class GameView implements Observer {
                         game.setCurrentHint(word);
                         game.setCurrentNumberWord(number);
                         game.setTurnBegin(2);
+
+                        resetTimer();
                         return null;
                     } else {
                         showError("Le nombre doit être un entier positif.");
@@ -272,4 +292,59 @@ public class GameView implements Observer {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    private void resetTimer() {
+        int timeTurn = GameConfiguration.getInstance().getTimeTurn();
+        if (timeTurn > 0) {
+            timerController.resetTimer(timeTurn);
+            timerController.startTimer();
+        } else {
+            timerLabel.setText("∞"); // Affiche l'infini si le temps n'est pas limité
+        }
+    }
+
+    private void handleTimerEnd() {
+        int turnState = game.isTurnBegin();
+        showEndOfTurnDialog();
+
+        // Si c'est le tour du spy
+        if (turnState == 0 || turnState == 1) {
+            // Si le spy n'a pas validé son entrée, on saute son tour et celui de l'agent suivant
+            game.setTurnBegin(2); // L'équipe adverse devient spy
+        }
+        // Si c'est le tour des agents
+        else if (turnState == 2) {
+            // Si le timer expire pendant le tour des agents, passer au spy adverse
+            game.setTurnBegin(0); // Le tour suivant devient celui du spy adverse
+        }
+
+        resetTimer();
+    }
+
+    private void showEndOfTurnDialog() {
+        // Créer une alerte de type INFORMATION
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Fin du Tour");
+        alert.setHeaderText(null); // Pas de titre spécifique
+        alert.setContentText("Le tour est terminé !");
+
+        // Ajouter un bouton OK pour fermer l'alerte
+        ButtonType okButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        alert.getButtonTypes().setAll(okButtonType);
+
+        // Utilisation d'un gestionnaire de fermeture pour capturer la réponse de l'utilisateur
+        alert.setOnCloseRequest(event -> {
+            // Vérifier si le bouton "OK" a été cliqué
+            if (alert.getResult() == okButtonType) {
+                // L'utilisateur a cliqué sur OK, on passe au tour suivant
+                if (onNextTurn != null) {
+                    onNextTurn.run();
+                }
+            }
+        });
+
+        // Afficher l'alerte
+        alert.show();
+    }
+
 }

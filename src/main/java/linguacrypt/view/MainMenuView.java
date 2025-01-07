@@ -9,7 +9,6 @@ import javafx.stage.Stage;
 import linguacrypt.controller.GameController;
 import linguacrypt.model.Game;
 import linguacrypt.model.GameConfiguration;
-import linguacrypt.model.GameConfigurationDialog;
 
 import java.io.IOException;
 
