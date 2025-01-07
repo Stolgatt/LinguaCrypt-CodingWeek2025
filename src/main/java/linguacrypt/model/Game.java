@@ -145,5 +145,8 @@ public class Game implements Serializable {
         obs = new ArrayList<>();  // Reinitialize the observers list
     }
 
-    
+    public GameConfiguration getGameConfiguration() {
+        return this.gConfig;
+    }
+
 }

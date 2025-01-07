@@ -45,7 +45,7 @@ public class TimerController {
     }
 
     // Update the label with the remaining time
-    private void updateLabel() {
+    public void updateLabel() {
         int minutes = timeRemaining / 60;
         int seconds = timeRemaining % 60;
         timerLabel.setText(String.format("%02d:%02d", minutes, seconds)); // Format MM:SS

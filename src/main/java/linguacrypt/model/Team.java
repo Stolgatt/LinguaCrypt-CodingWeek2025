@@ -1,8 +1,10 @@
 package linguacrypt.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Team {
+public class Team implements Serializable{
+    private static final long serialVersionUID = 1L;
     private ArrayList<Player> players;
     private String name;
     private Game game;

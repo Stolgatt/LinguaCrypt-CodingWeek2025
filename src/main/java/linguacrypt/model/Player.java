@@ -1,11 +1,15 @@
 package linguacrypt.model;
 
-public class Player {
+import java.io.Serializable;
+
+public class Player implements Serializable{
+    private static final long serialVersionUID = 1L;
     private String name;
     private boolean isSpy; // 0 : Espion / 1 : Agent
     private String urlAvatar;
 
-    public Player(String name, boolean isSpy, String urlAvatar) {
+    public Player(String name, boolean isSpy, String urlAvatar){
+        
         this.name = name;
         this.isSpy = isSpy;
         this.urlAvatar = urlAvatar;

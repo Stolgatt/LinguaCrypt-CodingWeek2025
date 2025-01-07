@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 import linguacrypt.ApplicationContext;
 import linguacrypt.model.Game;
 import linguacrypt.model.GameConfiguration;
-import linguacrypt.model.GameConfigurationDialog;
+import linguacrypt.view.GameConfigurationDialog;
 import linguacrypt.view.MainMenuView;
 
 

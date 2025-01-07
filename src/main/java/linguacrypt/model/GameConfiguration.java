@@ -28,15 +28,6 @@ public class GameConfiguration implements Serializable {
 
     public static GameConfiguration getInstance() {
         if (configuration == null) {
-            if (firstThread) {
-                firstThread = false;
-                Thread.currentThread();
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
             configuration = new GameConfiguration();
         }
         return configuration;
