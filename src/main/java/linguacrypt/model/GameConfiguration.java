@@ -1,8 +1,11 @@
 package linguacrypt.model;
 
-public class GameConfiguration {
-    private static GameConfiguration configuration = null;
-    static boolean firstThread = true;
+import java.io.Serializable;
+
+public class GameConfiguration implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private static transient GameConfiguration configuration = null;
+    static transient boolean firstThread = true;
     private int difficultyLevel;                            // For the AI
     private int maxDiffLevel = 3;
     private int minDiffLevel = 1;
