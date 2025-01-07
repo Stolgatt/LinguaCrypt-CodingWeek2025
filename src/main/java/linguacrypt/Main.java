@@ -4,22 +4,20 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import linguacrypt.model.Game;
-import linguacrypt.model.GameConfiguration;
+import linguacrypt.controller.MainMenuController;
+import linguacrypt.view.MainMenuView;
 
 import java.io.IOException;
-import java.net.URL;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        URL fxmlURL = getClass().getResource("/FXML/mainMenuView.fxml");
-        if (fxmlURL == null) {
-            System.err.println("Could not find main.fxml");
-            System.exit(1);
-        }
-        Parent root = FXMLLoader.load(fxmlURL);
+        FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/FXML/mainMenuView.fxml"));
+        Parent root =menuLoader.load();
+        MainMenuView menuView = menuLoader.getController();
+        MainMenuController mainMenuController = new MainMenuController();
+        mainMenuController.setView(menuView);
 
         Scene scene = new Scene(root, 800, 800);
         primaryStage.setScene(scene);

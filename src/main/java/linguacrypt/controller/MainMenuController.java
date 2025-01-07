@@ -8,22 +8,43 @@ import javafx.stage.Stage;
 import linguacrypt.model.Game;
 import linguacrypt.model.GameConfiguration;
 import linguacrypt.model.GameConfigurationDialog;
+import linguacrypt.view.EditTeamView;
+import linguacrypt.view.MainMenuView;
 
 import java.io.IOException;
 
 public class MainMenuController {
 
-    @FXML
+    MainMenuView view;
+
+    public void setView(MainMenuView menuView){
+        this.view = menuView;
+        view.setOnCreateGame(this::handleCreateGame);
+    }
+
     public void handleCreateGame(ActionEvent event) {
         try {
+            // Retrieve game configuration and personalize settings
+            GameConfiguration config = GameConfiguration.getInstance();
+            GameConfigurationDialog dialog = new GameConfigurationDialog();
+            if (dialog.showGameConfigurationDialog()) {
+                config.setTheme(dialog.getSelectedTheme());
+                Game game = new Game(config);
 
+                // Load the game view from FXML
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/editTeam.fxml"));
+                Scene gameScene = new Scene(loader.load(), 1000, 1000);
 
+                // Set the game instance in the game view controller
+                EditTeamView editTeamView = loader.getController();
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/editTeam.fxml"));
-            Scene gameScene = new Scene(loader.load(), 1000, 1000);
+                EditTeamController editTeamController = new EditTeamController(game, editTeamView);
+                editTeamView.setGame(editTeamController.getGame());
 
-            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            stage.setScene(gameScene);
+                // Switch to the game scene
+                Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+                stage.setScene(gameScene);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
