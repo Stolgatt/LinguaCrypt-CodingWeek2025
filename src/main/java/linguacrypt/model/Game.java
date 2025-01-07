@@ -1,11 +1,14 @@
 package linguacrypt.model;
 
+import linguacrypt.utils.ThemeLoader;
 import linguacrypt.view.Observer;
 import java.io.Serializable;
 import java.io.ObjectInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.List;
+import linguacrypt.model.Theme;
 
 public class Game implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -20,12 +23,24 @@ public class Game implements Serializable {
     private int currentTryCount = 0;
     private int isWin = -1;
     private transient Random random = new Random();
+    private List<String> themeWords;
 
     public Game(GameConfiguration gConfig) {
         this.gConfig = gConfig;
         this.grid = new Grid(gConfig.getGridSize());
+        this.themeWords = loadThemeWords(gConfig.getTheme());
         setUpGame();
         grid.printGrid();
+    }
+
+    private List<String> loadThemeWords(String themeName) {
+        List<Theme> themes = ThemeLoader.loadThemes();
+        for (Theme theme : themes) {
+            if (theme.getName().equals(themeName)) {
+                return theme.getWords();
+            }
+        }
+        return List.of(); // Return an empty list if no theme found
     }
 
     //SETTER AND GETTER

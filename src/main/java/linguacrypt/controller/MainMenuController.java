@@ -5,24 +5,22 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import linguacrypt.model.Game;
+import linguacrypt.model.GameConfiguration;
+import linguacrypt.model.GameConfigurationDialog;
 
 import java.io.IOException;
 
 public class MainMenuController {
 
     @FXML
-    public void handleCreateGame(ActionEvent event) {
-        try {
-
-
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/gameView.fxml"));
-            Scene gameScene = new Scene(loader.load(), 1000, 1000);
-
-            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            stage.setScene(gameScene);
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void handleCreateGame(ActionEvent event) throws IOException {
+        GameConfiguration config = GameConfiguration.getInstance();
+        GameConfigurationDialog dialog = new GameConfigurationDialog();
+        if (dialog.showGameConfigurationDialog()) {
+            config.setTheme(dialog.getSelectedTheme());
+            Game game = new Game(config);
+            // Load the game view...
         }
     }
 
