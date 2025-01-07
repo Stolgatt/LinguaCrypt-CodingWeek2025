@@ -32,14 +32,14 @@ public class MainMenuController {
                     if (dialog.showGameConfigurationDialog()) {
                         config.setTheme(dialog.getSelectedTheme());
                         context.setGame(new Game(config));
-                        context.getRoot().setCenter(context.getGameNode());
+                        context.getRoot().setCenter(context.getEditTeamNode());
                     }
                     break;
                 case 1:                                 // Picture Game Mode
                     PictGameConfigurationDialog pictDialog = new PictGameConfigurationDialog();
                     if (pictDialog.showGameConfigurationDialog()) {
                         context.setGame(new Game(config));
-                        context.getRoot().setCenter(context.getGameNode());
+                        context.getRoot().setCenter(context.getEditTeamNode());
                     }
                     break;
                 default:
