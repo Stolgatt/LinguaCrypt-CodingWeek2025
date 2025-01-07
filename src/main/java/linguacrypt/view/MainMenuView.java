@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import linguacrypt.controller.EditTeamController;
 import linguacrypt.controller.GameController;
 import linguacrypt.model.Game;
 import linguacrypt.model.GameConfiguration;
@@ -46,14 +47,14 @@ public class MainMenuView {
 
 
                 // Load the game view from FXML
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/gameView.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/editTeam.fxml"));
                 Scene gameScene = new Scene(loader.load(), 1000, 1000);
 
                 // Set the game instance in the game view controller
-                GameView gameView = loader.getController();
+                EditTeamView editTeamView = loader.getController();
 
-                GameController gameController = new GameController(game, gameView);
-                gameView.setGame(gameController.getGame());
+                EditTeamController editTeamController = new EditTeamController(game, editTeamView);
+                editTeamView.setGame(editTeamController.getGame());
 
                 // Switch to the game scene
                 Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
