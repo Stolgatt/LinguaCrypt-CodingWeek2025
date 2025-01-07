@@ -2,17 +2,12 @@ package linguacrypt.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 import linguacrypt.ApplicationContext;
 import linguacrypt.model.Game;
 import linguacrypt.model.GameConfiguration;
 import linguacrypt.model.GameConfigurationDialog;
-import linguacrypt.view.EditTeamView;
 import linguacrypt.view.MainMenuView;
 
-import java.io.IOException;
 
 public class MainMenuController {
 
@@ -32,7 +27,7 @@ public class MainMenuController {
             if (dialog.showGameConfigurationDialog()) {
                 config.setTheme(dialog.getSelectedTheme());
                 context.setGame(new Game(config));
-                context.getRoot().setCenter(context.getEditTeamNode());
+                context.getRoot().setCenter(context.getGameNode());
             }
     }
 

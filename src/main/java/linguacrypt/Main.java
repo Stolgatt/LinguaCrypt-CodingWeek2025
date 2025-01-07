@@ -1,6 +1,8 @@
 package linguacrypt;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -10,11 +12,15 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
 
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/Main.fxml"));
+        BorderPane root = loader.load();
+
         ApplicationContext applicationContext = ApplicationContext.getInstance();
         applicationContext.initialize();
+        applicationContext.setRoot(root);
         applicationContext.setPrimaryStage(primaryStage);
-
-        Scene scene = new Scene(applicationContext.getRoot(), 800, 800);
+        root.setCenter(applicationContext.getMainMenuNode());
+        Scene scene = new Scene(root, 800, 800);
         primaryStage.setScene(scene);
         primaryStage.setTitle("LinguaCrypt");
         primaryStage.show();

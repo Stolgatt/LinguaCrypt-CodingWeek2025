@@ -58,6 +58,7 @@ public class GameConfigurationDialog {
             List<Theme> themes = ThemeLoader.loadThemes();
             for (Theme theme : themes) {
                 themeComboBox.getItems().add(theme.getName());
+                themeComboBox.getSelectionModel().selectFirst();
             }
 
             // Add ComboBox to the dialog layout

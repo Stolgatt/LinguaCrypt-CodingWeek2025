@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import linguacrypt.ApplicationContext;
 import linguacrypt.model.Game;
 import linguacrypt.model.Player;
 import linguacrypt.view.EditTeamView;
@@ -15,6 +16,7 @@ import java.io.IOException;
 public class EditTeamController {
     private Game game;
     private EditTeamView view;
+    ApplicationContext context =ApplicationContext.getInstance();
 
     public EditTeamController(Game game,EditTeamView view) {
         this.game = game;
@@ -31,6 +33,10 @@ public class EditTeamController {
         return game;
     }
 
+    public void setGame(Game game){
+        this.game = game;
+    }
+
     /*
     public void addPlayer(Player player,int teamId) {
         if (teamId == 0){
@@ -43,21 +49,7 @@ public class EditTeamController {
      */
     //@FXML
     public void startGame(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/gameView.fxml"));
-            Scene gameScene = new Scene(loader.load(), 1000, 1000);
-
-            // Set the game instance in the game view controller
-            GameView gameView = loader.getController();
-
-            GameController gameController = new GameController(game, gameView);
-            gameView.setGame(gameController.getGame());
-
-            // Switch to the game scene
-            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            stage.setScene(gameScene);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // Switch to the game scene
+        context.getRoot().setCenter(context.getGameNode());
     }
 }

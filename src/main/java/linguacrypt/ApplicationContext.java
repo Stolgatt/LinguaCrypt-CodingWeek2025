@@ -9,9 +9,11 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import linguacrypt.controller.EditTeamController;
+import linguacrypt.controller.GameController;
 import linguacrypt.controller.MainMenuController;
 import linguacrypt.model.Game;
 import linguacrypt.view.EditTeamView;
+import linguacrypt.view.GameView;
 import linguacrypt.view.MainMenuView;
 
 public class ApplicationContext {
@@ -27,14 +29,20 @@ public class ApplicationContext {
     /** Root layout principal de l'application. */
     private BorderPane root;
     private Node editTeamNode;
+    private Node MainMenuNode;
+    private Node GameNode;
 
     /** Références aux contrôleurs. */
     private MainMenuController mainMenuController;
     private EditTeamController editTeamController;
+    private GameController gameController;
 
-    /** Modèles et vues. */
+    /** Vues. */
     private MainMenuView mainMenuView;
     private EditTeamView editTeamView;
+    private GameView gameView;
+
+    /** Modèles */
     private Game game;
 
     //endregion
@@ -86,18 +94,23 @@ public class ApplicationContext {
     public void initialize() {
         try {
 
-        FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/FXML/mainMenuView.fxml"));
-        root =menuLoader.load();
-        mainMenuView = menuLoader.getController();
+        //Load main menu components
+        FXMLLoader mainMenuLoad = new FXMLLoader(getClass().getResource("/FXML/MainMenu.fxml"));
+        MainMenuNode =mainMenuLoad.load();
+        mainMenuView = mainMenuLoad.getController();
         mainMenuController = new MainMenuController();
         mainMenuController.setView(mainMenuView);
-
+        //Load edit team scene components
         FXMLLoader editTeamLoader = new FXMLLoader(getClass().getResource("/FXML/editTeam.fxml"));
         editTeamNode = editTeamLoader.load();
         editTeamView = editTeamLoader.getController();
         editTeamController = new EditTeamController(game, editTeamView);
-        
-
+        //Load GameView components
+        FXMLLoader gameLoader = new FXMLLoader(getClass().getResource("/FXML/Game.fxml"));
+        GameNode = gameLoader.load();
+        gameView = gameLoader.getController();
+        gameController = new GameController(game, gameView);
+            
         } catch (IOException e) {
             System.err.println("Erreur lors du chargement des composants de l'application : " + e.getMessage());
             //noinspection CallToPrintStackTrace
@@ -111,12 +124,26 @@ public class ApplicationContext {
 
     public void setPrimaryStage(Stage primaryStage) {this.primaryStage = primaryStage;}
 
-    public void setGame(Game game){this.game = game; editTeamView.setGame(game);}
+    public void setGame(Game game){
+        this.game = game; 
+        editTeamView.setGame(game);
+        gameView.setGame(game);
+        gameController.setGame(game);
+        editTeamController.setGame(game);
+    }
 
     public Node getEditTeamNode(){
         return editTeamNode;
     }
     //endregion
+
+    public Node getMainMenuNode() {
+        return MainMenuNode;
+    }
+
+    public Node getGameNode() {
+        return GameNode;
+    }
 
     //endregion
 

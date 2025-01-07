@@ -42,6 +42,9 @@ public class Grid implements Serializable {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 String randomWord = themeWords.get(random.nextInt(themeWords.size()));
+                while(gridWords.contains(randomWord)){
+                    randomWord = themeWords.get(random.nextInt(themeWords.size()));
+                }
                 gridWords.add(randomWord);
                 grid[i][j] = new Card(randomWord, "url_to_image");
                 int color;
