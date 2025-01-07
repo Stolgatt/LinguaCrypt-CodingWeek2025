@@ -6,6 +6,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.geometry.Insets;
 import javafx.application.Platform;
 import linguacrypt.model.GameConfiguration;
+import linguacrypt.model.Theme;
 
 import java.util.Optional;
 import java.util.List;
@@ -104,7 +105,7 @@ public class GameConfigurationDialog {
                 if (gridSize < 5 || gridSize > config.getMaxGridSize()) {
                     throw new IllegalArgumentException("Grid size must be between 5 and " + config.getMaxGridSize() +".");
                 }
-                if (timeTurn != -1 && (timeTurn < 0 || timeTurn > config.getTimeTurn())) {
+                if (timeTurn != -1 && (timeTurn < 0 || timeTurn > config.getMaxTimeTurn())) {
                     throw new IllegalArgumentException("Time per turn must be -1 or a positive value <= " + config.getMaxTimeTurn());
                 }
 

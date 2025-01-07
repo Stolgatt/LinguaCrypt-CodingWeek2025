@@ -1,6 +1,7 @@
 package linguacrypt.utils;
 
 import linguacrypt.model.Game;
+import linguacrypt.model.GameConfiguration;
 
 import java.io.*;
 
@@ -32,6 +33,17 @@ public class GameUtils {
         try (ObjectInputStream ois = new ObjectInputStream(
                 new FileInputStream(SAVE_FILE_PATH))) {
             Game loadedGame = (Game) ois.readObject();
+            
+            // Override GameConfiguration fields with loaded data
+            GameConfiguration config = GameConfiguration.getInstance();
+            GameConfiguration loadedConfig = loadedGame.getGameConfiguration();
+            
+            config.setDifficultyLevel(loadedConfig.getDifficultyLevel());
+            config.setMaxTeamMember(loadedConfig.getMaxTeamMember());
+            config.setGridSize(loadedConfig.getGridSize());
+            config.setTheme(loadedConfig.getTheme());
+            config.setNbPlayer(loadedConfig.getNbPlayer());
+            config.setTimeTurn(loadedConfig.getTimeTurn());
             
             // Debug print
             System.out.println("Loaded game with grid content:");

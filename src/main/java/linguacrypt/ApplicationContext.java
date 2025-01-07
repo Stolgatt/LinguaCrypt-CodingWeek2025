@@ -128,6 +128,7 @@ public class ApplicationContext {
         this.game = game; 
         editTeamView.setGame(game);
         gameView.setGame(game);
+        gameView.setTimer();
         gameController.setGame(game);
         editTeamController.setGame(game);
     }

@@ -57,6 +57,10 @@ public class GameView implements Observer {
             if (OnGiveHint != null) OnGiveHint.run();
         });
 
+
+    }
+
+    public void setTimer(){
         // initialize timer controller
         int timeTurn = GameConfiguration.getInstance().getTimeTurn();
         if (timeTurn > 0) {
@@ -64,6 +68,7 @@ public class GameView implements Observer {
             timerController.setOnTimerEnd(this::handleTimerEnd);
             timerController.startTimer();
         } else {
+            timerController = new TimerController(timerLabel, timeTurn);
             timerLabel.setText("∞"); // Prints infinity if time isn't limited
         }
     }
@@ -116,6 +121,10 @@ public class GameView implements Observer {
     }
 
     public void reagir(){
+        if(timerController != null){
+
+            timerController.updateLabel();
+        }
         int turn = game.getTurn();
         Grid grid = game.getGrid();
         Node root = context.getGameNode();
@@ -140,7 +149,7 @@ public class GameView implements Observer {
                 // Update button text with loaded word
                 cardButton.setText(grid.getCard(row, col).getWord());
 
-                if (grid.getCard(row,col).isSelected() || game.isTurnBegin()==0){
+                if (grid.getCard(row,col).isSelected() || game.isTurnBegin()==0 || game.isTurnBegin()==1){
                     switch (grid.getCard(row,col).getCouleur()){
                         case 0:
                             cardButton.setStyle("-fx-background-color: #F5DEB3;");

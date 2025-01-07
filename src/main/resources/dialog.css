@@ -1,0 +1,20 @@
+.dialog-pane {
+    -fx-background-color: #ffffff; /* White background */
+    -fx-padding: 20; /* Padding around the content */
+}
+
+.text {
+    -fx-font-size: 14px; /* Font size for text */
+    -fx-text-fill: #333; /* Dark text color */
+}
+
+.button {
+    -fx-background-color: #007bff; /* Button background color */
+    -fx-text-fill: white; /* Button text color */
+    -fx-padding: 10; /* Padding inside buttons */
+    -fx-background-radius: 5; /* Rounded corners */
+}
+
+.button:hover {
+    -fx-background-color: #0056b3; /* Darker shade on hover */
+} 
