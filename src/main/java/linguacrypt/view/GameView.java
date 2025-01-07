@@ -265,6 +265,7 @@ public class GameView implements Observer {
         dialog.showAndWait();
     }
 
+
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur");

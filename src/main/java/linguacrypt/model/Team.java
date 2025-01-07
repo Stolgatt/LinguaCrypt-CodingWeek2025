@@ -22,4 +22,20 @@ public class Team {
     public int getColor() {return color;}
     public void setColor(int color) {this.color = color;}
 
+    public int addPlayer(Player player) {
+        if (game.getgConfig().getMaxTeamMember() == players.size()) {
+            return -1;
+        }
+        this.players.add(player);
+        return 0;
+    }
+
+    public boolean checkIfHaveSpy() {
+        for (Player player : players) {
+            if (player.getIsSpy()){
+                return true;
+            }
+        }
+        return false;
+    }
 }
