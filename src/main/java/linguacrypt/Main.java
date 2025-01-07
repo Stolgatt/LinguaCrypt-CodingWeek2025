@@ -28,10 +28,6 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        GameConfiguration gConfig = GameConfiguration.getInstance();
-        Game game = new Game(gConfig);
-
-
         launch();
     }
 

@@ -27,8 +27,8 @@ public class Game implements Serializable {
 
     public Game(GameConfiguration gConfig) {
         this.gConfig = gConfig;
-        this.grid = new Grid(gConfig.getGridSize());
         this.themeWords = loadThemeWords(gConfig.getTheme());
+        this.grid = new Grid(gConfig.getGridSize(), themeWords);
         setUpGame();
         grid.printGrid();
     }
@@ -71,7 +71,7 @@ public class Game implements Serializable {
     public int getIsWin(){return isWin;}
     public void setGrid(Grid loadedGrid) {
         if (this.grid == null) {
-            this.grid = new Grid(loadedGrid.getGrid().length);
+            this.grid = new Grid(loadedGrid.getGrid().length, List.of());
         }
         this.grid.copyFrom(loadedGrid);
     }
