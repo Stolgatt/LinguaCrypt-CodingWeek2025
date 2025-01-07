@@ -34,6 +34,8 @@ public class GameView implements Observer {
 
     private TimerController timerController;
 
+    private Dialog<Void> spyDialog;
+
     private Game game;
     private Runnable onNextTurn;
     private Runnable OnGiveHint;
@@ -176,18 +178,20 @@ public class GameView implements Observer {
 
         //check if game is over
         if (game.getIsWin() != -1 && game.getIsWin() != 2){
+            timerController.stopTimer();
             drawWinningDialogueBox();
             return;
         }
         if (game.getIsWin() == 2){
+            timerController.stopTimer();
             drawLoosingDialogueBox();
         }
 
     }
 
     public void drawSpyDialogueBox() {
-        Dialog<Void> dialog = new Dialog<>();
-        dialog.setTitle("Spy Dialogue");
+        spyDialog = new Dialog<>();
+        spyDialog.setTitle("Spy Dialogue");
 
         GridPane grid = new GridPane();
         grid.setHgap(10);
@@ -205,12 +209,12 @@ public class GameView implements Observer {
         grid.add(new Label("Entier positif:"), 0, 1);
         grid.add(numberField, 1, 1);
 
-        dialog.getDialogPane().setContent(grid);
+        spyDialog.getDialogPane().setContent(grid);
 
         ButtonType okButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(okButtonType);
+        spyDialog.getDialogPane().getButtonTypes().addAll(okButtonType);
 
-        dialog.setResultConverter(dialogButton -> {
+        spyDialog.setResultConverter(dialogButton -> {
             if (dialogButton == okButtonType) {
                 String word = wordField.getText();
                 String numberText = numberField.getText();
@@ -237,7 +241,7 @@ public class GameView implements Observer {
             }
             return null;
         });
-        dialog.showAndWait();
+        spyDialog.showAndWait();
         game.notifierObservateurs();
     }
 
@@ -293,58 +297,51 @@ public class GameView implements Observer {
         alert.showAndWait();
     }
 
-    private void resetTimer() {
+    public void nextTurn() {
+        int currentTurn = game.getTurn();
+        game.setTurn((currentTurn + 1) % 2);
+        game.setTurnBegin(0);
+        game.notifierObservateurs();
+    }
+
+    public TimerController getTimerController(){
+        return timerController;
+    }
+
+    // Resets the timer based on the configured time per turn
+    public void resetTimer() {
         int timeTurn = GameConfiguration.getInstance().getTimeTurn();
+
         if (timeTurn > 0) {
             timerController.resetTimer(timeTurn);
             timerController.startTimer();
         } else {
-            timerLabel.setText("∞"); // Affiche l'infini si le temps n'est pas limité
+            timerLabel.setText("∞"); // Display infinity symbol if time is unlimited
         }
     }
 
-    private void handleTimerEnd() {
+    /**
+     * Handles the actions to be performed when the timer ends.
+     * This includes closing any open dialogs, managing turn transitions,
+     * and resetting the timer for the next turn.
+     */
+    public void handleTimerEnd() {
+        // Get the current state of the turn (spy or agent phase)
         int turnState = game.isTurnBegin();
-        showEndOfTurnDialog();
 
-        // Si c'est le tour du spy
-        if (turnState == 0 || turnState == 1) {
-            // Si le spy n'a pas validé son entrée, on saute son tour et celui de l'agent suivant
-            game.setTurnBegin(2); // L'équipe adverse devient spy
-        }
-        // Si c'est le tour des agents
-        else if (turnState == 2) {
-            // Si le timer expire pendant le tour des agents, passer au spy adverse
-            game.setTurnBegin(0); // Le tour suivant devient celui du spy adverse
-        }
-
-        resetTimer();
-    }
-
-    private void showEndOfTurnDialog() {
-        // Créer une alerte de type INFORMATION
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Fin du Tour");
-        alert.setHeaderText(null); // Pas de titre spécifique
-        alert.setContentText("Le tour est terminé !");
-
-        // Ajouter un bouton OK pour fermer l'alerte
-        ButtonType okButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
-        alert.getButtonTypes().setAll(okButtonType);
-
-        // Utilisation d'un gestionnaire de fermeture pour capturer la réponse de l'utilisateur
-        alert.setOnCloseRequest(event -> {
-            // Vérifier si le bouton "OK" a été cliqué
-            if (alert.getResult() == okButtonType) {
-                // L'utilisateur a cliqué sur OK, on passe au tour suivant
-                if (onNextTurn != null) {
-                    onNextTurn.run();
-                }
+        // Show the end-of-turn dialog and execute the specified actions afterward
+        EndOfTurnDialog.showEndOfTurnDialog(() -> {
+            if (spyDialog != null) {
+                spyDialog.close();
+                spyDialog = null;
             }
+            // Handle actions based on the current turn state
+            if (turnState == 0 || turnState == 1) { // Spy's turn
+                nextTurn();
+            } else if (turnState == 2) { // Agents' turn
+                nextTurn();
+            }
+            resetTimer();
         });
-
-        // Afficher l'alerte
-        alert.show();
     }
-
 }
