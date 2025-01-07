@@ -1,0 +1,46 @@
+/* Background pour le menu RPG */
+.stat-menu {
+    -fx-background-color: #1c1c1c; /* Noir mat */
+    -fx-padding: 20px;
+    -fx-border-color: gold;
+    -fx-border-width: 3px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+/* Titre principal */
+.menu-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: gold;
+    -fx-effect: dropshadow(gaussian, black, 10, 0.5, 0, 0);
+    -fx-padding: 10 0 20 0;
+    -fx-underline: true;
+}
+
+/* Grille pour les statistiques */
+.stat-grid {
+    -fx-padding: 20px;
+}
+
+/* Labels des statistiques */
+.stat-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #87ceeb; /* Bleu clair */
+    -fx-font-family: "Verdana";
+    -fx-effect: dropshadow(gaussian, black, 5, 0.3, 0, 0);
+}
+
+/* Valeurs des statistiques */
+.stat-value {
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+    -fx-font-family: "Courier New";
+    -fx-background-color: #444; /* Fond gris foncé */
+    -fx-padding: 5px 10px;
+    -fx-border-color: #87ceeb;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-alignment: CENTER_RIGHT;
+}
