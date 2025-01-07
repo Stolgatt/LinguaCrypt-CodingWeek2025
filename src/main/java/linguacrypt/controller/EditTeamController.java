@@ -51,5 +51,7 @@ public class EditTeamController {
     public void startGame(ActionEvent event) {
         // Switch to the game scene
         context.getRoot().setCenter(context.getGameNode());
+        game.setStartTime(System.currentTimeMillis());
+        game.setNbTour(1);
     }
 }

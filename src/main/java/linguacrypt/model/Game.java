@@ -28,6 +28,9 @@ public class Game implements Serializable {
     private transient Random random = new Random();
     private Team[] teams = new Team[2];
     private List<String> themeWords;
+    private long startTime;
+    private int nbTour = 0;
+    private GameStat gameStat;
 
     public Game(GameConfiguration gConfig) {
         this.gConfig = gConfig;
@@ -58,6 +61,9 @@ public class Game implements Serializable {
     public void setCurrentNumberWord(int currentNumberWord) {this.currentNumberWord = currentNumberWord;}
     public Team getBlueTeam(){return teams[0];}
     public Team getRedTeam(){return teams[1];}
+    public void setStartTime(long startTime) {this.startTime = startTime;}
+    public int getNbTour(){return nbTour;}
+    public void setNbTour(int nbTour) {this.nbTour = nbTour;}
 
     public void ajouterObservateur(Observer o) {
         this.obs.add(o) ;
@@ -191,5 +197,17 @@ public class Game implements Serializable {
             stat.setRatioVictoiresDefaites((double) stat.getVictoires() / stat.getPartiesJouees());
         }
         StatLoader.overwritePlayerList(gConfig.getPlayerList());
+    }
+
+    public void updateGameStat(){
+        if (isWin == 2){
+            gameStat.setEquipeGagnante(Math.abs(1-turn));
+        }
+        else{
+            gameStat.setEquipeGagnante(isWin);
+        }
+        gameStat.setDuree(System.currentTimeMillis()-startTime);
+        gameStat.setNombreDeTours(nbTour);
+        gameStat.setTheme(gConfig.getTheme());
     }
 }
