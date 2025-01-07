@@ -2,6 +2,7 @@ package linguacrypt.view;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -92,25 +93,51 @@ public class EditTeamView implements Observer {
             teamRedTitle.setAlignment(javafx.geometry.Pos.CENTER);
         }
         teamBox.getChildren().clear();
+        teamBox.setSpacing(10);
 
         for (Player player : team.getPlayers()) {
             HBox playerCard = createPlayerCard(player);
+
+            // Définir le style de la carte en fonction de l'équipe
+            if (team.getColor() == 0) {
+                playerCard.setStyle("-fx-background-color: lightBlue; " +
+                        "-fx-border-color: darkGray; " +
+                        "-fx-border-width: 2; " +
+                        "-fx-padding: 10; " +
+                        "-fx-border-radius: 10; " +
+                        "-fx-background-radius: 10;");
+            } else {
+                playerCard.setStyle("-fx-background-color: lightCoral; " +
+                        "-fx-border-color: darkGray; " +
+                        "-fx-border-width: 2; " +
+                        "-fx-padding: 10; " +
+                        "-fx-border-radius: 10; " +
+                        "-fx-background-radius: 10;");
+            }
+
+            playerCard.setSpacing(15);  // Espacement entre les éléments de la carte
+            HBox.setMargin(playerCard, new Insets(20));  // Marge autour de la carte
+            playerCard.setAlignment(Pos.CENTER_LEFT);
+
+            // Ajouter la carte à la teamBox
             teamBox.getChildren().add(playerCard);
         }
     }
 
     private HBox createPlayerCard(Player player) {
         HBox card = new HBox();
-        card.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 1; -fx-padding: 5;");
-        card.setSpacing(10);
+
+
         /*
         ImageView imageAvatar = new ImageView(new Image(getClass().getResourceAsStream(player.getUrlAvatar())));
         imageAvatar.setFitWidth(20);
         imageAvatar.setFitHeight(20);
         */
         Label playerName = new Label(player.getName());
-        playerName.setStyle("-fx-font-size: 12;");
-
+        playerName.setStyle("-fx-font-size: 14; " +   // Taille de la police
+                "-fx-font-weight: bold; " +  // Texte en gras
+                "-fx-text-fill: #333333; " + // Couleur de texte (gris foncé)
+                "-fx-padding: 5 10 5 5;");
         ImageView imageRole = new ImageView(new Image(getClass().getResourceAsStream("/image/agent.png")));
         if (player.getIsSpy()){
             imageRole = new ImageView(new Image(getClass().getResourceAsStream("/image/spy.png")));

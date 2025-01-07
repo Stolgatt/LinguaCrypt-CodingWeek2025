@@ -164,7 +164,6 @@ public class GameView implements Observer {
         if (game.getIsWin() == 2){
             drawLoosingDialogueBox();
         }
-
     }
 
     public void drawSpyDialogueBox() {
