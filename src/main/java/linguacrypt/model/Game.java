@@ -28,10 +28,22 @@ public class Game implements Serializable {
 
     public Game(GameConfiguration gConfig) {
         this.gConfig = gConfig;
-        this.themeWords = loadThemeWords(gConfig.getTheme());
-        this.grid = new Grid(gConfig.getGridSize(), themeWords);
-        setUpGame();
-        grid.printGrid();
+
+        switch (gConfig.getGameMode()) {
+            case 0:                     // Words Game Mode
+                this.themeWords = loadThemeWords(gConfig.getTheme());
+                this.grid = new Grid(gConfig.getGridSize(), themeWords, 0);
+                setUpGame();
+                grid.printGrid();
+                break;
+            case 1:                     // Picture Game Mode
+                this.grid = new Grid(gConfig.getGridSize(), null, 1);
+                setUpGame();
+                grid.printGrid();
+                break;
+            default:
+                break;
+        }
     }
 
     private List<String> loadThemeWords(String themeName) {
@@ -75,7 +87,7 @@ public class Game implements Serializable {
     public int getIsWin(){return isWin;}
     public void setGrid(Grid loadedGrid) {
         if (this.grid == null) {
-            this.grid = new Grid(loadedGrid.getGrid().length, List.of());
+            this.grid = new Grid(loadedGrid.getGrid().length, List.of(), gConfig.getGameMode());
         }
         this.grid.copyFrom(loadedGrid);
     }
