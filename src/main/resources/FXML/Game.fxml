@@ -30,4 +30,10 @@
         </HBox>
 
     </bottom>
+    <right>
+        <VBox>
+            <Label text="Time left to play:"/>
+            <Label fx:id="timerLabel" text="00:00"/>
+        </VBox>
+    </right>
 </BorderPane>

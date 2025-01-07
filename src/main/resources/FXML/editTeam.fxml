@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="linguacrypt.view.EditTeamView">
+    <center>
+            <HBox spacing="20" maxHeight="200" alignment="CENTER" >
+                <VBox style="-fx-background-color: lightBlue;" fx:id="BlueTeam" prefWidth="200" prefHeight="150">
+                    <HBox alignment="CENTER" prefWidth="200">
+                        <Label fx:id="teamBlueTitle" />
+                    </HBox>
+                    <VBox fx:id="BlueTeamPlayer">
+
+                    </VBox>
+                </VBox>
+
+                <VBox style="-fx-background-color: lightCoral;" fx:id="RedTeam" prefWidth="200" prefHeight="150">
+                    <HBox alignment="CENTER" prefWidth="200">
+                        <Label fx:id="teamRedTitle" />
+                    </HBox>
+                    <VBox fx:id="RedTeamPlayer">
+
+                    </VBox>
+                </VBox>
+            </HBox>
+
+    </center>
+    <bottom>
+        <HBox spacing="20" alignment="CENTER" style="-fx-padding: 10;">
+            <Button text="Start" fx:id="launchGameButton" />
+            <Button text="Ajouter un Joueur" fx:id="addPlayerBtn" />
+        </HBox>
+    </bottom>
+</BorderPane>

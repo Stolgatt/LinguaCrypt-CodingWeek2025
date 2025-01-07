@@ -1,6 +1,8 @@
 package linguacrypt.controller;
 
 import linguacrypt.model.Game;
+import linguacrypt.model.GameConfiguration;
+import linguacrypt.view.EndOfTurnDialog;
 import linguacrypt.view.GameView;
 
 public class GameController {
@@ -23,6 +25,10 @@ public class GameController {
         return game;
     }
 
+    public void setGame(Game game){
+        this.game = game;
+    }
+
     public void nextTurn() {
         int currentTurn = game.getTurn();
         game.setTurn((currentTurn + 1) % 2);
@@ -43,13 +49,23 @@ public class GameController {
             }
             else {
                 if (turn + 1 != color){
-                    nextTurn();
+                    view.getTimerController().stopTimer();
+                    EndOfTurnDialog.showEndOfTurnDialog(() -> {
+                        game.setCurrentTryCount(0);
+                        nextTurn();
+                        view.resetTimer();
+                    });
                 }
                 game.increaseTryCounter();
                 if (game.getCurrentTryCount() == game.getCurrentNumberWord() +1){
-                    nextTurn();
-                    game.setCurrentTryCount(0);
+                    view.getTimerController().stopTimer();
+                    EndOfTurnDialog.showEndOfTurnDialog(() -> {
+                        game.setCurrentTryCount(0);
+                        nextTurn();
+                        view.resetTimer();
+                    });
                 }
+
             }
 
         }

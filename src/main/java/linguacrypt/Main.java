@@ -1,26 +1,25 @@
 package linguacrypt;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import linguacrypt.model.Game;
-import linguacrypt.model.GameConfiguration;
 
 import java.io.IOException;
-import java.net.URL;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        URL fxmlURL = getClass().getResource("/FXML/mainMenuView.fxml");
-        if (fxmlURL == null) {
-            System.err.println("Could not find main.fxml");
-            System.exit(1);
-        }
-        Parent root = FXMLLoader.load(fxmlURL);
 
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/Main.fxml"));
+        BorderPane root = loader.load();
+
+        ApplicationContext applicationContext = ApplicationContext.getInstance();
+        applicationContext.initialize();
+        applicationContext.setRoot(root);
+        applicationContext.setPrimaryStage(primaryStage);
+        root.setCenter(applicationContext.getMainMenuNode());
         Scene scene = new Scene(root, 800, 800);
         primaryStage.setScene(scene);
         primaryStage.setTitle("LinguaCrypt");
@@ -28,10 +27,6 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        GameConfiguration gConfig = GameConfiguration.getInstance();
-        Game game = new Game(gConfig);
-
-
         launch();
     }
 
