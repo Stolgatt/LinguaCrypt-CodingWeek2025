@@ -41,10 +41,10 @@ public class MainMenuView {
         try {
             // Retrieve game configuration and personalize settings
             GameConfiguration config = GameConfiguration.getInstance();
-            if (GameConfigurationDialog.showGameConfigurationDialog()){
-                // Initialize Game with GameConfiguration's settings
+            GameConfigurationDialog dialog = new GameConfigurationDialog();
+            if (dialog.showGameConfigurationDialog()) {
+                config.setTheme(dialog.getSelectedTheme());
                 Game game = new Game(config);
-
 
                 // Load the game view from FXML
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/editTeam.fxml"));

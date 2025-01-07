@@ -5,6 +5,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import linguacrypt.model.Game;
+import linguacrypt.model.GameConfiguration;
+import linguacrypt.model.GameConfigurationDialog;
 
 import java.io.IOException;
 

@@ -1,0 +1,40 @@
+[
+    {
+        "name": "Default Theme",
+        "words": [
+            "Afrique", "Aiguille", "Aile", "Air", "Alien", "Allemagne", "Alpes", "Amour", "Ampoule", "Amérique",
+            "Ange", "Angleterre", "Anneau", "Appareil", "Araignée", "Arc", "Argent", "Asile", "Astérix", "Atlantique",
+            "Atout", "Australie", "Avion", "Avocat", "Baguette", "Baie", "Balance", "Baleine", "Balle", "Ballon",
+            "Banane", "Banc", "Bande", "Banque", "Bar", "Barbe", "Base", "Bateau", "Berlin", "Bière", "Blé",
+            "Bombe", "Bon", "Botte", "Bouche", "Bouchon", "Bougie", "Boulet", "Bourse", "Bouteille", "Bouton",
+            "Boîte", "Branche", "Bretelle", "Brique", "Bureau", "But", "Bâton", "Bête", "Bûche", "Bœuf",
+            "Cabinet", "Cadre", "Cafard", "Café", "Camembert", "Campagne", "Canada", "Canard", "Canne", "Canon",
+            "Carreau", "Carrière", "Carte", "Carton", "Cartouche", "Casino", "Ceinture", "Cellule", "Centre", "Cercle",
+            "Champ", "Champagne", "Chance", "Chapeau", "Charge", "Charme", "Chasse", "Chat", "Chausson", "Chaîne"
+        ]
+    },
+    {
+        "name": "Animals",
+        "words": [
+            "Chien", "Chat", "Oiseau", "Serpent", "Dauphin", "Lion", "Tigre", "Éléphant", "Girafe", "Zèbre",
+            "Aigle", "Bison", "Crocodile", "Faucon", "Giraffe", "Hérisson", "Koala", "Loutre", "Morse", "Narval",
+            "Orang-outan", "Panda", "Quokka", "Rhinocéros", "Singe", "Tortue", "Urubu", "Vache", "Wallaby", "Zèbre"
+        ]
+    },
+    {
+        "name": "Food",
+        "words": [
+            "Pomme", "Banane", "Orange", "Fraise", "Raisin", "Cerise", "Mangue", "Ananas", "Kiwi", "Melon",
+            "Abricot", "Avocat", "Carotte", "Chocolat", "Ciboulette", "Coconut", "Figue", "Framboise", "Groseille", "Litchi",
+            "Myrtille", "Noix", "Papaye", "Pêche", "Poire", "Prune", "Radis", "Tomate", "Vanille", "Zucchini"
+        ]
+    },
+    {
+        "name": "Countries",
+        "words": [
+            "France", "Allemagne", "Espagne", "Italie", "Canada", "Japon", "Chine", "Inde", "Brésil", "Australie",
+            "Argentine", "Belgique", "Danemark", "Finlande", "Grèce", "Hongrie", "Irlande", "Mexique", "Norvège", "Portugal",
+            "Royaume-Uni", "Russie", "Suède", "Suisse", "Turquie", "Ukraine", "États-Unis", "Afrique du Sud", "Nouvelle-Zélande", "Émirats Arabes Unis"
+        ]
+    }
+]
