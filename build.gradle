@@ -52,3 +52,17 @@ javafx {
 application {
     mainClass.set("linguacrypt.Main")
 }
+
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest {
+        attributes(
+            'Main-Class': application.mainClass,
+            'Implementation-Version': '0.1.3' 
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
