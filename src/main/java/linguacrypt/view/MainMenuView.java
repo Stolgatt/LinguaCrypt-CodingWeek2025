@@ -14,6 +14,7 @@ import javafx.util.Duration;
 public class MainMenuView {
 
     private Consumer<ActionEvent> onCreateGame;
+    private Runnable onAddCustomTheme;
 
     @FXML
     private Button createGameButton; // Button to create a new game
@@ -28,6 +29,7 @@ public class MainMenuView {
     @FXML
     public void initialize() {
         createGameButton.setOnAction(e -> {onCreateGame.accept(e);});
+        addCustomThemeButton.setOnAction(e -> {onAddCustomTheme.run();});
         addHoverEffect(createGameButton);
         addHoverEffect(addCustomThemeButton);
         addHoverEffect(exitButton);
@@ -38,6 +40,10 @@ public class MainMenuView {
 
     public void setOnCreateGame(Consumer<ActionEvent> onCreateGame){
         this.onCreateGame = onCreateGame;
+    }
+
+    public void setOnAddCustomTheme(Runnable onAddCustomTheme){
+        this.onAddCustomTheme = onAddCustomTheme;
     }
 
     /**
