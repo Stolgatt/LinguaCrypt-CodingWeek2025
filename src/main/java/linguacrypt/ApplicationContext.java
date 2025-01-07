@@ -3,10 +3,15 @@ package linguacrypt;
 import java.io.IOException;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import linguacrypt.controller.EditTeamController;
 import linguacrypt.controller.MainMenuController;
+import linguacrypt.model.Game;
+import linguacrypt.view.EditTeamView;
 import linguacrypt.view.MainMenuView;
 
 public class ApplicationContext {
@@ -21,12 +26,16 @@ public class ApplicationContext {
 
     /** Root layout principal de l'application. */
     private BorderPane root;
+    private Node editTeamNode;
 
     /** Références aux contrôleurs. */
     private MainMenuController mainMenuController;
+    private EditTeamController editTeamController;
 
     /** Modèles et vues. */
     private MainMenuView mainMenuView;
+    private EditTeamView editTeamView;
+    private Game game;
 
     //endregion
 
@@ -79,9 +88,15 @@ public class ApplicationContext {
 
         FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/FXML/mainMenuView.fxml"));
         root =menuLoader.load();
-        MainMenuView menuView = menuLoader.getController();
-        MainMenuController mainMenuController = new MainMenuController();
-        mainMenuController.setView(menuView);
+        mainMenuView = menuLoader.getController();
+        mainMenuController = new MainMenuController();
+        mainMenuController.setView(mainMenuView);
+
+        FXMLLoader editTeamLoader = new FXMLLoader(getClass().getResource("/FXML/editTeam.fxml"));
+        editTeamNode = editTeamLoader.load();
+        editTeamView = editTeamLoader.getController();
+        editTeamController = new EditTeamController(game, editTeamView);
+        
 
         } catch (IOException e) {
             System.err.println("Erreur lors du chargement des composants de l'application : " + e.getMessage());
@@ -96,7 +111,11 @@ public class ApplicationContext {
 
     public void setPrimaryStage(Stage primaryStage) {this.primaryStage = primaryStage;}
 
+    public void setGame(Game game){this.game = game; editTeamView.setGame(game);}
 
+    public Node getEditTeamNode(){
+        return editTeamNode;
+    }
     //endregion
 
     //endregion
