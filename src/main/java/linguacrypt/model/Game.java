@@ -1,5 +1,8 @@
 package linguacrypt.model;
 
+import linguacrypt.model.statistique.GameStat;
+import linguacrypt.model.statistique.PlayerStat;
+import linguacrypt.utils.StatLoader;
 import linguacrypt.utils.ThemeLoader;
 import linguacrypt.view.Observer;
 import java.io.Serializable;
@@ -21,7 +24,7 @@ public class Game implements Serializable {
     private int currentNumberWord;
     private transient ArrayList<Observer> obs = new ArrayList<>();
     private int currentTryCount = 0;
-    private int isWin = -1;
+    private int isWin = -1; // -1 : partie en cours / 0 / Bleu a gagne / 1 : Rouge a gagne / 2 : lequipe qui joue a trouve le mot noir
     private transient Random random = new Random();
     private Team[] teams = new Team[2];
     private List<String> themeWords;
@@ -149,4 +152,44 @@ public class Game implements Serializable {
         return this.gConfig;
     }
 
+    public int addPlayer(int teamId,Player player) throws IOException, ClassNotFoundException {
+        boolean alreadyExists = false;
+        ArrayList<Player> playerList = gConfig.getPlayerList();
+        if (playerList == null){
+            playerList = new ArrayList<>();
+        }
+        for (Player p : playerList){
+            if (p.getName().equals(player.getName())){
+                alreadyExists = true;
+                player = p;
+                break;
+            }
+        }
+        if (!alreadyExists){
+            gConfig.addPlayer(player);
+            StatLoader.addPlayer(player);
+        }
+        int added = teams[teamId].addPlayer(player);
+        return added;
+    }
+
+    public void updateStat() throws IOException {
+        for (Player p : teams[0].getPlayers()){
+            PlayerStat stat = p.getStat();
+            stat.setPartiesJouees(stat.getPartiesJouees() + 1);
+            if (isWin == 0 || (isWin == 2 && turn == 1)){stat.setVictoires(stat.getVictoires() + 1);}
+            else{stat.setDefaites(stat.getDefaites() + 1);}
+            if (p.getIsSpy()){stat.setNbPartieJoueEspion(stat.getNbPartieJoueEspion() + 1);}
+            stat.setRatioVictoiresDefaites((double) stat.getVictoires() / stat.getPartiesJouees());
+        }
+        for (Player p : teams[1].getPlayers()){
+            PlayerStat stat = p.getStat();
+            stat.setPartiesJouees(stat.getPartiesJouees() + 1);
+            if (isWin == 1|| (isWin == 2 && turn == 0)){stat.setVictoires(stat.getVictoires() + 1);}
+            else{stat.setDefaites(stat.getDefaites() + 1);}
+            if (p.getIsSpy()){stat.setNbPartieJoueEspion(stat.getNbPartieJoueEspion() + 1);}
+            stat.setRatioVictoiresDefaites((double) stat.getVictoires() / stat.getPartiesJouees());
+        }
+        StatLoader.overwritePlayerList(gConfig.getPlayerList());
+    }
 }

@@ -19,6 +19,13 @@ public class MainMenuController {
         this.view = menuView;
         view.setOnCreateGame(this::handleCreateGame);
         view.setOnAddCustomTheme(this::handleAddCustomTheme);
+        view.setOnProfileMenu(this::handleProfileMenu);
+    }
+
+    private void handleProfileMenu() {
+        GameConfiguration.getInstance();
+        context.getRoot().setCenter(context.getProfileMenuNode());
+
     }
 
     public void handleCreateGame(ActionEvent event) {
@@ -29,7 +36,7 @@ public class MainMenuController {
             if (dialog.showGameConfigurationDialog()) {
                 config.setTheme(dialog.getSelectedTheme());
                 context.setGame(new Game(config));
-                context.getRoot().setCenter(context.getGameNode());
+                context.getRoot().setCenter(context.getEditTeamNode());
             }
     }
 

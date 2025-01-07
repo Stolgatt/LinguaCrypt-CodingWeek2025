@@ -4,13 +4,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import linguacrypt.model.GameConfiguration;
 
 import java.io.IOException;
 
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) throws IOException, ClassNotFoundException {
+        GameConfiguration config = GameConfiguration.getInstance();
+        config.loadPlayerList();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/Main.fxml"));
         BorderPane root = loader.load();

@@ -14,6 +14,7 @@ import javafx.stage.FileChooser;
 import linguacrypt.model.Game;
 import linguacrypt.model.Player;
 import linguacrypt.model.Team;
+import linguacrypt.model.statistique.PlayerStat;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -25,6 +26,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
@@ -184,18 +186,6 @@ public class EditTeamView implements Observer {
         FileChooser imageChooser = new FileChooser();
         imageChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"));
 
-        /*
-        Button imageButton = new Button("Choisir une image");
-        AtomicReference<File> selectedImage = new AtomicReference<>();
-        imageButton.setOnAction(e -> {
-            File file = imageChooser.showOpenDialog(dialog.getOwner());
-            if (file != null) {
-                selectedImage.set(file);
-            }
-        });
-
-         */
-
         // Ajout des éléments dans le GridPane
         grid.add(new Label("Nom du joueur:"), 0, 0);
         grid.add(nameField, 1, 0);
@@ -216,6 +206,23 @@ public class EditTeamView implements Observer {
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == okButtonType) {
                 String playerName = nameField.getText();
+                boolean alreadyExists = false;
+                for (Player player : game.getBlueTeam().getPlayers()) {
+                    if (player.getName().equals(playerName)) {
+                        alreadyExists = true;
+                        break;
+                    }
+                }
+                for (Player player : game.getRedTeam().getPlayers()) {
+                    if (player.getName().equals(playerName)) {
+                        alreadyExists = true;
+                        break;
+                    }
+                }
+                if (alreadyExists) {
+                    showError("Le joueur " + playerName + " a déjà était ajouté à une équipe");
+                    return null;
+                }
                 boolean isBlueTeam = blueTeamRadioButton.isSelected();
                 boolean isSpy = spyRadioButton.isSelected();
                 //File image = selectedImage.get();
@@ -224,72 +231,70 @@ public class EditTeamView implements Observer {
                     showError("Le nom du joueur ne peut pas être vide.");
                     return null;
                 }
-                /*
-                if (image != null) {
-                    try {
-                        Path sourcePath = image.toPath();
-                        Path targetPath = Paths.get("src/main/resources/image/" + image.getName());
-                        Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
-                        int maxAttempts = 10;
-                        int attempts = 0;
-                        while (!Files.exists(targetPath) && attempts < maxAttempts) {
-                            attempts++;
-                            Thread.sleep(500); // Attente de 500 ms avant de réessayer
-                        }
+                ArrayList<Player> playerList = game.getgConfig().getPlayerList();
+                if (playerList == null){
+                    playerList = new ArrayList<>();
+                }
+                boolean find = false;
+                for (Player p : playerList){
+                    if (p.getName().equals(playerName)) {
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Profil existant");
+                        alert.setHeaderText("Le joueur existe déjà !");
+                        alert.setContentText("Un joueur portant ce nom existe déjà. Voulez-vous utiliser ce profil existant ?");
 
-                        // Si après les tentatives, le fichier n'existe toujours pas, traiter l'erreur
-                        if (!Files.exists(targetPath)) {
-                            showError("Le fichier image n'a pas été correctement copié.");
-                            return null;
-                        }
-                        image = targetPath.toFile();
-                    } catch (IOException ex) {
-                        showError("Erreur lors de l'enregistrement de l'image.");
-                        return null;
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
+                        ButtonType yesButton = new ButtonType("Oui", ButtonBar.ButtonData.YES);
+                        ButtonType noButton = new ButtonType("Non", ButtonBar.ButtonData.NO);
+                        alert.getButtonTypes().setAll(yesButton, noButton);
+
+                        alert.showAndWait().ifPresent(response -> {
+                            if (response == yesButton) {
+                                tryAddPlayer( isSpy,isBlueTeam, playerName);
+                            }
+                        });
+                        find = true;
+                        break;
                     }
-                } else {
-                    URL imageUrl = getClass().getResource("/image/default_pic.png");
-                    if (imageUrl != null) {
-                        try {
-                            image = new File(imageUrl.toURI());
-                        } catch (URISyntaxException e) {
-                            showError("Erreur lors de l'enregistrement de l'image.");
-                            return null;
-                        }
-                    } else {
-                        showError("Erreur lors de l'enregistrement de l'image.");
-                        return null;
-                    }
-                    System.out.println("Default pic choose");
                 }
-                assert image != null;
-                String imageUrl = "/image/" + image.getName();
-                */
-                if ( isSpy && ((isBlueTeam && game.getBlueTeam().checkIfHaveSpy()) || (!isBlueTeam && game.getRedTeam().checkIfHaveSpy()))) {
-                    showError("L'équipe a déjà un espion.");
-                    return null;
+                if (!find) {
+                    tryAddPlayer(isSpy,isBlueTeam, playerName);
                 }
-                Player newPlayer = new Player(playerName,isSpy,"");
-                int added = 0;
-                if (isBlueTeam) {
-                    added = game.getBlueTeam().addPlayer(newPlayer);
-                }
-                else{
-                    added = game.getRedTeam().addPlayer(newPlayer);
-                }
-                if (added == -1){
-                    showError("L'équipe est déjà pleine.");
-                    return null;
-                }
-                game.notifierObservateurs();
             }
+            game.notifierObservateurs();
             return null;
         });
         dialog.showAndWait();
     }
 
+    public void tryAddPlayer(boolean isSpy,boolean isBlueTeam,String playerName){
+        if ( isSpy && ((isBlueTeam && game.getBlueTeam().checkIfHaveSpy()) || (!isBlueTeam && game.getRedTeam().checkIfHaveSpy()))) {
+            showError("L'équipe a déjà un espion.");
+            return;
+        }
+        Player newPlayer = new Player(playerName,isSpy,"",new PlayerStat());
+        int added = 0;
+        if (isBlueTeam) {
+            try {
+                added = game.addPlayer(0,newPlayer);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        else{
+            try {
+                added = game.addPlayer(1,newPlayer);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        if (added == -1){
+            showError("L'équipe est déjà pleine.");
+        }
+    }
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur");
