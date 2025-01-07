@@ -4,6 +4,8 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.fxml.FXMLLoader;
@@ -22,7 +24,7 @@ import java.util.function.Consumer;
 public class GameView implements Observer {
 
     @FXML
-    private GridPane gameGrid; // Lié à game_view.fxml
+    private GridPane gameGrid; // Lié à game.fxml
     @FXML
     private Button btnNextTurn;
     @FXML
@@ -89,7 +91,22 @@ public class GameView implements Observer {
 
     private void initializeGrid() {
         Grid grid = game.getGrid();
+        
+        switch (GameConfiguration.getInstance().getGameMode()) {
+            case 0:                                 // Words Game Mode
+                initializeWordGrid(grid);
+                break;
+            case 1:                                 // Picture Game Mode
+                initializePictureGrid(grid);
+                break;
+            default:
+                initializeWordGrid(grid);
+                break;
+        }
+        game.notifierObservateurs();
+    }
 
+    private void initializeWordGrid(Grid grid){
         // Parcours et affichage des cartes dans la grille
         for (int row = 0; row < grid.getGrid().length; row++) {
             for (int col = 0; col < grid.getGrid()[row].length; col++) {
@@ -105,10 +122,43 @@ public class GameView implements Observer {
                 gameGrid.add(cardButton, col, row);
             }
         }
-        game.notifierObservateurs();
     }
 
-
+    private void initializePictureGrid(Grid grid) {
+        // Parcours et affichage des cartes dans la grille
+        for (int row = 0; row < grid.getGrid().length; row++) {
+            for (int col = 0; col < grid.getGrid()[row].length; col++) {
+                // Récupérer la carte actuelle
+                Card card = grid.getCard(row, col);
+    
+                // Créer une image à partir de l'URL stockée dans la carte
+                Image image = new Image(card.getUrlImage());
+                ImageView imageView = new ImageView(image);
+    
+                // Configurer la taille de l'image
+                imageView.setFitWidth(100);  // Largeur fixe
+                imageView.setFitHeight(100); // Hauteur fixe
+                imageView.setPreserveRatio(true); // Conserver les proportions
+    
+                // Créer un bouton et ajouter l'image comme contenu
+                Button cardButton = new Button();
+                cardButton.setGraphic(imageView);
+                cardButton.setPrefSize(100, 100); // Taille fixe pour le bouton
+    
+                // Ajouter un événement clic sur le bouton
+                int finalRow = row;
+                int finalCol = col;
+                cardButton.setOnAction(e -> {
+                    if (onCardClicked != null) {
+                        onCardClicked.accept(finalRow, finalCol);
+                    }
+                });
+    
+                // Ajouter le bouton à la grille
+                gameGrid.add(cardButton, col, row);
+            }
+        }
+    }        
 
     public void setOnNextTurn(Runnable onNextTurn) {
         this.onNextTurn = onNextTurn;

@@ -17,6 +17,9 @@ public class GameConfiguration implements Serializable {
     private int timeTurn;                                   // Maximum chosen time allowed to play
     private int maxTimeTurn = 300;                          // Maximum time allowed to play
 
+    private int gameMode;                                   // 0 : Normal Words, 1 : Normal Pictures, 2 : Duo, 3 : Solo
+
+
     private GameConfiguration() {
         difficultyLevel = 1;
         maxTeamMember = 4;
@@ -24,6 +27,7 @@ public class GameConfiguration implements Serializable {
         theme = "";
         nbPlayer = 8;
         timeTurn = -1; // Default value : infinite time
+        gameMode = 0;  // Default value : Normal Words
     }
 
     public static GameConfiguration getInstance() {
@@ -101,6 +105,13 @@ public class GameConfiguration implements Serializable {
         return maxGridSize;
     }
 
+    public int getGameMode(){
+        return gameMode;
+    }
+
+    public void setGameMode(int gameMode){
+        this.gameMode = gameMode;
+    }
     /**
     // POUR TESTS UNIQUEMENT (avec utilisation de MOCK)
     public static void setInstance(GameConfiguration configuration) {
