@@ -1,4 +1,4 @@
-# LinguaCrypt
+# LinguaCrypt ![nvm version](https://img.shields.io/badge/version-v0.2.6-yellow.svg)
 
 LinguaCrypt est une implémentation en Java du jeu de société Codenames, construite avec JavaFX et suivant le modèle architectural MVC (Modèle-Vue-Contrôleur).
 
