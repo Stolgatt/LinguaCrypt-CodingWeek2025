@@ -22,8 +22,8 @@ Pour plus de détails sur la planification et l’avancement, consultez la [Feui
 Pour une vue détaillée des versions et des changements, consultez le [Changelog](changelog.md).
 
 ## Prérequis
-- Java 17 ou supérieur
-- Gradle 7.0 ou supérieur
+- Java 22 ou supérieur
+- Gradle 8.0 ou supérieur
 - JavaFX (inclus dans la configuration du projet)
 
 ## Démarrage rapide
