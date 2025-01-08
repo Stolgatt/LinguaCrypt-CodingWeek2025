@@ -41,6 +41,7 @@ public class SoloGameController {
         if (currentTurnStep == 2) {
             if (!game.getBlueTeam().getPlayers().get(0).getIsSpy()){
                game.spyAIPlay();
+               game.increaseNbTour();
             }
             else {
                 System.out.println("AIAgent Play");
@@ -57,7 +58,6 @@ public class SoloGameController {
                             for (int j = 0; j < game.getGrid().getGrid()[0].length; j++) {
                                 if (game.getGrid().getCard(i,j).getWord().equals(words.get(id))){
                                     CardClicked(i,j);
-                                    System.out.println("AI Clicked on " +game.getGrid().getCard(i,j).getWord());
                                 }
                             }
                         }
@@ -67,6 +67,7 @@ public class SoloGameController {
                     throw new RuntimeException(e);
                 }
                 game.setTurnBegin(0);
+                game.increaseNbTour();
             }
         }
         game.notifierObservateurs();
@@ -75,25 +76,27 @@ public class SoloGameController {
     public void CardClicked(int row, int col) {
         if (game.isTurnBegin()!=2){return;}
         if (game.getGrid().getCard(row, col).isSelected()){return;}
+
         game.flipCard(row,col);
+        int color = game.getGrid().getCard(row, col).getCouleur();
 
-        //if (game.isWinning() == -1){
-            int turn = game.getTurn();
-            int color = game.getGrid().getCard(row, col).getCouleur();
-            if (color == 3){
-                game.setIsWin(2);
+        //Noir trouve
+        if (game.isWinning()==0){}
+        else if (color == 3){
+            game.setIsWin(2);
+        }
+        else {
+            //Si on a une couleur différente
+            if (1 != color){
+                view.getTimerController().stopTimer();
+                EndOfTurnDialog.showEndOfTurnDialog(() -> {
+                    game.setCurrentTryCount(0);
+                    nextTurnStep();
+                    view.resetTimer();
+                });
             }
-            else {
-                if (turn + 1 != color){
-                    view.getTimerController().stopTimer();
-                    EndOfTurnDialog.showEndOfTurnDialog(() -> {
-                        game.setCurrentTryCount(0);
-                        nextTurnStep();
-                        view.resetTimer();
-                    });
-                }
+            else{
                 game.increaseTryCounter();
-
                 if (game.getCurrentTryCount() == game.getCurrentNumberWord() +1){
                     view.getTimerController().stopTimer();
                     EndOfTurnDialog.showEndOfTurnDialog(() -> {
@@ -102,11 +105,9 @@ public class SoloGameController {
                         view.resetTimer();
                     });
                 }
-
             }
-
-        //}
-
+        }
+        game.isWinning();
         game.notifierObservateurs();
     }
 

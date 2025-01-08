@@ -23,7 +23,7 @@ public class Game implements Serializable {
     private int turn; // 0 : Blue team to play / 1 : Red team to play
     private int turnStep = 0;
     private String currentHint;
-    private int currentNumberWord;
+    private int currentNumberWord = 0;
     private transient ArrayList<Observer> obs = new ArrayList<>();
     private int currentTryCount = 0;
     private int isWin = -1; // -1 : partie en cours / 0 / Bleu a gagne / 1 : Rouge a gagne / 2 : lequipe qui joue a trouve le mot noir
@@ -81,6 +81,7 @@ public class Game implements Serializable {
     public int getNbTour(){return nbTour;}
     public void setNbTour(int nbTour) {this.nbTour = nbTour;}
 
+    public void increaseNbTour(){nbTour++;}
     public void ajouterObservateur(Observer o) {
         this.obs.add(o) ;
     }
@@ -127,6 +128,9 @@ public class Game implements Serializable {
     public int isWinning(){
         boolean blueWinner = true;
         boolean redWinner = true;
+        if (getgConfig().getGameMode() == 2){
+            redWinner = false;
+        }
         for (int row = 0; row < grid.getGrid().length; row++) {
             for (int col = 0; col < grid.getGrid()[row].length; col++) {
                 Card currentCard = grid.getCard(row, col);
@@ -232,6 +236,7 @@ public class Game implements Serializable {
     public void setUpSoloGame(Player player){
         grid.initGrid(-2);
         grid.printGrid();
+        startTime = System.currentTimeMillis();
         teams[0] = new Team("Equipe Bleue",2,this,0);
         teams[1] = new Team("Equipe Rouge",0,this,1);
         teams[0].addPlayer(player);
@@ -241,6 +246,7 @@ public class Game implements Serializable {
         else{
             teams[0].addPlayer(new AISpy(0));
             spyAIPlay();
+            increaseNbTour();
         }
     }
     public void spyAIPlay(){
@@ -255,5 +261,7 @@ public class Game implements Serializable {
         this.setTurnBegin(2);
     }
 
+
+    public long getStartTime() {return startTime;}
 
 }

@@ -194,6 +194,9 @@ public class SoloGameView implements Observer {
             drawLoosingDialogueBox();
         }
          */
+        if (game.getIsWin()!=-1){
+            EndGameDialog.showEndGameDialog(game);
+        }
     }
 
 
