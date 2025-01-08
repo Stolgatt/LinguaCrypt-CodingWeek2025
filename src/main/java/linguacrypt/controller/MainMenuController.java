@@ -1,71 +1,63 @@
 package linguacrypt.controller;
 
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import linguacrypt.ApplicationContext;
 import linguacrypt.model.Game;
 import linguacrypt.model.GameConfiguration;
-import linguacrypt.view.*;
-
+import linguacrypt.view.GameConfigurationDialog;
+import linguacrypt.view.MainMenuView;
+import linguacrypt.view.PictGameConfigurationDialog;
+import linguacrypt.view.SoloModeConfigurationDialog;
 
 public class MainMenuController {
 
-    MainMenuView view;
-    ApplicationContext context = ApplicationContext.getInstance();
+    private MainMenuView view;
+    private ApplicationContext context = ApplicationContext.getInstance();
 
-    public void setView(MainMenuView menuView){
-        this.view = menuView;
-        view.setOnCreateGame(this::handleCreateGame);
-        view.setOnAddCustomTheme(this::handleAddCustomTheme);
+    public void setView(MainMenuView view) {
+        this.view = view;
+        view.setOnPlayGame(this::handlePlayGame);
         view.setOnProfileMenu(this::handleProfileMenu);
+        view.setOnAddCustomTheme(this::handleAddCustomTheme);
     }
 
-    private void handleProfileMenu(ActionEvent event) {
-        context.getRoot().setCenter(context.getProfileMenuNode());
-
-
-    }
-
-    public void handleCreateGame(ActionEvent event) {
-
-            // Retrieve game configuration and personalize settings
-            GameConfiguration config = GameConfiguration.getInstance();
-            switch (config.getGameMode()) {
-                case 0:                                 // Words Game Mode
-                    GameConfigurationDialog dialog = new GameConfigurationDialog();
-                    if (dialog.showGameConfigurationDialog()) {
-                        config.setTheme(dialog.getSelectedTheme());
-                        context.setGame(new Game(config));
-                        context.getRoot().setCenter(context.getEditTeamNode());
-                    }
-                    break;
-                case 1:                                 // Picture Game Mode
-                    PictGameConfigurationDialog pictDialog = new PictGameConfigurationDialog();
-                    if (pictDialog.showGameConfigurationDialog()) {
-                        context.setGame(new Game(config));
-                        context.getRoot().setCenter(context.getEditTeamNode());
-                    }
-                    break;
-                case 2:                                 // Solo Game Mode
+    private void handlePlayGame() {
+                    // Retrieve game configuration and personalize settings
+                    GameConfiguration config = GameConfiguration.getInstance();
+                    switch (config.getGameMode()) {
+                        case 0:                                 // Words Game Mode
+                            GameConfigurationDialog dialog = new GameConfigurationDialog();
+                            if (dialog.showGameConfigurationDialog()) {
+                                config.setTheme(dialog.getSelectedTheme());
+                                context.setGame(new Game(config));
+                                context.getRoot().setCenter(context.getEditTeamNode());
+                            }
+                            break;
+                        case 1:                                 // Picture Game Mode
+                            PictGameConfigurationDialog pictDialog = new PictGameConfigurationDialog();
+                            if (pictDialog.showGameConfigurationDialog()) {
+                                context.setGame(new Game(config));
+                                context.getRoot().setCenter(context.getEditTeamNode());
+                            }
+                            break;
+                        case 2:                                 // Solo Game Mode
                     SoloModeConfigurationDialog soloDialog = new SoloModeConfigurationDialog();
                     if (soloDialog.showSoloGameConfigurationDialog()) {
                         context.getRoot().setCenter(context.getSoloGameNode());
                     }
                     break;
                 default:
-                    config.setGameMode(0);
-                    break;
-            }
-            
+                            config.setGameMode(0);
+                            break;
+                    }
     }
 
-    public void handleAddCustomTheme() {
-        
-        new CustomThemeDialog();
+    private void handleProfileMenu() {
+        context.getRoot().setCenter(context.getProfileMenuNode());
     }
 
-    @FXML
-    public void handleExit(ActionEvent event) {
-        System.exit(0);
+    private void handleAddCustomTheme() {
+        // Add custom theme logic
+        System.out.println("Adding a custom theme...");
     }
 }
