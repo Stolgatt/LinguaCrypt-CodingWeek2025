@@ -9,3 +9,6 @@
 .idea
 game_save.dat
 themes.dat
+gradle/
+gradlew
+gradlew.bat
