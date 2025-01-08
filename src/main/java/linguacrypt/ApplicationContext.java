@@ -16,6 +16,7 @@ import linguacrypt.model.Game;
 import linguacrypt.view.EditTeamView;
 import linguacrypt.view.GameView;
 import linguacrypt.view.MainMenuView;
+import linguacrypt.view.MultiplayerMenuView;
 import linguacrypt.view.ProfileMenuView;
 
 public class ApplicationContext {
@@ -34,6 +35,7 @@ public class ApplicationContext {
     private Node MainMenuNode;
     private Node GameNode;
     private Node ProfileMenuNode;
+    private Node multplayerMenuNode;
     /** Références aux contrôleurs. */
     private MainMenuController mainMenuController;
     private EditTeamController editTeamController;
@@ -45,6 +47,7 @@ public class ApplicationContext {
     private EditTeamView editTeamView;
     private GameView gameView;
     private ProfileMenuView profileMenuView;
+    private MultiplayerMenuView multiplayerMenuView;
 
     /** Modèles */
     private Game game;
@@ -120,6 +123,10 @@ public class ApplicationContext {
         profileMenuView = profileMenuLoader.getController();
         profileMenuController = new ProfileMenuController(game, profileMenuView);
 
+        FXMLLoader mpMenuloader = new FXMLLoader(getClass().getResource("/FXML/MultiplayerMenu.fxml"));
+        multplayerMenuNode = mpMenuloader.load();
+        multiplayerMenuView = mpMenuloader.getController();
+
         } catch (IOException e) {
             System.err.println("Erreur lors du chargement des composants de l'application : " + e.getMessage());
             //noinspection CallToPrintStackTrace
@@ -158,6 +165,11 @@ public class ApplicationContext {
     }
 
     public Node getProfileMenuNode() {return ProfileMenuNode;}
+    public Node getMPMenuNode() {return multplayerMenuNode;}
+
+    public MultiplayerMenuView getMPMenuView(){
+        return multiplayerMenuView;
+    }
 
     //endregion
 

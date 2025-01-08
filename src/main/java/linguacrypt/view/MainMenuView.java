@@ -1,10 +1,16 @@
 package linguacrypt.view;
 
+import java.io.IOException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import linguacrypt.ApplicationContext;
 
 public class MainMenuView {
 
@@ -65,7 +71,7 @@ public class MainMenuView {
     private Runnable onPlayGame;
     private Runnable onProfileMenu;
     private Runnable onAddCustomTheme;
-
+    private ApplicationContext context = ApplicationContext.getInstance();
     @FXML
     public void initialize() {
         // Network Mode Selection
@@ -110,6 +116,9 @@ public class MainMenuView {
         multiButtons.setVisible(isMultiplayer);
         hostButton.setVisible(isMultiplayer);
         joinButton.setVisible(isMultiplayer);
+        hostButton.setOnAction(event -> context.getMPMenuView().showHostView());
+        joinButton.setOnAction(event -> context.getMPMenuView().showJoinView());
+
     }
 
     private void selectGameMode(int mode) {
@@ -134,6 +143,7 @@ public class MainMenuView {
         gameModeSelectionBox.setVisible(false);
         networkModeSelectionBox.setVisible(true);
     }
+
 
     @FXML
     public void handleExit(ActionEvent event) {
