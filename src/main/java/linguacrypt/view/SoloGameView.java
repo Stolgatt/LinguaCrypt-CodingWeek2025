@@ -4,28 +4,23 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.VBox;
 import linguacrypt.ApplicationContext;
-import linguacrypt.controller.GameController;
 import linguacrypt.controller.TimerController;
-import linguacrypt.model.Card;
-import linguacrypt.model.GameConfiguration;
-import linguacrypt.model.Grid;
-import linguacrypt.model.Game;
-import linguacrypt.controller.MenuBarController;
+import linguacrypt.model.*;
+import linguacrypt.model.AI.AISpy;
 
 import java.io.IOException;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
-public class GameView implements Observer {
+public class SoloGameView implements Observer {
+    private Game game;
 
     @FXML
     private GridPane gameGrid; // Lié à game.fxml
+    @FXML
+    private VBox motTrouve;
     @FXML
     private Button btnNextTurn;
     @FXML
@@ -40,72 +35,39 @@ public class GameView implements Observer {
     private TimerController timerController;
 
     private Dialog<Void> spyDialog;
-
-    private Game game;
     private ApplicationContext context = ApplicationContext.getInstance();
     private Runnable onNextTurn;
     private Runnable OnGiveHint;
     private BiConsumer<Integer, Integer> onCardClicked;
 
-    @FXML
-    private void initialize() {
-        btnNextTurn.setOnAction(e -> {
-            btnNextTurn.setVisible(false);
-            if (onNextTurn != null) onNextTurn.run();
-
-            resetTimer();
-        });
-        btnGuess.setOnAction(e -> {
-            btnGuess.setVisible(false);
-            if (OnGiveHint != null) OnGiveHint.run();
-        });
-    }
-
-    public void setTimer(){
-        // initialize timer controller
-        int timeTurn = GameConfiguration.getInstance().getTimeTurn();
-        if (timeTurn > 0) {
-            timerController = new TimerController(timerLabel, timeTurn);
-            timerController.setOnTimerEnd(this::handleTimerEnd);
-            timerController.startTimer();
-        } else {
-            timerController = new TimerController(timerLabel, timeTurn);
-            timerLabel.setText("∞"); // Prints infinity if time isn't limited
-        }
-    }
 
     public void setGame(Game game) {
         this.game = game;
         game.ajouterObservateur(this);
-
-        try {
-            MenuBarController menuBarController = new MenuBarController(game);
-            this.menuBarController.setController(menuBarController);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        initializeGrid();
+        initializeGrid(game.getGrid());
+        reagir();
+    }
+    public void setOnNextTurn(Runnable onNextTurn) {
+        this.onNextTurn = onNextTurn;
+    }
+    public void setOnGiveHint(Runnable OnGiveHint) {
+        this.OnGiveHint = OnGiveHint;
+    }
+    public void setonCardClicked(BiConsumer<Integer, Integer> onCardClicked) {
+        this.onCardClicked = onCardClicked;
+    }
+    @FXML
+    private void initialize() {
+        btnNextTurn.setOnAction(e -> {
+            if (onNextTurn != null) onNextTurn.run();
+            resetTimer();
+        });
+        btnGuess.setOnAction(e -> {
+            if (OnGiveHint != null) OnGiveHint.run();
+        });
     }
 
-    private void initializeGrid() {
-        Grid grid = game.getGrid();
-        
-        switch (GameConfiguration.getInstance().getGameMode()) {
-            case 0:                                 // Words Game Mode
-                initializeWordGrid(grid);
-                break;
-            case 1:                                 // Picture Game Mode
-                initializePictureGrid(grid);
-                break;
-            default:
-                initializeWordGrid(grid);
-                break;
-        }
-        game.notifierObservateurs();
-    }
-
-    private void initializeWordGrid(Grid grid){
+    private void initializeGrid(Grid grid){
         // Parcours et affichage des cartes dans la grille
         for (int row = 0; row < grid.getGrid().length; row++) {
             for (int col = 0; col < grid.getGrid()[row].length; col++) {
@@ -123,58 +85,13 @@ public class GameView implements Observer {
         }
     }
 
-    private void initializePictureGrid(Grid grid) {
-        // Parcours et affichage des cartes dans la grille
-        for (int row = 0; row < grid.getGrid().length; row++) {
-            for (int col = 0; col < grid.getGrid()[row].length; col++) {
-                // Récupérer la carte actuelle
-                Card card = grid.getCard(row, col);
-    
-                // Créer une image à partir de l'URL stockée dans la carte
-                Image image = new Image(card.getUrlImage());
-                ImageView imageView = new ImageView(image);
-    
-                // Configurer la taille de l'image
-                imageView.setFitWidth(100);  // Largeur fixe
-                imageView.setFitHeight(100); // Hauteur fixe
-                imageView.setPreserveRatio(true); // Conserver les proportions
-    
-                // Créer un bouton et ajouter l'image comme contenu
-                Button cardButton = new Button();
-                cardButton.setGraphic(imageView);
-                cardButton.setPrefSize(100, 100); // Taille fixe pour le bouton
-    
-                // Ajouter un événement clic sur le bouton
-                int finalRow = row;
-                int finalCol = col;
-                cardButton.setOnAction(e -> {
-                    if (onCardClicked != null) {
-                        onCardClicked.accept(finalRow, finalCol);
-                    }
-                });
-    
-                // Ajouter le bouton à la grille
-                gameGrid.add(cardButton, col, row);
-            }
-        }
-    }        
-
-    public void setOnNextTurn(Runnable onNextTurn) {
-        this.onNextTurn = onNextTurn;
-    }
-    public void setOnGiveHint(Runnable OnGiveHint) {
-        this.OnGiveHint = OnGiveHint;
-    }
-    public void setonCardClicked(BiConsumer<Integer, Integer> onCardClicked) {
-        this.onCardClicked = onCardClicked;
-    }
-
     public void reagir() {
-        if (game.getgConfig().getGameMode() == 2){return;}
+        if (game.getgConfig().getGameMode()!=2){return;}
         if(timerController != null){
 
             timerController.updateLabel();
         }
+        motTrouve.getChildren().clear();
         int turn = game.getTurn();
         Grid grid = game.getGrid();
         Node root = context.getGameNode();
@@ -199,7 +116,7 @@ public class GameView implements Observer {
                 // Update button text with loaded word
                 cardButton.setText(grid.getCard(row, col).getWord());
 
-                if (grid.getCard(row,col).isSelected() || game.isTurnBegin()==0 || game.isTurnBegin()==1){
+                if (grid.getCard(row,col).isSelected() || game.getBlueTeam().getPlayers().getFirst().getIsSpy()){
                     switch (grid.getCard(row,col).getCouleur()){
                         case 0:
                             cardButton.setStyle("-fx-background-color: #F5DEB3;");
@@ -214,17 +131,44 @@ public class GameView implements Observer {
                             cardButton.setStyle("-fx-background-color: darkgray;");
                             break;
                     }
+                    if(game.getBlueTeam().getPlayers().getFirst().getIsSpy()){
+                        Card discoveredCard = game.getGrid().getCard(row,col);
+                        if (!discoveredCard.isSelected()){continue;}
+                        if (discoveredCard != null) {
+                            Label cardLabel = new Label(discoveredCard.getWord());
+                            if (discoveredCard.getCouleur()==1){
+                                cardLabel.setStyle("-fx-background-color: lightblue; -fx-border-color: black; -fx-padding: 5; -fx-border-radius: 5; -fx-background-radius: 5;");
+                            }
+                            else{
+                                cardLabel.setStyle("-fx-background-color: #F5DEB3; -fx-border-color: black; -fx-padding: 5; -fx-border-radius: 5; -fx-background-radius: 5;");
+
+                            }
+                            cardLabel.setPrefSize(100, 30);
+                            cardLabel.setAlignment(Pos.CENTER);
+
+                            motTrouve.getChildren().add(cardLabel);
+                        }
+                    }
                 }
                 else{
                     cardButton.setStyle("");
                 }
             }
         }
-
-        //Check if button can be visible or not
-        if (game.isTurnBegin()==1){
-            drawSpyDialogueBox();
+        if (game.getBlueTeam().getPlayers().getFirst().getIsSpy()){
+            btnNextTurn.setVisible(false);
         }
+        else{
+            btnGuess.setVisible(false);
+        }
+        //Check if button can be visible or not
+
+        if (game.isTurnBegin()==1){
+            if (game.getBlueTeam().getPlayers().getFirst().getIsSpy()){
+                drawSpyDialogueBox();
+            }
+        }
+        /*
         else if (game.isTurnBegin()==2){
             btnGuess.setVisible(false);
             btnNextTurn.setVisible(true);
@@ -232,13 +176,14 @@ public class GameView implements Observer {
         else{
             btnNextTurn.setVisible(false);
             btnGuess.setVisible(true);
-        }
+        }*/
 
         //draw the actual hint
         String message = game.hintToString();
         labelHint.setText("Indice pour ce tour : " + message);
 
         //check if game is over
+        /*
         if (game.getIsWin() != -1 && game.getIsWin() != 2){
             timerController.stopTimer();
             drawWinningDialogueBox();
@@ -248,6 +193,58 @@ public class GameView implements Observer {
             timerController.stopTimer();
             drawLoosingDialogueBox();
         }
+         */
+    }
+
+
+    //A MODIFIER (ON PEUT FACTORISER DES METHODES AVEC GAMEVIEW)
+
+    public void setTimer(){
+        // initialize timer controller
+        int timeTurn = GameConfiguration.getInstance().getTimeTurn();
+        if (timeTurn > 0) {
+            timerController = new TimerController(timerLabel, timeTurn);
+            timerController.setOnTimerEnd(this::handleTimerEnd);
+            timerController.startTimer();
+        } else {
+            timerController = new TimerController(timerLabel, timeTurn);
+            timerLabel.setText("∞"); // Prints infinity if time isn't limited
+        }
+    }
+    public void resetTimer() {
+        int timeTurn = GameConfiguration.getInstance().getTimeTurn();
+
+        if (timeTurn > 0) {
+            timerController.resetTimer(timeTurn);
+            timerController.startTimer();
+        } else {
+            timerLabel.setText("∞"); // Display infinity symbol if time is unlimited
+        }
+    }
+
+    /**
+     * Handles the actions to be performed when the timer ends.
+     * This includes closing any open dialogs, managing turn transitions,
+     * and resetting the timer for the next turn.
+     */
+    public void handleTimerEnd() {
+        // Get the current state of the turn (spy or agent phase)
+        int turnState = game.isTurnBegin();
+
+        // Show the end-of-turn dialog and execute the specified actions afterward
+        EndOfTurnDialog.showEndOfTurnDialog(() -> {
+            if (spyDialog != null) {
+                spyDialog.close();
+                spyDialog = null;
+            }
+            // Handle actions based on the current turn state
+            if (turnState == 0 || turnState == 1) { // Spy's turn
+                //nextTurn();
+            } else if (turnState == 2) { // Agents' turn
+                //nextTurn();
+            }
+            resetTimer();
+        });
     }
 
     public void drawSpyDialogueBox() {
@@ -289,7 +286,8 @@ public class GameView implements Observer {
                         game.setCurrentHint(word);
                         game.setCurrentNumberWord(number);
                         game.setTurnBegin(2);
-
+                        System.out.println("WOUH");
+                        onNextTurn.run();
                         resetTimer();
                         return null;
                     } else {
@@ -350,6 +348,8 @@ public class GameView implements Observer {
         dialog.showAndWait();
     }
 
+    public TimerController getTimerController() {return timerController;}
+
 
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -357,53 +357,5 @@ public class GameView implements Observer {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }
-
-    public void nextTurn() {
-        int currentTurn = game.getTurn();
-        game.setTurn((currentTurn + 1) % 2);
-        game.setTurnBegin(0);
-        game.notifierObservateurs();
-    }
-
-    public TimerController getTimerController(){
-        return timerController;
-    }
-
-    // Resets the timer based on the configured time per turn
-    public void resetTimer() {
-        int timeTurn = GameConfiguration.getInstance().getTimeTurn();
-
-        if (timeTurn > 0) {
-            timerController.resetTimer(timeTurn);
-            timerController.startTimer();
-        } else {
-            timerLabel.setText("∞"); // Display infinity symbol if time is unlimited
-        }
-    }
-
-    /**
-     * Handles the actions to be performed when the timer ends.
-     * This includes closing any open dialogs, managing turn transitions,
-     * and resetting the timer for the next turn.
-     */
-    public void handleTimerEnd() {
-        // Get the current state of the turn (spy or agent phase)
-        int turnState = game.isTurnBegin();
-
-        // Show the end-of-turn dialog and execute the specified actions afterward
-        EndOfTurnDialog.showEndOfTurnDialog(() -> {
-            if (spyDialog != null) {
-                spyDialog.close();
-                spyDialog = null;
-            }
-            // Handle actions based on the current turn state
-            if (turnState == 0 || turnState == 1) { // Spy's turn
-                nextTurn();
-            } else if (turnState == 2) { // Agents' turn
-                nextTurn();
-            }
-            resetTimer();
-        });
     }
 }

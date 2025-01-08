@@ -10,7 +10,10 @@
                 style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 1); -fx-pref-width: 200;"/>
     <Button text="PictCrypt Game" fx:id="createPictGameButton" 
                 style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 1); -fx-pref-width: 200;"/>
-                    <Button text="Profile Menu" fx:id="profileMenuBtn"
+    <Button text="SoloCrypt Game" fx:id="createSoloGameButton"
+            style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 1); -fx-pref-width: 200;"/>
+
+    <Button text="Profile Menu" fx:id="profileMenuBtn"
             style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 1); -fx-pref-width: 200;"/>
     <Button text="Add Custom Theme Words" fx:id="addCustomThemeButton"
                 style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 1); -fx-pref-width: 200;"/>

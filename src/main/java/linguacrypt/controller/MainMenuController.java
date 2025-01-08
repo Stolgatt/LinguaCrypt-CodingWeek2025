@@ -5,10 +5,7 @@ import javafx.fxml.FXML;
 import linguacrypt.ApplicationContext;
 import linguacrypt.model.Game;
 import linguacrypt.model.GameConfiguration;
-import linguacrypt.view.GameConfigurationDialog;
-import linguacrypt.view.PictGameConfigurationDialog;
-import linguacrypt.view.MainMenuView;
-import linguacrypt.view.CustomThemeDialog;
+import linguacrypt.view.*;
 
 
 public class MainMenuController {
@@ -47,6 +44,12 @@ public class MainMenuController {
                     if (pictDialog.showGameConfigurationDialog()) {
                         context.setGame(new Game(config));
                         context.getRoot().setCenter(context.getEditTeamNode());
+                    }
+                    break;
+                case 2:                                 // Solo Game Mode
+                    SoloModeConfigurationDialog soloDialog = new SoloModeConfigurationDialog();
+                    if (soloDialog.showSoloGameConfigurationDialog()) {
+                        context.getRoot().setCenter(context.getSoloGameNode());
                     }
                     break;
                 default:

@@ -1,5 +1,7 @@
 package linguacrypt.model;
 
+import linguacrypt.model.AI.AIAgent;
+import linguacrypt.model.AI.AISpy;
 import linguacrypt.model.statistique.GameStat;
 import linguacrypt.model.statistique.PlayerStat;
 import linguacrypt.utils.StatLoader;
@@ -40,12 +42,14 @@ public class Game implements Serializable {
                 this.themeWords = loadThemeWords(gConfig.getTheme());
                 this.grid = new Grid(gConfig.getGridSize(), themeWords, 0);
                 setUpGame();
-                grid.printGrid();
                 break;
             case 1:                     // Picture Game Mode
                 this.grid = new Grid(gConfig.getGridSize(), null, 1);
                 setUpGame();
-                grid.printGrid();
+                break;
+            case 2:                     // Solo Game Mode
+                this.themeWords = loadThemeWords(gConfig.getTheme());
+                this.grid = new Grid(gConfig.getGridSize(), themeWords, 2);
                 break;
             default:
                 break;
@@ -106,6 +110,7 @@ public class Game implements Serializable {
     public void setUpGame(){
         turn = random.nextInt(2);
         grid.initGrid(turn);
+        grid.printGrid();
         teams[0] = new Team("Equipe Bleue",gConfig.getMaxTeamMember(),this,0);
         teams[1] = new Team("Equipe Rouge",gConfig.getMaxTeamMember(),this,1);
     }
@@ -223,4 +228,32 @@ public class Game implements Serializable {
         gameStat.setNombreDeTours(nbTour);
         gameStat.setTheme(gConfig.getTheme());
     }
+
+    public void setUpSoloGame(Player player){
+        grid.initGrid(-2);
+        grid.printGrid();
+        teams[0] = new Team("Equipe Bleue",2,this,0);
+        teams[1] = new Team("Equipe Rouge",0,this,1);
+        teams[0].addPlayer(player);
+        if (player.getIsSpy()){
+            teams[0].addPlayer(new AIAgent(0));
+        }
+        else{
+            teams[0].addPlayer(new AISpy(0));
+            spyAIPlay();
+        }
+    }
+    public void spyAIPlay(){
+        System.out.println("spyAIPlay");
+        try {
+            Hint hint = ((AISpy) this.getBlueTeam().getPlayers().get(1)).generateHint(this.getGrid());
+            this.setCurrentHint(hint.getWord());
+            this.setCurrentNumberWord(hint.getCount());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        this.setTurnBegin(2);
+    }
+
+
 }

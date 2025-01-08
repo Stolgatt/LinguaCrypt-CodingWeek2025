@@ -23,6 +23,8 @@ public class MainMenuView {
     @FXML
     private Button createPictGameButton; // Button to create a new picture game
     @FXML
+    private Button createSoloGameButton;
+    @FXML
     private Button profileMenuBtn;
     @FXML
     private Button addCustomThemeButton; // Button to add custom theme words
@@ -40,15 +42,21 @@ public class MainMenuView {
         createPictGameButton.setOnAction(e -> {
             GameConfiguration.getInstance().setGameMode(1);         // Picture Game Mode
             onCreateGame.accept(e);});
+        createSoloGameButton.setOnAction(e -> {
+            GameConfiguration.getInstance().setGameMode(2);         // Solo Game Mode
+            onCreateGame.accept(e);});
         addCustomThemeButton.setOnAction(e -> {onAddCustomTheme.run();});
         profileMenuBtn.setOnAction(e -> {onProfileMenu.accept(e);});
         addHoverEffect(profileMenuBtn);
         addHoverEffect(createWordGameButton);
         addHoverEffect(createPictGameButton);
+        addHoverEffect(createSoloGameButton);
         addHoverEffect(addCustomThemeButton);
         addHoverEffect(exitButton);
+
         addSelectedEffect(profileMenuBtn);
         addSelectedEffect(createWordGameButton);
+        addSelectedEffect(createSoloGameButton);
         addSelectedEffect(addCustomThemeButton);
         addSelectedEffect(exitButton);
     }
