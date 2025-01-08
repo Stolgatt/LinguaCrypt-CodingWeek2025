@@ -106,12 +106,10 @@ public class LobbyView {
     }
 
     public void addPlayer(String playerName) {
-        userList.add(playerName);
         textAreaChat.appendText(playerName + " joined the game.\n");
     }
 
     public void removePlayer(String playerName) {
-        userList.remove(playerName);
         textAreaChat.appendText(playerName + " left the game.\n");
     }
 

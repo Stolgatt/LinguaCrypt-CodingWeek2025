@@ -98,12 +98,8 @@ public class Client {
     }
 
     public void disconnect() {
-        try {
             sendMessage(new Message(MessageType.DISCONNECT, user.getNickname(), ""));
-            socket.close();
-        } catch (IOException e) {
-            System.out.println("Error disconnecting: " + e.getMessage());
-        }
+            closeConnection();
     }
 
     public User getUser() {

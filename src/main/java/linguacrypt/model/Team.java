@@ -54,4 +54,8 @@ public class Team implements Serializable{
         }
         return hasSpy && hasAgent;
     }
+
+    public void removePlayer(Player player) {
+        this.players.remove(player);
+    }
 }

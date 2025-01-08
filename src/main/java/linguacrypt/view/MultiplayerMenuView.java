@@ -52,9 +52,6 @@ public class MultiplayerMenuView {
         }
         comboBoxTheme.getSelectionModel().selectFirst();
 
-        // Initialize team selection
-        comboBoxTeam.getItems().addAll("Blue Team", "Red Team");
-        comboBoxTeam.getSelectionModel().selectFirst();
     }
 
     @FXML
@@ -157,6 +154,7 @@ public class MultiplayerMenuView {
             server.start();
 
             context.setServer(server);
+            context.getLobbyView().initialize();
             context.getRoot().setCenter(context.getLobbyNode());
             context.getLobbyView().addPlayer(nickname);
         } catch (IOException e) {
@@ -188,6 +186,7 @@ public class MultiplayerMenuView {
         try {
             Client client = new Client(address, Server.PORT, nickname, teamId);
             context.setClient(client);
+            context.getLobbyView().initialize();
             context.getRoot().setCenter(context.getLobbyNode());
         } catch (IOException e) {
             System.out.println("Error connecting to server: " + e.getMessage());
