@@ -76,6 +76,7 @@ public class Game implements Serializable {
             o.reagir();
         }
     }
+    public Team getTeam(int id){return teams[id];}
     public int isTurnBegin() {return turnStep;}
     public void setTurnBegin(int turnBegin) {this.turnStep = turnBegin;}
     public int getCurrentTryCount() {return currentTryCount;}

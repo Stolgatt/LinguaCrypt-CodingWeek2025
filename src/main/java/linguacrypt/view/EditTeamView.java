@@ -117,11 +117,10 @@ public class EditTeamView implements Observer {
                         "-fx-background-radius: 10;");
             }
 
-            playerCard.setSpacing(15);  // Espacement entre les éléments de la carte
-            HBox.setMargin(playerCard, new Insets(20));  // Marge autour de la carte
+            playerCard.setSpacing(15);
+            HBox.setMargin(playerCard, new Insets(20));
             playerCard.setAlignment(Pos.CENTER_LEFT);
 
-            // Ajouter la carte à la teamBox
             teamBox.getChildren().add(playerCard);
         }
     }
@@ -129,17 +128,14 @@ public class EditTeamView implements Observer {
     private HBox createPlayerCard(Player player) {
         HBox card = new HBox();
 
-
-        /*
-        ImageView imageAvatar = new ImageView(new Image(getClass().getResourceAsStream(player.getUrlAvatar())));
-        imageAvatar.setFitWidth(20);
-        imageAvatar.setFitHeight(20);
-        */
+        //playerName
         Label playerName = new Label(player.getName());
-        playerName.setStyle("-fx-font-size: 14; " +   // Taille de la police
-                "-fx-font-weight: bold; " +  // Texte en gras
-                "-fx-text-fill: #333333; " + // Couleur de texte (gris foncé)
+        playerName.setStyle("-fx-font-size: 14; " +
+                "-fx-font-weight: bold; " +
+                "-fx-text-fill: #333333; " +
                 "-fx-padding: 5 10 5 5;");
+
+        //Spy or Agent pic
         ImageView imageRole = new ImageView(new Image(getClass().getResourceAsStream("/image/agent.png")));
         if (player.getIsSpy()){
             imageRole = new ImageView(new Image(getClass().getResourceAsStream("/image/spy.png")));
@@ -147,7 +143,6 @@ public class EditTeamView implements Observer {
         imageRole.setFitWidth(20);
         imageRole.setFitHeight(20);
 
-        //card.getChildren().addAll(imageAvatar, playerName, imageRole);
         card.getChildren().addAll(playerName, imageRole);
         return card;
     }
@@ -161,30 +156,25 @@ public class EditTeamView implements Observer {
         grid.setVgap(10);
         grid.setAlignment(Pos.CENTER);
 
-        // Champ pour le nom du joueur
+        //Champ pour le nom
         TextField nameField = new TextField();
         nameField.setPromptText("Entrez le nom du joueur");
 
+        //Choix de l'équipe
         ToggleGroup teamGroup = new ToggleGroup();
-
         RadioButton blueTeamRadioButton = new RadioButton("Équipe Bleue");
         blueTeamRadioButton.setToggleGroup(teamGroup);
-        blueTeamRadioButton.setSelected(true); // Par défaut, équipe Bleue
-
+        blueTeamRadioButton.setSelected(true); // Default = Blue
         RadioButton redTeamRadioButton = new RadioButton("Équipe Rouge");
         redTeamRadioButton.setToggleGroup(teamGroup);
 
+        //Choix du rôle
         ToggleGroup roleGroup = new ToggleGroup();
-
         RadioButton spyRadioButton = new RadioButton("Rôle Espion");
         spyRadioButton.setToggleGroup(roleGroup);
-        spyRadioButton.setSelected(true); // Par défaut, rôle Espion
-
+        spyRadioButton.setSelected(true); // Default = Spy
         RadioButton agentRadioButton = new RadioButton("Rôle Agent");
         agentRadioButton.setToggleGroup(roleGroup);
-
-        FileChooser imageChooser = new FileChooser();
-        imageChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"));
 
         // Ajout des éléments dans le GridPane
         grid.add(new Label("Nom du joueur:"), 0, 0);
@@ -195,10 +185,10 @@ public class EditTeamView implements Observer {
         grid.add(new Label("Choisir un rôle:"), 0, 3);
         grid.add(spyRadioButton, 1, 3);
         grid.add(agentRadioButton, 1, 4);
-        //grid.add(imageButton, 1, 5);
 
         dialog.getDialogPane().setContent(grid);
 
+        //Bouton de Validation/Annulation
         ButtonType okButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
         ButtonType cancelButtonType = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);
         dialog.getDialogPane().getButtonTypes().addAll(okButtonType, cancelButtonType);
@@ -206,31 +196,31 @@ public class EditTeamView implements Observer {
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == okButtonType) {
                 String playerName = nameField.getText();
+                //Verification si un joueur du meme nom appartient déjà à une équipe
                 boolean alreadyExists = false;
-                for (Player player : game.getBlueTeam().getPlayers()) {
-                    if (player.getName().equals(playerName)) {
-                        alreadyExists = true;
-                        break;
-                    }
-                }
-                for (Player player : game.getRedTeam().getPlayers()) {
-                    if (player.getName().equals(playerName)) {
-                        alreadyExists = true;
-                        break;
+                for (int i = 0; i<2; i++){
+                    Team team = game.getTeam(i);
+                    for (Player player : team.getPlayers()) {
+                        if (player.getName().equals(playerName)) {
+                            alreadyExists = true;
+                            break;
+                        }
                     }
                 }
                 if (alreadyExists) {
                     showError("Le joueur " + playerName + " a déjà était ajouté à une équipe");
                     return null;
                 }
-                boolean isBlueTeam = blueTeamRadioButton.isSelected();
-                boolean isSpy = spyRadioButton.isSelected();
-                //File image = selectedImage.get();
-
+                //Check si le nom est valide
                 if (playerName.trim().isEmpty()) {
                     showError("Le nom du joueur ne peut pas être vide.");
                     return null;
                 }
+                //Recupere les autre Champs
+                boolean isBlueTeam = blueTeamRadioButton.isSelected();
+                boolean isSpy = spyRadioButton.isSelected();
+
+
                 ArrayList<Player> playerList = game.getgConfig().getPlayerList();
                 if (playerList == null){
                     playerList = new ArrayList<>();
