@@ -41,6 +41,10 @@ public class MultiplayerMenuView {
         labelGridSize.setText(String.valueOf(gridSize));
         labelTimer.setText(String.valueOf(timer));
 
+        //init teams combo box
+        comboBoxTeam.getItems().addAll("Blue Team", "Red Team");
+        comboBoxTeam.getSelectionModel().selectFirst();
+
         // Load themes
         List<Theme> themes = ThemeLoader.loadThemes();
         for (Theme theme : themes) {

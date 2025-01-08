@@ -14,5 +14,6 @@ public enum MessageType {
     GAME_UPDATE,    // Sent to update game state
     TEAM_UPDATE,    // Updates the teams (if a player changes team)
     ERROR           // Generic error message
+, PLAYER_LIST
 }
 

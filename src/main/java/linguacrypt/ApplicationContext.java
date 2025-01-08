@@ -176,6 +176,10 @@ public class ApplicationContext {
         profileMenuView.setGame(game);
     }
 
+    public Game getGame(){
+        return game;
+    }
+
     public Node getEditTeamNode(){
         return editTeamNode;
     }

@@ -1,11 +1,12 @@
 package linguacrypt.networking;
 
+import linguacrypt.model.Player;
+import linguacrypt.model.statistique.PlayerStat;
+
 import java.io.Serializable;
 import java.net.InetAddress;
 
 public class User implements Serializable {
-    private static final long serialVersionUID = 1L;
-
     private String nickname;
     private InetAddress address;
     private int teamId;
@@ -16,6 +17,7 @@ public class User implements Serializable {
         this.teamId = teamId;
     }
 
+    // Getter and Setter methods
     public String getNickname() {
         return nickname;
     }
@@ -38,6 +40,13 @@ public class User implements Serializable {
 
     public void setTeamId(int teamId) {
         this.teamId = teamId;
+    }
+
+    // Convert User to Player
+    public Player toPlayer() {
+        Player player = new Player(nickname, false,"", new PlayerStat()); // Assuming Player has a constructor that accepts a nickname
+        //player.setTeamId(teamId); // Assuming Player has a setTeamId method
+        return player;
     }
 
     @Override

@@ -4,11 +4,16 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 
+import linguacrypt.ApplicationContext;
+import linguacrypt.model.Game;
+import linguacrypt.model.Player;
+
 public class Server {
     public static final int PORT = 9001;
     private ServerSocket serverSocket;
     private ArrayList<ClientHandler> clients = new ArrayList<>();
     private String hostNickname;
+    private ApplicationContext context = ApplicationContext.getInstance();
 
     public Server(String hostNickname) throws IOException {
         this.serverSocket = new ServerSocket(PORT);
@@ -20,7 +25,10 @@ public class Server {
 
         // Add the host to the list of clients
         User hostUser = new User(hostNickname, null, 0); // Default team is 0 for the host
-        clients.add(new ClientHandler(null, hostUser));
+        ClientHandler cHandler = new ClientHandler(null);
+        clients.add(cHandler);
+        cHandler.addUserToTeam(hostUser);
+        broadcastPlayerList();
 
         new Thread(() -> {
             try {
@@ -29,7 +37,7 @@ public class Server {
                     System.out.println("New client connected: " + clientSocket.getInetAddress());
 
                     // Create a new ClientHandler for the connected client
-                    ClientHandler clientHandler = new ClientHandler(clientSocket, null);
+                    ClientHandler clientHandler = new ClientHandler(clientSocket);
                     clients.add(clientHandler);
 
                     // Start the ClientHandler in a new thread
@@ -59,6 +67,23 @@ public class Server {
         }
     }
 
+public void broadcastPlayerList() {
+    Game game = ApplicationContext.getInstance().getGame();
+    if (game != null) {
+        StringBuilder playerList = new StringBuilder();
+        for (Player player : game.getBlueTeam().getPlayers()) {
+            playerList.append("[Blue] ").append(player.getName()).append(";");
+        }
+        for (Player player : game.getRedTeam().getPlayers()) {
+            playerList.append("[Red] ").append(player.getName()).append(";");
+        }
+        Message playerListMessage = new Message(MessageType.PLAYER_LIST, "Server", playerList.toString());
+        for (ClientHandler client : clients) {
+            client.sendMessage(playerListMessage);
+        }
+    }
+}
+
     public String getHostNickname() {
         return hostNickname;
     }
@@ -69,34 +94,39 @@ public class Server {
         private ObjectOutputStream output;
         private User user;
 
-        public ClientHandler(Socket socket, User user) {
+        public ClientHandler(Socket socket) {
             this.socket = socket;
-            this.user = user;
+        }
+
+        public User getUser() {
+            return user;
         }
 
         @Override
         public void run() {
             try {
-                if (socket != null) {
-                    // Initialize input and output streams
-                    output = new ObjectOutputStream(socket.getOutputStream());
-                    input = new ObjectInputStream(socket.getInputStream());
+                // Initialize streams
+                output = new ObjectOutputStream(socket.getOutputStream());
+                input = new ObjectInputStream(socket.getInputStream());
 
-                    // Handle connection
-                    Message connectMessage = (Message) input.readObject();
-                    if (connectMessage.getType() == MessageType.CONNECT) {
-                    InetAddress clientAddress = socket.getInetAddress(); // Use the actual socket's address
+                // Process the CONNECT message
+                Message connectMessage = (Message) input.readObject();
+                if (connectMessage.getType() == MessageType.CONNECT) {
+                    String nickname = connectMessage.getNickname();
+                    int teamId = connectMessage.getTeam(); // Get the team ID from the message
 
-                    user = new User(connectMessage.getNickname(), clientAddress, connectMessage.getTeam());
-                    System.out.println(user.getNickname() + " joined team " + user.getTeamId());
+                    // Create and add the user
+                    user = new User(nickname, socket.getInetAddress(), teamId);
+                    addUserToTeam(user);
+                    broadcastPlayerList(); // Notify all clients
 
-                    // Notify all users about the new player
-                    broadcastMessage(new Message(MessageType.USER_JOINED, "Server", user.getNickname() + " joined the game.", user.getTeamId()));
-}
+                    System.out.println(nickname + " joined team " + teamId);
+                    // Notify all connected clients
+                    broadcastMessage(new Message(MessageType.USER_JOINED, "Server :", nickname + " joined the game."));
                 }
 
-                // Message handling loop
-                while (socket != null && !socket.isClosed()) {
+                // Handle messages from the client
+                while (!socket.isClosed()) {
                     Message message = (Message) input.readObject();
                     handleMessage(message);
                 }
@@ -107,11 +137,24 @@ public class Server {
             }
         }
 
+        private void addUserToTeam(User user) {
+            Game game = ApplicationContext.getInstance().getGame();
+            if (game != null) {
+                if (user.getTeamId() == 0) {
+                    game.getBlueTeam().addPlayer(user.toPlayer());
+                } else if (user.getTeamId() == 1) {
+                    game.getRedTeam().addPlayer(user.toPlayer());
+                }
+            }
+            context.getLobbyView().refreshUserList();
+        }
+
         public void handleMessage(Message message) {
             if (message.getType() == MessageType.CHAT) {
                 broadcastMessage(new Message(MessageType.CHAT, user.getNickname(), message.getContent()));
             }
             // Additional message handling can be added here
+            broadcastPlayerList();
         }
 
         public void sendMessage(Message message) {
