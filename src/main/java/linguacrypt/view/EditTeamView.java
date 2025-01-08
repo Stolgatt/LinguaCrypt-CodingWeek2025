@@ -249,7 +249,7 @@ public class EditTeamView implements Observer {
 
                         alert.showAndWait().ifPresent(response -> {
                             if (response == yesButton) {
-                                tryAddPlayer( isSpy,isBlueTeam, playerName);
+                                tryAddPlayer( isSpy,isBlueTeam, p);
                             }
                         });
                         find = true;
@@ -257,7 +257,8 @@ public class EditTeamView implements Observer {
                     }
                 }
                 if (!find) {
-                    tryAddPlayer(isSpy,isBlueTeam, playerName);
+                    Player newPlayer = new Player(playerName,isSpy,"",new PlayerStat());
+                    tryAddPlayer(isSpy,isBlueTeam, newPlayer);
                 }
             }
             game.notifierObservateurs();
@@ -266,12 +267,12 @@ public class EditTeamView implements Observer {
         dialog.showAndWait();
     }
 
-    public void tryAddPlayer(boolean isSpy,boolean isBlueTeam,String playerName){
+    public void tryAddPlayer(boolean isSpy,boolean isBlueTeam,Player newPlayer){
         if ( isSpy && ((isBlueTeam && game.getBlueTeam().checkIfHaveSpy()) || (!isBlueTeam && game.getRedTeam().checkIfHaveSpy()))) {
             showError("L'équipe a déjà un espion.");
             return;
         }
-        Player newPlayer = new Player(playerName,isSpy,"",new PlayerStat());
+        newPlayer.setRole(isSpy);
         int added = 0;
         if (isBlueTeam) {
             try {
