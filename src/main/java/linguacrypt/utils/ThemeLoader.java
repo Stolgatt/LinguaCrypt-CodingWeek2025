@@ -9,72 +9,90 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 public class ThemeLoader {
-    private static final String THEME_SAVE_FILE_PATH = "themes.dat";
-    private static final String DEFAULT_THEME_FILE_PATH = "/themes.json";
+    private static final String WORDS_THEME_SAVE_FILE_PATH = "/wordsThemes.dat"; // File to save word themes
+    private static final String PICT_THEME_SAVE_FILE_PATH = "/pictThemes.dat"; // File to save picture themes
+    private static final String DEFAULT_WORDS_THEME_FILE_PATH = "/wordThemes.json"; // File for word themes
+    private static final String DEFAULT_PICTS_THEME_FILE_PATH = "/pictThemes.json"; // File for picture themes
 
-    public static List<Theme> loadThemes() {
-        // Try to load themes from the .dat file first
-        List<Theme> themes = loadThemesFromDatFile();
-        if (themes.isEmpty()) {
-            // If the .dat file does not exist or is empty, load from the JSON file
-            themes = loadThemesFromJsonFile();
+    public static List<Theme> loadThemes(int gameMode) {
+        if (gameMode == 0 || gameMode == 2) { // Word Game Mode
+            List<Theme> themes = loadThemesFromDatFile(gameMode);
+            if (themes.isEmpty()) {
+                themes = loadThemesFromJsonFile(gameMode);
+            }
+            return themes;
+        } else if (gameMode == 1) { // Picture Game Mode
+            List<Theme> themes = loadThemesFromDatFile(gameMode);
+            if (themes.isEmpty()) {
+                themes = loadThemesFromJsonFile(gameMode);    
+            }
+            return themes;
         }
-        return themes;
+        return List.of();
     }
 
-    private static List<Theme> loadThemesFromJsonFile() {
+    private static List<Theme> loadThemesFromJsonFile(int gameMode) {
         Gson gson = new Gson();
         Type themeListType = new TypeToken<List<Theme>>(){}.getType();
-        
-        try (InputStream inputStream = ThemeLoader.class.getResourceAsStream(DEFAULT_THEME_FILE_PATH);
+
+        String filePath = (gameMode == 1) ? DEFAULT_PICTS_THEME_FILE_PATH : DEFAULT_WORDS_THEME_FILE_PATH;
+
+        try (InputStream inputStream = ThemeLoader.class.getResourceAsStream(filePath);
              InputStreamReader reader = new InputStreamReader(inputStream)) {
             return gson.fromJson(reader, themeListType);
         } catch (Exception e) {
             e.printStackTrace();
-            return List.of();
+            return List.of(); // Return an empty list if an error occurs while reading the JSON file
         }
     }
 
-    private static List<Theme> loadThemesFromDatFile() {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(THEME_SAVE_FILE_PATH))) {
+    private static List<Theme> loadThemesFromDatFile(int gameMode) {
+        String filePath = (gameMode == 1) ? PICT_THEME_SAVE_FILE_PATH : WORDS_THEME_SAVE_FILE_PATH;
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath))) {
             return (List<Theme>) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            return List.of(); // Return an empty list if the file does not exist or cannot be read
+            return List.of(); // Return an empty list if the .dat file is not found or cannot be read
         }
     }
 
-    public static void addTheme(Theme theme) {
-        List<Theme> themes = loadThemes();
+    public static void addTheme(Theme theme, int gameMode) {
+        List<Theme> themes = loadThemes(gameMode);
         themes.add(theme);
-        saveThemes(themes);
+        saveThemes(themes, gameMode);
     }
 
-    public static void updateTheme(Theme theme) {
-        List<Theme> themes = loadThemes();
+    public static void updateTheme(Theme theme, int gameMode) {
+        List<Theme> themes = loadThemes(gameMode);
         for (int i = 0; i < themes.size(); i++) {
             if (themes.get(i).getName().equals(theme.getName())) {
                 themes.set(i, theme);
                 break;
             }
         }
-        saveThemes(themes);
+        saveThemes(themes, gameMode);
     }
 
-    private static void saveThemes(List<Theme> themes) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(THEME_SAVE_FILE_PATH))) {
+    private static void saveThemes(List<Theme> themes, int gameMode) {
+        String filePath = (gameMode == 1) ? PICT_THEME_SAVE_FILE_PATH : WORDS_THEME_SAVE_FILE_PATH;
+
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
             oos.writeObject(themes);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static Theme getThemeByName(String name) {
-        List<Theme> themes = loadThemes();
+    public static Theme getThemeByName(String name, int gameMode) {
+        List<Theme> themes = loadThemes(gameMode);
         for (Theme theme : themes) {
             if (theme.getName().equals(name)) {
                 return theme;
             }
         }
-        return null;
+        return null; // Return null if the theme is not found
     }
-} 
+}
+
+
+    

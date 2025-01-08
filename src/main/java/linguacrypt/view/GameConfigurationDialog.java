@@ -57,7 +57,7 @@ public class GameConfigurationDialog {
 
             // Create a ComboBox for themes
             themeComboBox = new ComboBox<>();
-            List<Theme> themes = ThemeLoader.loadThemes();
+            List<Theme> themes = ThemeLoader.loadThemes(0);
             for (Theme theme : themes) {
                 themeComboBox.getItems().add(theme.getName());
                 themeComboBox.getSelectionModel().selectFirst();
@@ -113,7 +113,7 @@ public class GameConfigurationDialog {
                 config.setDifficultyLevel(difficulty);
                 config.setMaxTeamMember(maxTeam);
                 config.setGridSize(gridSize);
-                config.setTheme(themeComboBox.getValue());
+                config.setWordTheme(themeComboBox.getValue());
                 config.setNbPlayer(nbPlayers);
                 config.setTimeTurn(timeTurn);
 

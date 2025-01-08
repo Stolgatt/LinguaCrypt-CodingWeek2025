@@ -2,6 +2,7 @@ package linguacrypt.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Team implements Serializable{
     private static final long serialVersionUID = 1L;
@@ -53,5 +54,17 @@ public class Team implements Serializable{
             }
         }
         return hasSpy && hasAgent;
+    }
+
+    public List<String> getPlayersNames() {
+        List<String> playersNames = new ArrayList<>();
+        for (Player player : players) {
+            playersNames.add(player.getName());
+        }
+        return playersNames;
+    }
+
+    public void removePlayer(Player player) {
+        this.players.remove(player);
     }
 }

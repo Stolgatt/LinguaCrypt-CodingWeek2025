@@ -1,5 +1,10 @@
 package linguacrypt.model;
 
+import linguacrypt.model.AI.AIAgent;
+import linguacrypt.model.AI.AISpy;
+import linguacrypt.model.statistique.GameStat;
+import linguacrypt.model.statistique.PlayerStat;
+import linguacrypt.utils.StatLoader;
 import linguacrypt.utils.ThemeLoader;
 import linguacrypt.view.Observer;
 import java.io.Serializable;
@@ -18,36 +23,43 @@ public class Game implements Serializable {
     private int turn; // 0 : Blue team to play / 1 : Red team to play
     private int turnStep = 0;
     private String currentHint;
-    private int currentNumberWord;
+    private int currentNumberWord = 0;
     private transient ArrayList<Observer> obs = new ArrayList<>();
     private int currentTryCount = 0;
-    private int isWin = -1;
+    private int isWin = -1; // -1 : partie en cours / 0 / Bleu a gagne / 1 : Rouge a gagne / 2 : lequipe qui joue a trouve le mot noir
     private transient Random random = new Random();
-    private Team[] teams = new Team[2];
+    private Team[] teams = new Team[2]; // 0 bleu, //1 pour rouge
     private List<String> themeWords;
+    private long startTime;
+    private int nbTour = 0;
+    private GameStat gameStat;
 
     public Game(GameConfiguration gConfig) {
         this.gConfig = gConfig;
 
         switch (gConfig.getGameMode()) {
             case 0:                     // Words Game Mode
-                this.themeWords = loadThemeWords(gConfig.getTheme());
+                this.themeWords = loadThemeWords(gConfig.getWordTheme());
                 this.grid = new Grid(gConfig.getGridSize(), themeWords, 0);
                 setUpGame();
-                grid.printGrid();
                 break;
             case 1:                     // Picture Game Mode
-                this.grid = new Grid(gConfig.getGridSize(), null, 1);
+            this.themeWords = loadThemeWords(gConfig.getPictTheme());
+            this.grid = new Grid(gConfig.getGridSize(), themeWords, 1);
                 setUpGame();
-                grid.printGrid();
+                break;
+            case 2:                     // Solo Game Mode
+                this.themeWords = loadThemeWords(gConfig.getWordTheme());
+                this.grid = new Grid(gConfig.getGridSize(), themeWords, 2);
                 break;
             default:
                 break;
         }
+
     }
 
     private List<String> loadThemeWords(String themeName) {
-        List<Theme> themes = ThemeLoader.loadThemes();
+        List<Theme> themes = ThemeLoader.loadThemes(gConfig.getGameMode());
         for (Theme theme : themes) {
             if (theme.getName().equals(themeName)) {
                 return theme.getWords();
@@ -67,7 +79,11 @@ public class Game implements Serializable {
     public void setCurrentNumberWord(int currentNumberWord) {this.currentNumberWord = currentNumberWord;}
     public Team getBlueTeam(){return teams[0];}
     public Team getRedTeam(){return teams[1];}
+    public void setStartTime(long startTime) {this.startTime = startTime;}
+    public int getNbTour(){return nbTour;}
+    public void setNbTour(int nbTour) {this.nbTour = nbTour;}
 
+    public void increaseNbTour(){nbTour++;}
     public void ajouterObservateur(Observer o) {
         this.obs.add(o) ;
     }
@@ -79,6 +95,7 @@ public class Game implements Serializable {
             o.reagir();
         }
     }
+    public Team getTeam(int id){return teams[id];}
     public int isTurnBegin() {return turnStep;}
     public void setTurnBegin(int turnBegin) {this.turnStep = turnBegin;}
     public int getCurrentTryCount() {return currentTryCount;}
@@ -96,6 +113,7 @@ public class Game implements Serializable {
     public void setUpGame(){
         turn = random.nextInt(2);
         grid.initGrid(turn);
+        grid.printGrid();
         teams[0] = new Team("Equipe Bleue",gConfig.getMaxTeamMember(),this,0);
         teams[1] = new Team("Equipe Rouge",gConfig.getMaxTeamMember(),this,1);
     }
@@ -112,6 +130,9 @@ public class Game implements Serializable {
     public int isWinning(){
         boolean blueWinner = true;
         boolean redWinner = true;
+        if (getgConfig().getGameMode() == 2){
+            redWinner = false;
+        }
         for (int row = 0; row < grid.getGrid().length; row++) {
             for (int col = 0; col < grid.getGrid()[row].length; col++) {
                 Card currentCard = grid.getCard(row, col);
@@ -160,5 +181,99 @@ public class Game implements Serializable {
     public GameConfiguration getGameConfiguration() {
         return this.gConfig;
     }
+
+    public int addPlayer(int teamId,Player player) throws IOException, ClassNotFoundException {
+        boolean alreadyExists = false;
+        ArrayList<Player> playerList = gConfig.getPlayerList();
+        if (playerList == null){
+            playerList = new ArrayList<>();
+        }
+        for (Player p : playerList){
+            if (p.getName().equals(player.getName())){
+                alreadyExists = true;
+                player = p;
+                break;
+            }
+        }
+        if (!alreadyExists){
+            gConfig.addPlayer(player);
+            StatLoader.addPlayer(player);
+        }
+        int added = teams[teamId].addPlayer(player);
+        return added;
+    }
+
+    public void updateStat() throws IOException {
+        for (Player p : teams[0].getPlayers()){
+            PlayerStat stat = p.getStat();
+            stat.setPartiesJouees(stat.getPartiesJouees() + 1);
+            if (isWin == 0 || (isWin == 2 && turn == 1)){stat.setVictoires(stat.getVictoires() + 1);}
+            else{stat.setDefaites(stat.getDefaites() + 1);}
+            if (p.getIsSpy()){stat.setNbPartieJoueEspion(stat.getNbPartieJoueEspion() + 1);}
+            stat.setRatioVictoiresDefaites((double) stat.getVictoires() / stat.getPartiesJouees());
+        }
+        for (Player p : teams[1].getPlayers()){
+            PlayerStat stat = p.getStat();
+            stat.setPartiesJouees(stat.getPartiesJouees() + 1);
+            if (isWin == 1|| (isWin == 2 && turn == 0)){stat.setVictoires(stat.getVictoires() + 1);}
+            else{stat.setDefaites(stat.getDefaites() + 1);}
+            if (p.getIsSpy()){stat.setNbPartieJoueEspion(stat.getNbPartieJoueEspion() + 1);}
+            stat.setRatioVictoiresDefaites((double) stat.getVictoires() / stat.getPartiesJouees());
+        }
+        StatLoader.overwritePlayerList(gConfig.getPlayerList());
+    }
+
+    public void updateGameStat(){
+        if (isWin == 2){
+            gameStat.setEquipeGagnante(Math.abs(1-turn));
+        }
+        else{
+            gameStat.setEquipeGagnante(isWin);
+        }
+        gameStat.setDuree(System.currentTimeMillis()-startTime);
+        gameStat.setNombreDeTours(nbTour);
+        switch (gConfig.getGameMode()){
+            case 0:
+                gameStat.setTheme(gConfig.getWordTheme());
+                break;
+            case 1:
+                gameStat.setTheme(gConfig.getPictTheme());
+                break;
+            default:
+                gameStat.setTheme("None");
+                break;
+        }
+    }
+
+    public void setUpSoloGame(Player player){
+        grid.initGrid(-2);
+        grid.printGrid();
+        startTime = System.currentTimeMillis();
+        teams[0] = new Team("Equipe Bleue",2,this,0);
+        teams[1] = new Team("Equipe Rouge",0,this,1);
+        teams[0].addPlayer(player);
+        if (player.getIsSpy()){
+            teams[0].addPlayer(new AIAgent(0));
+        }
+        else{
+            teams[0].addPlayer(new AISpy(0));
+            spyAIPlay();
+            increaseNbTour();
+        }
+    }
+    public void spyAIPlay(){
+        System.out.println("spyAIPlay");
+        try {
+            Hint hint = ((AISpy) this.getBlueTeam().getPlayers().get(1)).generateHint(this.getGrid());
+            this.setCurrentHint(hint.getWord());
+            this.setCurrentNumberWord(hint.getCount());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        this.setTurnBegin(2);
+    }
+
+
+    public long getStartTime() {return startTime;}
 
 }

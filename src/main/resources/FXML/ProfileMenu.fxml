@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import java.net.URL?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="linguacrypt.view.ProfileMenuView">
+    <stylesheets>
+        <URL value="@statCss.css" />
+    </stylesheets>
+    <top>
+        <VBox alignment="CENTER" spacing="10" >
+            <Label text="Sélectionnez un joueur" styleClass="menu-subtitle" />
+            <ComboBox fx:id="comboBox" styleClass="stat-combobox" />
+        </VBox>
+    </top>
+    <center>
+        <VBox alignment="CENTER" spacing="10" styleClass="stat-menu">
+            <Label fx:id ="statTitle" text="Statistiques du Joueur" styleClass="menu-title" />
+            <GridPane hgap="20" vgap="10" alignment="CENTER" styleClass="stat-grid">
+                <Label text="Parties Jouées :" styleClass="stat-label" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                <Label fx:id="partiesJoueesLabel" styleClass="stat-value" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                <Label text="Victoires :" styleClass="stat-label" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                <Label fx:id="victoiresLabel" styleClass="stat-value" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                <Label text="Défaites :" styleClass="stat-label" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                <Label fx:id="defaitesLabel" styleClass="stat-value" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                <Label text="Ratio V/D :" styleClass="stat-label" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                <Label fx:id="ratioVDLabel" styleClass="stat-value" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+                <Label text="Temps Total (min) :" styleClass="stat-label" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                <Label fx:id="tempsTotalLabel" styleClass="stat-value" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+
+                <Label text="Rôle Préféré :" styleClass="stat-label" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+                <Label fx:id="rolePrefereLabel" styleClass="stat-value" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+            </GridPane>
+        </VBox>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER">
+            <Button text="Menu Principal" fx:id="MainMenuBtn"
+                    style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 1); -fx-pref-width: 200;"/>
+
+        </HBox>
+    </bottom>
+</BorderPane>

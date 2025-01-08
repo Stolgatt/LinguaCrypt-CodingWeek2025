@@ -6,6 +6,49 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [0.3.4] - 2025-01-08
+
+### Ajouté
+- **Fonctionnalités réseau pour le mode multijoueur** :
+  - Implémentation d’un serveur pour permettre d’héberger des parties multijoueurs avec la classe `Server`.
+  - Création de la classe `Client` pour gérer les connexions et interactions des joueurs.
+  - Synchronisation des listes de joueurs entre le serveur et les clients via des messages réseau (`MessageType.PLAYER_LIST`).
+  - Ajout de la gestion des messages de chat en temps réel dans `LobbyView`.
+  - Ajout d’une vue `MultiplayerMenuView` pour permettre de créer ou de rejoindre des parties multijoueurs.
+
+---
+
+## [0.3.3] - 2025-01-08
+
+### Ajouté
+- **Mode solo avec IA** :
+  - Création de la classe `AISpy` et `AIAgent` pour représenter un adversaire IA.
+  - Implémentation d’une logique de prise de décision dans l’IA pour simuler des comportements stratégiques.
+  - Intégration du mode solo dans le menu principal avec une option de sélection de niveau de difficulté.
+  - Mise à jour de `GameController` pour gérer les interactions entre le joueur et l’IA.
+
+---
+
+## [0.3.2] - 2025-01-08
+
+### Ajouté
+- **Gestion des thèmes avec le mode images** :
+  - Ajout d'une option pour les thèmes utilisant des images dans `ThemeLoader`.
+  - Mise à jour de `Grid` pour inclure des cartes contenant des images au lieu de texte.
+  - Ajout d’une interface utilisateur permettant de choisir un thème d’images ou de mots dans le menu principal.
+  - Intégration des URL d’images dans les fichiers de configuration des thèmes (`themes.json`).
+
+---
+
+## [0.3.1] - 2025-01-08
+
+### Ajouté
+- **Refonte des thèmes personnalisés et du Menu** :
+  - Mise à jour de `ThemeLoader` pour inclure des fonctionnalités avancées de gestion des thèmes.
+  - Ajout de validations supplémentaires pour les fichiers JSON des thèmes.
+  - Amélioration de l’interface utilisateur du menu pour permettre un choix plus fluide entre les différents mode.
+  - Possibilité d’intégrer des thèmes prédéfinis ou personnalisés dans le jeu.
+
 ## [0.2.6] - 2025-01-07
 
 ### Ajouté

@@ -3,6 +3,8 @@ package linguacrypt.view;
 import javafx.fxml.FXML;
 import linguacrypt.controller.MenuBarController;
 
+import java.io.IOException;
+
 public class MenuBarView {
     private MenuBarController controller;
 
@@ -21,7 +23,7 @@ public class MenuBarView {
     }
 
     @FXML
-    public void handleExit() {
+    public void handleExit() throws IOException {
         if (controller != null) {
             controller.exit();
         }

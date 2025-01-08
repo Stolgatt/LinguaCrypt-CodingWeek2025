@@ -14,6 +14,7 @@ import javafx.stage.FileChooser;
 import linguacrypt.model.Game;
 import linguacrypt.model.Player;
 import linguacrypt.model.Team;
+import linguacrypt.model.statistique.PlayerStat;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -25,6 +26,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
@@ -115,11 +117,10 @@ public class EditTeamView implements Observer {
                         "-fx-background-radius: 10;");
             }
 
-            playerCard.setSpacing(15);  // Espacement entre les éléments de la carte
-            HBox.setMargin(playerCard, new Insets(20));  // Marge autour de la carte
+            playerCard.setSpacing(15);
+            HBox.setMargin(playerCard, new Insets(20));
             playerCard.setAlignment(Pos.CENTER_LEFT);
 
-            // Ajouter la carte à la teamBox
             teamBox.getChildren().add(playerCard);
         }
     }
@@ -127,17 +128,14 @@ public class EditTeamView implements Observer {
     private HBox createPlayerCard(Player player) {
         HBox card = new HBox();
 
-
-        /*
-        ImageView imageAvatar = new ImageView(new Image(getClass().getResourceAsStream(player.getUrlAvatar())));
-        imageAvatar.setFitWidth(20);
-        imageAvatar.setFitHeight(20);
-        */
+        //playerName
         Label playerName = new Label(player.getName());
-        playerName.setStyle("-fx-font-size: 14; " +   // Taille de la police
-                "-fx-font-weight: bold; " +  // Texte en gras
-                "-fx-text-fill: #333333; " + // Couleur de texte (gris foncé)
+        playerName.setStyle("-fx-font-size: 14; " +
+                "-fx-font-weight: bold; " +
+                "-fx-text-fill: #333333; " +
                 "-fx-padding: 5 10 5 5;");
+
+        //Spy or Agent pic
         ImageView imageRole = new ImageView(new Image(getClass().getResourceAsStream("/image/agent.png")));
         if (player.getIsSpy()){
             imageRole = new ImageView(new Image(getClass().getResourceAsStream("/image/spy.png")));
@@ -145,7 +143,6 @@ public class EditTeamView implements Observer {
         imageRole.setFitWidth(20);
         imageRole.setFitHeight(20);
 
-        //card.getChildren().addAll(imageAvatar, playerName, imageRole);
         card.getChildren().addAll(playerName, imageRole);
         return card;
     }
@@ -159,42 +156,25 @@ public class EditTeamView implements Observer {
         grid.setVgap(10);
         grid.setAlignment(Pos.CENTER);
 
-        // Champ pour le nom du joueur
+        //Champ pour le nom
         TextField nameField = new TextField();
         nameField.setPromptText("Entrez le nom du joueur");
 
+        //Choix de l'équipe
         ToggleGroup teamGroup = new ToggleGroup();
-
         RadioButton blueTeamRadioButton = new RadioButton("Équipe Bleue");
         blueTeamRadioButton.setToggleGroup(teamGroup);
-        blueTeamRadioButton.setSelected(true); // Par défaut, équipe Bleue
-
+        blueTeamRadioButton.setSelected(true); // Default = Blue
         RadioButton redTeamRadioButton = new RadioButton("Équipe Rouge");
         redTeamRadioButton.setToggleGroup(teamGroup);
 
+        //Choix du rôle
         ToggleGroup roleGroup = new ToggleGroup();
-
         RadioButton spyRadioButton = new RadioButton("Rôle Espion");
         spyRadioButton.setToggleGroup(roleGroup);
-        spyRadioButton.setSelected(true); // Par défaut, rôle Espion
-
+        spyRadioButton.setSelected(true); // Default = Spy
         RadioButton agentRadioButton = new RadioButton("Rôle Agent");
         agentRadioButton.setToggleGroup(roleGroup);
-
-        FileChooser imageChooser = new FileChooser();
-        imageChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"));
-
-        /*
-        Button imageButton = new Button("Choisir une image");
-        AtomicReference<File> selectedImage = new AtomicReference<>();
-        imageButton.setOnAction(e -> {
-            File file = imageChooser.showOpenDialog(dialog.getOwner());
-            if (file != null) {
-                selectedImage.set(file);
-            }
-        });
-
-         */
 
         // Ajout des éléments dans le GridPane
         grid.add(new Label("Nom du joueur:"), 0, 0);
@@ -205,10 +185,10 @@ public class EditTeamView implements Observer {
         grid.add(new Label("Choisir un rôle:"), 0, 3);
         grid.add(spyRadioButton, 1, 3);
         grid.add(agentRadioButton, 1, 4);
-        //grid.add(imageButton, 1, 5);
 
         dialog.getDialogPane().setContent(grid);
 
+        //Bouton de Validation/Annulation
         ButtonType okButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
         ButtonType cancelButtonType = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);
         dialog.getDialogPane().getButtonTypes().addAll(okButtonType, cancelButtonType);
@@ -216,80 +196,96 @@ public class EditTeamView implements Observer {
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == okButtonType) {
                 String playerName = nameField.getText();
-                boolean isBlueTeam = blueTeamRadioButton.isSelected();
-                boolean isSpy = spyRadioButton.isSelected();
-                //File image = selectedImage.get();
-
+                //Verification si un joueur du meme nom appartient déjà à une équipe
+                boolean alreadyExists = false;
+                for (int i = 0; i<2; i++){
+                    Team team = game.getTeam(i);
+                    for (Player player : team.getPlayers()) {
+                        if (player.getName().equals(playerName)) {
+                            alreadyExists = true;
+                            break;
+                        }
+                    }
+                }
+                if (alreadyExists) {
+                    showError("Le joueur " + playerName + " a déjà était ajouté à une équipe");
+                    return null;
+                }
+                //Check si le nom est valide
                 if (playerName.trim().isEmpty()) {
                     showError("Le nom du joueur ne peut pas être vide.");
                     return null;
                 }
-                /*
-                if (image != null) {
-                    try {
-                        Path sourcePath = image.toPath();
-                        Path targetPath = Paths.get("src/main/resources/image/" + image.getName());
-                        Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
-                        int maxAttempts = 10;
-                        int attempts = 0;
-                        while (!Files.exists(targetPath) && attempts < maxAttempts) {
-                            attempts++;
-                            Thread.sleep(500); // Attente de 500 ms avant de réessayer
-                        }
+                //Recupere les autre Champs
+                boolean isBlueTeam = blueTeamRadioButton.isSelected();
+                boolean isSpy = spyRadioButton.isSelected();
 
-                        // Si après les tentatives, le fichier n'existe toujours pas, traiter l'erreur
-                        if (!Files.exists(targetPath)) {
-                            showError("Le fichier image n'a pas été correctement copié.");
-                            return null;
-                        }
-                        image = targetPath.toFile();
-                    } catch (IOException ex) {
-                        showError("Erreur lors de l'enregistrement de l'image.");
-                        return null;
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
+
+                ArrayList<Player> playerList = game.getgConfig().getPlayerList();
+                if (playerList == null){
+                    playerList = new ArrayList<>();
+                }
+                boolean find = false;
+                for (Player p : playerList){
+                    if (p.getName().equals(playerName)) {
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Profil existant");
+                        alert.setHeaderText("Le joueur existe déjà !");
+                        alert.setContentText("Un joueur portant ce nom existe déjà. Voulez-vous utiliser ce profil existant ?");
+
+                        ButtonType yesButton = new ButtonType("Oui", ButtonBar.ButtonData.YES);
+                        ButtonType noButton = new ButtonType("Non", ButtonBar.ButtonData.NO);
+                        alert.getButtonTypes().setAll(yesButton, noButton);
+
+                        alert.showAndWait().ifPresent(response -> {
+                            if (response == yesButton) {
+                                tryAddPlayer( isSpy,isBlueTeam, p);
+                            }
+                        });
+                        find = true;
+                        break;
                     }
-                } else {
-                    URL imageUrl = getClass().getResource("/image/default_pic.png");
-                    if (imageUrl != null) {
-                        try {
-                            image = new File(imageUrl.toURI());
-                        } catch (URISyntaxException e) {
-                            showError("Erreur lors de l'enregistrement de l'image.");
-                            return null;
-                        }
-                    } else {
-                        showError("Erreur lors de l'enregistrement de l'image.");
-                        return null;
-                    }
-                    System.out.println("Default pic choose");
                 }
-                assert image != null;
-                String imageUrl = "/image/" + image.getName();
-                */
-                if ( isSpy && ((isBlueTeam && game.getBlueTeam().checkIfHaveSpy()) || (!isBlueTeam && game.getRedTeam().checkIfHaveSpy()))) {
-                    showError("L'équipe a déjà un espion.");
-                    return null;
+                if (!find) {
+                    Player newPlayer = new Player(playerName,isSpy,"",new PlayerStat());
+                    tryAddPlayer(isSpy,isBlueTeam, newPlayer);
                 }
-                Player newPlayer = new Player(playerName,isSpy,"");
-                int added = 0;
-                if (isBlueTeam) {
-                    added = game.getBlueTeam().addPlayer(newPlayer);
-                }
-                else{
-                    added = game.getRedTeam().addPlayer(newPlayer);
-                }
-                if (added == -1){
-                    showError("L'équipe est déjà pleine.");
-                    return null;
-                }
-                game.notifierObservateurs();
             }
+            game.notifierObservateurs();
             return null;
         });
         dialog.showAndWait();
     }
 
+    public void tryAddPlayer(boolean isSpy,boolean isBlueTeam,Player newPlayer){
+        if ( isSpy && ((isBlueTeam && game.getBlueTeam().checkIfHaveSpy()) || (!isBlueTeam && game.getRedTeam().checkIfHaveSpy()))) {
+            showError("L'équipe a déjà un espion.");
+            return;
+        }
+        newPlayer.setRole(isSpy);
+        int added = 0;
+        if (isBlueTeam) {
+            try {
+                added = game.addPlayer(0,newPlayer);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        else{
+            try {
+                added = game.addPlayer(1,newPlayer);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        if (added == -1){
+            showError("L'équipe est déjà pleine.");
+        }
+    }
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur");

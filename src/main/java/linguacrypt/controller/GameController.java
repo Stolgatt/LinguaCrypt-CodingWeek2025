@@ -33,6 +33,7 @@ public class GameController {
         int currentTurn = game.getTurn();
         game.setTurn((currentTurn + 1) % 2);
         game.setTurnBegin(0);
+        game.setNbTour(game.getNbTour() + 1);
         game.notifierObservateurs();
     }
 

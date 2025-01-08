@@ -41,7 +41,16 @@ public class GameUtils {
             config.setDifficultyLevel(loadedConfig.getDifficultyLevel());
             config.setMaxTeamMember(loadedConfig.getMaxTeamMember());
             config.setGridSize(loadedConfig.getGridSize());
-            config.setTheme(loadedConfig.getTheme());
+            switch (loadedConfig.getGameMode()) {
+                case 0:
+                    config.setWordTheme(loadedConfig.getWordTheme());
+                    break;
+                case 1:
+                    config.setPictTheme(loadedConfig.getPictTheme());
+                    break;
+                default:
+                    break;
+            }
             config.setNbPlayer(loadedConfig.getNbPlayer());
             config.setTimeTurn(loadedConfig.getTimeTurn());
             

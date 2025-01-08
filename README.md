@@ -71,7 +71,7 @@ LinguaCrypt est un jeu au tour par tour opposant deux équipes : Bleu et Rouge. 
 4. Sauvegarder ou charger une partie à partir de la barre de menu.
 5. Donnez des indices en tant que maitre espion en cliquant sur le bouton approprié.
 6. Cliquez sur les cartes pour révéler leurs couleurs.
-7. Depusi le menu principale vous pouvez modifié les thématiques (en ajouter ou ajouter des mots aux thèmes existants).
+7. Depusi le menu principale vous pouvez modifier les thématiques (en ajouter ou ajouter des mots aux thèmes existants).
 
 ## Documentation technique
 ### Vision globale de l'application
