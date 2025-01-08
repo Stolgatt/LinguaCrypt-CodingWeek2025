@@ -26,7 +26,7 @@ public class Game implements Serializable {
     private int currentTryCount = 0;
     private int isWin = -1; // -1 : partie en cours / 0 / Bleu a gagne / 1 : Rouge a gagne / 2 : lequipe qui joue a trouve le mot noir
     private transient Random random = new Random();
-    private Team[] teams = new Team[2];
+    private Team[] teams = new Team[2]; // 0 bleu, //1 pour rouge
     private List<String> themeWords;
     private long startTime;
     private int nbTour = 0;
