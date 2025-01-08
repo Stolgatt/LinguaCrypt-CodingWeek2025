@@ -47,11 +47,11 @@ Toutes les tâches prévues pour le jour 1 ont été complétées avec succès. 
 |------------------------------------------------|-----------------|----------------|--------------|-----------------------|
 | Ajouter les thèmes de mots                     | Baptiste         | 3/5            | 🟢 Complété  | `Backend`, `jour 2`   |
 | Ajouter une interface pour sélectionner les thèmes | Aymeric      | 3/5            | 🟢 Complété  | `UI`, `jour 2`        |
-| Supporter les cartes avec des images           | Alexis        | 4/5            | 🟠 En cours  | `Backend`, `jour 2`   |
+| Supporter les cartes avec des images           | Alexis        | 4/5            | 🟢 Complété | `Backend`, `jour 2`   |
 | Ajouter un compte à rebours pour les tours     | Alexis        | 4/5            | 🟢 Complété  | `UI`, `jour 2`        |
 | Ajouter une interface pour éditer/ajouter des thèmes | Aymeric     | 3/5            | 🟢 Complété  | `UI`, `jour 2`        |
 | Sauvegarder et charger les thèmes personnalisés| Aymeric          | 3/5            | 🟢 Complété  | `Backend`, `jour 2`   |
-| Ajouter un tableau de statistique des joueurs           | Baptiste        | 3/5            | 🟠 En cours  | `Backend`, `jour 2`   |
+| Ajouter un tableau de statistique des joueurs           | Baptiste        | 3/5            | 🟢 Complété  | `Backend`, `jour 2`   |
 
 
 **Résumé :**
@@ -64,15 +64,14 @@ La fonctionalité de statistique est en cours
 
 | **Tâche**                                      | **Responsable** | **Difficulté** | **Statut**   | **Tags**              |
 |------------------------------------------------|-----------------|----------------|--------------|-----------------------|
-| Implémenter la logique du mode solo            | Baptiste         | 4/5            | 🔴 Non commencé | `Backend`, `jour 3`   |
-| Ajouter une interface pour le mode solo        | Aymeric         | 3/5            | 🔴 Non commencé | `UI`, `jour 3`        |
-| Implémenter la logique du mode duo             | Baptiste        | 4/5            | 🔴 Non commencé | `Backend`, `jour 3`   |
-| Ajouter une interface pour le mode duo         | Aymeric        | 3/5            | 🔴 Non commencé | `UI`, `jour 3`        |
-| Ajouter des indices préprogrammés pour le mode solo | Alexis       | 4/5            | 🔴 Non commencé | `Backend`, `jour 3`   |
-| Améliorer l'interface de sélection des indices | Alexis          | 3/5            | 🔴 Non commencé | `UI`, `jour 3`        |
+| Implémenter la logique du mode solo            | Baptiste         | 4/5            | 🟢 Complété | `Backend`, `jour 3`   |
+| Ajouter une interface pour le mode solo        | Baptiste         | 3/5            | 🟢 Complété | `UI`, `jour 3`        |
+| Implémenter un système de client-serveur pour le multijoueur   | Aymeric        | 5/5            | 🟢 Complété | `Backend`, `jour 3`   |
+| Ajouter un système lobby pour le multijoueur         | Aymeric        | 5/5            | 🟢 Complété | `UI`, `jour 3`        |
+| Ajouter le support des thème pour les cartes images | Alexis       | 4/5            | 🟢 Complété | `Backend`, `jour 3`   |
 
 **Résumé :**
-Les tâches du jour 3 se concentreront sur les nouveaux modes de jeu (Solo et Duo), avec des interfaces et des logiques dédiées.
+Les tâches du jour 3 ont été revue le matin. Nous avons décidé d'implémenter directement l'IA pour le mode Solo plutôt que de d'abord passé par des indices préprogrammé. Aussi nous avons décidé de commencer l'implémentation du mode multijoueur étant donnée que celui-ci nous a parue long et qu'il nous faudrait plus que 1 jour pour la réalisé
 
 ---
 
@@ -80,15 +79,15 @@ Les tâches du jour 3 se concentreront sur les nouveaux modes de jeu (Solo et Du
 
 | **Tâche**                                      | **Responsable** | **Difficulté** | **Statut**   | **Tags**              |
 |------------------------------------------------|-----------------|----------------|--------------|-----------------------|
-| Implémenter une IA pour le maître-espion       | Baptiste         | 5/5            | 🔴 Non commencé | `Backend`, `jour 4`   |
-| Implémenter une IA pour les joueurs            | Baptiste         | 4/5            | 🔴 Non commencé | `Backend`, `jour 4`   |
-| Ajouter une fonctionnalité multijoueur en réseau | Aymeric       | 5/5            | 🔴 Non commencé | `Backend`, `jour 4`   |
-| Ajouter une interface pour le multijoueur      | Aymeric        | 4/5            | 🔴 Non commencé | `UI`, `jour 4`        |
-| Synchroniser les données du jeu en multijoueur | Alexis          | 5/5            | 🔴 Non commencé | `Backend`, `jour 4`   |
-| Gérer les erreurs réseau                       | Alexis          | 4/5            | 🔴 Non commencé | `Backend`, `jour 4`   |
+| Améliorer l'IA pour le maître-espion       | Baptiste         | 5/5            | 🔴 Non commencé | `Backend`, `jour 4`   |
+| Créer une logique pour le mode duo            | Baptiste         | 4/5            | 🔴 Non commencé | `Backend`, `jour 4`   |
+| Synchroniser les données du jeu en multijoueur | Aymeric       | 5/5            | 🔴 Non commencé | `Backend`, `jour 4`   |
+| Ajouter une interface de jeu pour le multijoueur      | Aymeric        | 4/5            | 🔴 Non commencé | `UI`, `jour 4`        |
+| Adapter le mode image pour le mode multijoueur | Alexis          | 5/5            | 🔴 Non commencé | `Backend`, `jour 4`   |
+| Ajouter une interface pour le mode duo                      | Alexis          | 4/5            | 🔴 Non commencé | `Backend`, `jour 4`   |
 
 **Résumé :**
-Le jalon 4 inclut l'ajout de l'IA et des fonctionnalités réseau pour jouer en multijoueur.
+Le jalon 4 inclut l'amélioration de l'IA et des fonctionnalités réseau pour jouer en multijoueur et l'ajout du mode duo.
 
 ---
 
@@ -109,6 +108,6 @@ Le dernier jalon inclut la finalisation, les tests, la correction des bugs, et l
 ---
 
 ## **Progrès global**
-- **Tâches complétées** : 11
-- **Tâches en cours** : 1 En cours
-- **Tâches restantes** : 18
+- **Tâches complétées** : 18
+- **Tâches en cours** : 0 En cours
+- **Tâches restantes** : 30

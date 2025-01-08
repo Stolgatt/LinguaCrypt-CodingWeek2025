@@ -143,7 +143,7 @@ public class ApplicationContext {
         multiplayerMenuView = mpMenuloader.getController();
 
         // Load Lobby components
-        FXMLLoader lobbyLoader = new FXMLLoader(getClass().getResource("/FXML/Lobby.fxml"));
+        FXMLLoader lobbyLoader = new FXMLLoader(getClass().getResource("/FXML/lobby.fxml"));
         lobbyNode = lobbyLoader.load();
         lobbyView = lobbyLoader.getController();
 
