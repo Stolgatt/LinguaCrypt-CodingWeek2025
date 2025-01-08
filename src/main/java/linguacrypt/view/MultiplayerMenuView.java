@@ -46,7 +46,7 @@ public class MultiplayerMenuView {
         comboBoxTeam.getSelectionModel().selectFirst();
 
         // Load themes
-        List<Theme> themes = ThemeLoader.loadThemes();
+        List<Theme> themes = ThemeLoader.loadThemes(0);
         for (Theme theme : themes) {
             comboBoxTheme.getItems().add(theme.getName());
         }
@@ -143,7 +143,7 @@ public class MultiplayerMenuView {
         config.setMaxTeamMember(teamSize);
         config.setGridSize(gridSize);
         config.setTimeTurn(timer);
-        config.setTheme(selectedTheme);
+        config.setWordTheme(selectedTheme);
 
         // Create a new game instance
         context.setGame(new Game(config));
