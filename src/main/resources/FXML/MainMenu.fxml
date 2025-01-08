@@ -40,8 +40,12 @@
             <VBox fx:id="mainMenuBox" spacing="20" alignment="CENTER" visible="false">
                 <!-- StackPane to manage Play/Host/Join Buttons -->
                 <StackPane fx:id="playModeButtons" alignment="CENTER">
+                <VBox fx:id="localButtons" visible="true" spacing="20" alignment="CENTER">
                     <Button text="Play" fx:id="playButton"
                             style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-pref-width: 200;" />
+                    <Button text="Play Solo" fx:id="createSoloGameButton"
+                            style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 1); -fx-pref-width: 200;"/>
+                    </VBox>
                     <VBox fx:id="multiButtons" visible="false" spacing="20" alignment="CENTER">
                         <Button text="Host" fx:id="hostButton" visible="true"
                             style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-pref-width: 200;" />

@@ -7,6 +7,7 @@ import linguacrypt.model.GameConfiguration;
 import linguacrypt.view.GameConfigurationDialog;
 import linguacrypt.view.MainMenuView;
 import linguacrypt.view.PictGameConfigurationDialog;
+import linguacrypt.view.SoloModeConfigurationDialog;
 
 public class MainMenuController {
 
@@ -39,7 +40,13 @@ public class MainMenuController {
                                 context.getRoot().setCenter(context.getEditTeamNode());
                             }
                             break;
-                        default:
+                        case 2:                                 // Solo Game Mode
+                    SoloModeConfigurationDialog soloDialog = new SoloModeConfigurationDialog();
+                    if (soloDialog.showSoloGameConfigurationDialog()) {
+                        context.getRoot().setCenter(context.getSoloGameNode());
+                    }
+                    break;
+                default:
                             config.setGameMode(0);
                             break;
                     }
