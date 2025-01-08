@@ -17,6 +17,15 @@ public class Grid implements Serializable {
     private int size;
     private Card[][] grid;
     private transient Random random = new Random();
+
+    public ArrayList<String> getGridWords() {
+        return gridWords;
+    }
+
+    public void setGridWords(ArrayList<String> gridWords) {
+        this.gridWords = gridWords;
+    }
+
     private ArrayList<String> gridWords;
     private List<String> themeWords;
     private int gameMode;
@@ -26,11 +35,7 @@ public class Grid implements Serializable {
         this.grid = new Card[size][size];
         this.gridWords = new ArrayList<>();
         this.gameMode = gameMode;
-        if (gameMode == 0) {
-            this.themeWords = themeWords;
-        } else {
-            this.themeWords = null;
-        }
+        this.themeWords = themeWords;
     }
 
     public void initGrid(int turn) {
@@ -41,13 +46,21 @@ public class Grid implements Serializable {
         int black = 0;
 
         int nbCard = size * size;
-        int maxBlue = nbCard / 3 + 1 - turn;
-        int maxRed = nbCard / 3 + turn;
+        int maxBlue;
+        int maxRed;
+        if (turn!=-2){
+            maxRed= nbCard / 3 + turn;
+            maxBlue = nbCard / 3 + 1 - turn;
+        }
+        else{
+            maxRed= 0;
+            maxBlue = nbCard / 3 + 1;
+        }
         int maxWhite = nbCard - maxBlue - maxRed - 1;
 
         System.out.println(nbCard + " " + maxBlue + " " + maxRed + " " + maxWhite + " turn: " + turn);
 
-        if (gameMode == 0 && (themeWords == null || themeWords.isEmpty())) {
+        if ((gameMode == 0 || gameMode==2) && (themeWords == null || themeWords.isEmpty())) {
             throw new IllegalArgumentException("Theme words list is empty. Cannot initialize grid.");
         }
 
@@ -55,17 +68,16 @@ public class Grid implements Serializable {
             for (int j = 0; j < size; j++) {
                 String randomWord = null;
                 String randomImage = null;
-                if (gameMode == 0) {
+                if (gameMode == 0 || gameMode == 2) {
                     randomWord = themeWords.get(random.nextInt(themeWords.size()));
                     while (gridWords.contains(randomWord)) {
                         randomWord = themeWords.get(random.nextInt(themeWords.size()));
                     }
                     gridWords.add(randomWord);
                 } else if (gameMode == 1) {
-                    List<String> themePictures = loadPicturesFromFile("pictures/picturesPath.txt");
-                    randomImage = themePictures.get(random.nextInt(themePictures.size()));
+                    randomImage = themeWords.get(random.nextInt(themeWords.size()));
                     while (gridWords.contains(randomImage)){
-                        randomImage = themePictures.get(random.nextInt(themePictures.size()));
+                        randomImage = themeWords.get(random.nextInt(themeWords.size()));
                     }
                     gridWords.add(randomImage);
                 }
@@ -103,7 +115,7 @@ public class Grid implements Serializable {
     public void printGrid() {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                if (gameMode == 0) {
+                if (gameMode == 0 || gameMode == 2) {
                     System.out.print(grid[i][j].getWord() + " (" + grid[i][j].getCouleur() + ")" );
                 } else {
                     System.out.print(grid[i][j].getUrlImage() + " (" + grid[i][j].getCouleur() + ")" );
@@ -135,23 +147,27 @@ public class Grid implements Serializable {
         }
     }
 
-    private List<String> loadPicturesFromFile(String filePath) {
-        List<String> pictures = new ArrayList<>();   
-        try {
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(filePath);
-            if (inputStream == null) {
-                throw new FileNotFoundException(filePath + " not found!");
+    public List<String> getRemainingWordsForTeam(int teamID){
+        List<String> remainingWords = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (!grid[i][j].isSelected() && teamID + 1 ==grid[i][j].getCouleur()) {
+                    remainingWords.add(grid[i][j].getWord());
+                }
             }
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                pictures.add(line);
-            }
-            reader.close();
-        } catch(IOException e) {
-            e.printStackTrace();
-            System.err.println(filePath + " not found!");
         }
-        return pictures;
+        return remainingWords;
     }
+    public List<String> getRemainingWords(){
+        List<String> remainingWords = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (!grid[i][j].isSelected()){
+                    remainingWords.add(grid[i][j].getWord());
+                }
+            }
+        }
+        return remainingWords;
+    }
+
 }

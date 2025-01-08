@@ -6,6 +6,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import linguacrypt.model.GameConfiguration;
 import linguacrypt.model.Theme;
 import linguacrypt.utils.ThemeLoader;
 
@@ -17,7 +18,7 @@ public class CustomThemeDialog {
     private TextArea wordsTextArea;
     private ComboBox<String> existingThemesComboBox;
 
-    public CustomThemeDialog() {
+    public CustomThemeDialog() {        
         Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.setTitle("Add Custom Theme");
@@ -57,7 +58,7 @@ public class CustomThemeDialog {
 
     private void loadExistingThemes() {
         existingThemesComboBox.getItems().clear();
-        List<Theme> themes = ThemeLoader.loadThemes();
+        List<Theme> themes = ThemeLoader.loadThemes(GameConfiguration.getInstance().getGameMode());
         for (Theme theme : themes) {
             existingThemesComboBox.getItems().add(theme.getName());
         }
@@ -66,7 +67,7 @@ public class CustomThemeDialog {
     private void loadWordsForSelectedTheme() {
         String selectedTheme = existingThemesComboBox.getValue();
         if (selectedTheme != null) {
-            Theme theme = ThemeLoader.getThemeByName(selectedTheme);
+            Theme theme = ThemeLoader.getThemeByName(selectedTheme, GameConfiguration.getInstance().getGameMode());
             if (theme != null) {
                 // Load existing words into the text area
                 wordsTextArea.setText(String.join(", ", theme.getWords()));
@@ -91,10 +92,10 @@ public class CustomThemeDialog {
             Theme newTheme = new Theme();
             newTheme.setName(newThemeName);
             newTheme.setWords(List.of(words.split(",")));
-            ThemeLoader.addTheme(newTheme);
+            ThemeLoader.addTheme(newTheme, GameConfiguration.getInstance().getGameMode());
         } else if (selectedTheme != null) {
             // Modify existing theme
-            Theme existingTheme = ThemeLoader.getThemeByName(selectedTheme);
+            Theme existingTheme = ThemeLoader.getThemeByName(selectedTheme, GameConfiguration.getInstance().getGameMode());
             List<String> existingWords = existingTheme.getWords();
 
             // Create a new list for updated words
@@ -114,7 +115,7 @@ public class CustomThemeDialog {
             existingWords.addAll(updatedWords); // Add the updated words
 
             existingTheme.setWords(existingWords);
-            ThemeLoader.updateTheme(existingTheme);
+            ThemeLoader.updateTheme(existingTheme, GameConfiguration.getInstance().getGameMode());
         }
 
         // Reload the themes to reflect the changes

@@ -5,16 +5,21 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.control.Alert.AlertType;
 import javafx.geometry.Insets;
 
+import java.util.List;
 import java.util.Optional;
 
 import javafx.application.Platform;
 import linguacrypt.model.GameConfiguration;
+import linguacrypt.model.Theme;
+import linguacrypt.utils.ThemeLoader;
 
 /**
  * This class provides a dialog box for configuring game settings.
  * Users can customize parameters such as grid size, number of players, max team members, and time per turn.
  */
 public class PictGameConfigurationDialog {
+
+    private ComboBox<String> themeComboBox;
 
     /**
      * Displays a dialog box to configure game settings.
@@ -47,6 +52,19 @@ public class PictGameConfigurationDialog {
             grid.add(gridSizeField, 1, 2);
             grid.add(new Label("Time per Turn (s) [-1 for infinite]:"), 0, 3);
             grid.add(timeTurnField, 1, 3);
+
+            // Create a ComboBox for themes
+            themeComboBox = new ComboBox<>();
+            List<Theme> themes = ThemeLoader.loadThemes(1);
+            for (Theme theme : themes) {
+                themeComboBox.getItems().add(theme.getName());
+                themeComboBox.getSelectionModel().selectFirst();
+            }
+
+            // Add ComboBox to the dialog layout
+            grid.add(new Label("Select Theme:"), 0, 5);
+            grid.add(themeComboBox, 1, 4);
+
 
             // Create a dialog box for input
             Dialog<ButtonType> dialog = new Dialog<>();
@@ -112,5 +130,10 @@ public class PictGameConfigurationDialog {
             }
         }
         return true;
+    }
+
+    // After user confirms, set the selected theme in the configuration
+    public String getSelectedTheme() {
+        return themeComboBox.getValue();
     }
 }

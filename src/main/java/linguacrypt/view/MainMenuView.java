@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import linguacrypt.model.GameConfiguration;
 import linguacrypt.ApplicationContext;
 
 public class MainMenuView {
@@ -60,6 +61,8 @@ public class MainMenuView {
     private Button customThemeButton;
 
     @FXML
+    private Button createSoloGameButton;
+    @FXML
     private Button exitButton;
 
     @FXML
@@ -82,6 +85,12 @@ public class MainMenuView {
         wordGameButton.setOnAction(e -> selectGameMode(0));
         pictGameButton.setOnAction(e -> selectGameMode(1));
 
+
+        
+        createSoloGameButton.setOnAction(e -> {
+            GameConfiguration.getInstance().setGameMode(2);         // Solo Game Mode
+            onPlayGame.run();});
+
         // Main Menu Buttons
         playButton.setOnAction(e -> onPlayGame.run());
         profileMenuButton.setOnAction(e -> onProfileMenu.run());
@@ -90,6 +99,7 @@ public class MainMenuView {
         // Back Button
         backToGameModeButton.setOnAction(this::handleBackToGameModeButton);
         backToNetworkModeButton.setOnAction(this::handleBackToNetworkModeButton);
+
     }
 
     public void setOnPlayGame(Runnable onPlayGame) {
@@ -113,6 +123,7 @@ public class MainMenuView {
 
         // Update buttons based on network mode
         playButton.setVisible(!isMultiplayer);
+        createSoloGameButton.setVisible(!isMultiplayer);
         multiButtons.setVisible(isMultiplayer);
         hostButton.setVisible(isMultiplayer);
         joinButton.setVisible(isMultiplayer);

@@ -59,8 +59,6 @@ public class GameView implements Observer {
             btnGuess.setVisible(false);
             if (OnGiveHint != null) OnGiveHint.run();
         });
-
-
     }
 
     public void setTimer(){
@@ -133,7 +131,7 @@ public class GameView implements Observer {
                 Card card = grid.getCard(row, col);
     
                 // Créer une image à partir de l'URL stockée dans la carte
-                Image image = new Image(card.getUrlImage());
+                Image image = new Image("pictures/"+card.getUrlImage());  
                 ImageView imageView = new ImageView(image);
     
                 // Configurer la taille de l'image
@@ -172,6 +170,7 @@ public class GameView implements Observer {
     }
 
     public void reagir() {
+        if (game.getgConfig().getGameMode() == 2){return;}
         if(timerController != null){
 
             timerController.updateLabel();

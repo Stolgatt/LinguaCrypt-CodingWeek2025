@@ -8,10 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import linguacrypt.controller.EditTeamController;
-import linguacrypt.controller.GameController;
-import linguacrypt.controller.MainMenuController;
-import linguacrypt.controller.ProfileMenuController;
+import linguacrypt.controller.*;
 import linguacrypt.model.Game;
 import linguacrypt.networking.Client;
 import linguacrypt.networking.Server;
@@ -21,6 +18,7 @@ import linguacrypt.view.LobbyView;
 import linguacrypt.view.MainMenuView;
 import linguacrypt.view.MultiplayerMenuView;
 import linguacrypt.view.ProfileMenuView;
+import linguacrypt.view.*;
 
 public class ApplicationContext {
 
@@ -42,11 +40,13 @@ public class ApplicationContext {
     private Node GameNode;
     private Node ProfileMenuNode;
     private Node multplayerMenuNode;
+    private Node SoloGameNode;
     /** Références aux contrôleurs. */
     private MainMenuController mainMenuController;
     private EditTeamController editTeamController;
     private GameController gameController;
     private ProfileMenuController profileMenuController;
+    private SoloGameController soloGameController;
 
     /** Vues. */
     private MainMenuView mainMenuView;
@@ -57,6 +57,7 @@ public class ApplicationContext {
 
         private Node lobbyNode;
     private LobbyView lobbyView;
+    private SoloGameView soloGameView;
 
     /** Modèles */
     private Game game;
@@ -126,6 +127,11 @@ public class ApplicationContext {
         GameNode = gameLoader.load();
         gameView = gameLoader.getController();
         gameController = new GameController(game, gameView);
+        //Load SoloGameView components
+        FXMLLoader soloGameLoader = new FXMLLoader(getClass().getResource("/FXML/SoloGame.fxml"));
+        SoloGameNode = soloGameLoader.load();
+        soloGameView = soloGameLoader.getController();
+        soloGameController = new SoloGameController(game, soloGameView);
 
         FXMLLoader profileMenuLoader = new FXMLLoader(getClass().getResource("/FXML/ProfileMenu.fxml"));
         ProfileMenuNode = profileMenuLoader.load();
@@ -188,6 +194,7 @@ public class ApplicationContext {
     public Node getMainMenuNode() {
         return MainMenuNode;
     }
+    public Node getSoloGameNode(){return SoloGameNode;}
 
     public Node getGameNode() {
         return GameNode;
