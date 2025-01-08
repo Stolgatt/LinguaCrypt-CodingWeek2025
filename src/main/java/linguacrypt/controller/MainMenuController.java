@@ -20,6 +20,13 @@ public class MainMenuController {
         this.view = menuView;
         view.setOnCreateGame(this::handleCreateGame);
         view.setOnAddCustomTheme(this::handleAddCustomTheme);
+        view.setOnProfileMenu(this::handleProfileMenu);
+    }
+
+    private void handleProfileMenu(ActionEvent event) {
+        context.getRoot().setCenter(context.getProfileMenuNode());
+
+
     }
 
     public void handleCreateGame(ActionEvent event) {

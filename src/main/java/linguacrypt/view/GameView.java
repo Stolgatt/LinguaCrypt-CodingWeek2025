@@ -18,6 +18,7 @@ import linguacrypt.model.Grid;
 import linguacrypt.model.Game;
 import linguacrypt.controller.MenuBarController;
 
+import java.io.IOException;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -170,7 +171,7 @@ public class GameView implements Observer {
         this.onCardClicked = onCardClicked;
     }
 
-    public void reagir(){
+    public void reagir() {
         if(timerController != null){
 
             timerController.updateLabel();

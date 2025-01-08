@@ -11,10 +11,12 @@ import javafx.stage.Stage;
 import linguacrypt.controller.EditTeamController;
 import linguacrypt.controller.GameController;
 import linguacrypt.controller.MainMenuController;
+import linguacrypt.controller.ProfileMenuController;
 import linguacrypt.model.Game;
 import linguacrypt.view.EditTeamView;
 import linguacrypt.view.GameView;
 import linguacrypt.view.MainMenuView;
+import linguacrypt.view.ProfileMenuView;
 
 public class ApplicationContext {
 
@@ -31,16 +33,18 @@ public class ApplicationContext {
     private Node editTeamNode;
     private Node MainMenuNode;
     private Node GameNode;
-
+    private Node ProfileMenuNode;
     /** Références aux contrôleurs. */
     private MainMenuController mainMenuController;
     private EditTeamController editTeamController;
     private GameController gameController;
+    private ProfileMenuController profileMenuController;
 
     /** Vues. */
     private MainMenuView mainMenuView;
     private EditTeamView editTeamView;
     private GameView gameView;
+    private ProfileMenuView profileMenuView;
 
     /** Modèles */
     private Game game;
@@ -110,7 +114,12 @@ public class ApplicationContext {
         GameNode = gameLoader.load();
         gameView = gameLoader.getController();
         gameController = new GameController(game, gameView);
-            
+
+        FXMLLoader profileMenuLoader = new FXMLLoader(getClass().getResource("/FXML/ProfileMenu.fxml"));
+        ProfileMenuNode = profileMenuLoader.load();
+        profileMenuView = profileMenuLoader.getController();
+        profileMenuController = new ProfileMenuController(game, profileMenuView);
+
         } catch (IOException e) {
             System.err.println("Erreur lors du chargement des composants de l'application : " + e.getMessage());
             //noinspection CallToPrintStackTrace
@@ -131,6 +140,8 @@ public class ApplicationContext {
         gameView.setTimer();
         gameController.setGame(game);
         editTeamController.setGame(game);
+        profileMenuController.setGame(game);
+        profileMenuView.setGame(game);
     }
 
     public Node getEditTeamNode(){
@@ -145,6 +156,8 @@ public class ApplicationContext {
     public Node getGameNode() {
         return GameNode;
     }
+
+    public Node getProfileMenuNode() {return ProfileMenuNode;}
 
     //endregion
 

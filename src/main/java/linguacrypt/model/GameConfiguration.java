@@ -1,6 +1,11 @@
 package linguacrypt.model;
 
+import linguacrypt.model.statistique.GameStat;
+import linguacrypt.utils.StatLoader;
+
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class GameConfiguration implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -16,6 +21,8 @@ public class GameConfiguration implements Serializable {
     private int nbPlayer;                                   // Total number of player
     private int timeTurn;                                   // Maximum chosen time allowed to play
     private int maxTimeTurn = 300;                          // Maximum time allowed to play
+    private ArrayList<Player> playerList;
+    private GameStat gameStat;
 
     private int gameMode;                                   // 0 : Normal Words, 1 : Normal Pictures, 2 : Duo, 3 : Solo
 
@@ -37,6 +44,9 @@ public class GameConfiguration implements Serializable {
         return configuration;
     }
 
+    public void loadPlayerList() throws IOException, ClassNotFoundException {
+        playerList = StatLoader.loadPlayerList();
+    }
 
 
     public static void resetInstance() {
@@ -104,6 +114,9 @@ public class GameConfiguration implements Serializable {
     public int getMaxGridSize(){
         return maxGridSize;
     }
+
+    public ArrayList<Player> getPlayerList() {return playerList;}
+    public void addPlayer(Player player) { if (playerList ==null){playerList = new ArrayList<>();}playerList.add(player);}
 
     public int getGameMode(){
         return gameMode;

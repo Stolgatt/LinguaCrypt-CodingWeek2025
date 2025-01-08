@@ -17,11 +17,13 @@ public class MainMenuView {
 
     private Consumer<ActionEvent> onCreateGame;
     private Runnable onAddCustomTheme;
-
+    private Consumer<ActionEvent> onProfileMenu;
     @FXML
     private Button createWordGameButton; // Button to create a new game
     @FXML
     private Button createPictGameButton; // Button to create a new picture game
+    @FXML
+    private Button profileMenuBtn;
     @FXML
     private Button addCustomThemeButton; // Button to add custom theme words
     @FXML
@@ -39,10 +41,13 @@ public class MainMenuView {
             GameConfiguration.getInstance().setGameMode(1);         // Picture Game Mode
             onCreateGame.accept(e);});
         addCustomThemeButton.setOnAction(e -> {onAddCustomTheme.run();});
+        profileMenuBtn.setOnAction(e -> {onProfileMenu.accept(e);});
+        addHoverEffect(profileMenuBtn);
         addHoverEffect(createWordGameButton);
         addHoverEffect(createPictGameButton);
         addHoverEffect(addCustomThemeButton);
         addHoverEffect(exitButton);
+        addSelectedEffect(profileMenuBtn);
         addSelectedEffect(createWordGameButton);
         addSelectedEffect(addCustomThemeButton);
         addSelectedEffect(exitButton);
@@ -51,7 +56,7 @@ public class MainMenuView {
     public void setOnCreateGame(Consumer<ActionEvent> onCreateGame){
         this.onCreateGame = onCreateGame;
     }
-
+    public void setOnProfileMenu(Consumer<ActionEvent> onprofileMenu){this.onProfileMenu = onprofileMenu;}
     public void setOnAddCustomTheme(Runnable onAddCustomTheme){
         this.onAddCustomTheme = onAddCustomTheme;
     }

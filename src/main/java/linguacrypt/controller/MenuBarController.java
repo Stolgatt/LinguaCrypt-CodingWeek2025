@@ -44,7 +44,9 @@ public class MenuBarController {
         return game;
     }
 
-    public void exit() {
+    public void exit() throws IOException {
+
+        game.updateStat();
         System.exit(0);
     }
 } 
