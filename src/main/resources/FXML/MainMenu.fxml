@@ -1,19 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Text?>
 
-<VBox spacing="20" alignment="CENTER" xmlns:fx="http://javafx.com/fxml" fx:controller="linguacrypt.view.MainMenuView" 
-        style="-fx-background-color: #f0f0f0; -fx-padding: 20;">
-    <Text text="Welcome to Linguacrypt" style="-fx-font-size: 24px; -fx-text-fill: #333;"/>
-    <Button text="WordCrypt Game" fx:id="createWordGameButton" 
-                style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 1); -fx-pref-width: 200;"/>
-    <Button text="PictCrypt Game" fx:id="createPictGameButton" 
-                style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 1); -fx-pref-width: 200;"/>
-                    <Button text="Profile Menu" fx:id="profileMenuBtn"
-            style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 1); -fx-pref-width: 200;"/>
-    <Button text="Add Custom Theme Words" fx:id="addCustomThemeButton"
-                style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 1); -fx-pref-width: 200;"/>
-    <Button text="Exit" fx:id="exitButton" onAction="#handleExit" 
-                style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 1); -fx-pref-width: 200;"/>
-</VBox>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="linguacrypt.view.MainMenuView"
+            style="-fx-background-color: #f0f0f0; -fx-padding: 20;">
+    
+    <!-- Top Section: Welcome Text -->
+    <top>
+        <Text text="Welcome to Linguacrypt" 
+              style="-fx-font-size: 24px; -fx-text-fill: #333;" 
+              BorderPane.alignment="CENTER" />
+    </top>
+
+    <!-- Center Section: Dynamic Content -->
+    <center>
+        <StackPane fx:id="dynamicContent" alignment="CENTER">
+            <!-- Network Mode Selection -->
+            <VBox fx:id="networkModeSelectionBox" spacing="20" alignment="CENTER">
+                <Button text="Local" fx:id="localButton"
+                        style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-pref-width: 200;" />
+                <Button text="Multiplayer" fx:id="multiplayerButton"
+                        style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-pref-width: 200;" />
+            </VBox>
+
+            <!-- Game Mode Selection -->
+            <VBox fx:id="gameModeSelectionBox" spacing="20" alignment="CENTER" visible="false">
+                <Button text="WordCrypt Game" fx:id="wordGameButton"
+                        style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-pref-width: 200;" />
+                <Button text="PictCrypt Game" fx:id="pictGameButton"
+                        style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-pref-width: 200;" />
+                <Button text="Back" fx:id="backToNetworkModeButton"
+                        style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 8 16; -fx-background-radius: 20; -fx-pref-width: 200;" />
+            </VBox>
+
+            <!-- Main Menu Options -->
+            <VBox fx:id="mainMenuBox" spacing="20" alignment="CENTER" visible="false">
+                <!-- StackPane to manage Play/Host/Join Buttons -->
+                <StackPane fx:id="playModeButtons" alignment="CENTER">
+                    <Button text="Play" fx:id="playButton"
+                            style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-pref-width: 200;" />
+                    <VBox fx:id="multiButtons" visible="false" spacing="20" alignment="CENTER">
+                        <Button text="Host" fx:id="hostButton" visible="true"
+                            style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-pref-width: 200;" />
+                        <Button text="Join" fx:id="joinButton" visible="true"
+                            style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-pref-width: 200;" />
+                    </VBox>
+                </StackPane>
+                <Button text="Profile Menu" fx:id="profileMenuButton"
+                        style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-pref-width: 200;" />
+                <Button text="Customize Words" fx:id="customThemeButton"
+                        style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-pref-width: 200;" />
+                <Button text="Exit" fx:id="exitButton" onAction="#handleExit"
+                        style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-pref-width: 200;" />
+                <Button text="Back" fx:id="backToGameModeButton"
+                        style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 8 16; -fx-background-radius: 20; -fx-pref-width: 200;" />
+            </VBox>
+        </StackPane>
+    </center>
+</BorderPane>
