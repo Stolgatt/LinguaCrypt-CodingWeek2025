@@ -18,13 +18,13 @@ public class ThemeLoader {
         if (gameMode == 0) { // Word Game Mode
             List<Theme> themes = loadThemesFromDatFile(gameMode);
             if (themes.isEmpty()) {
-                themes = loadThemesFromJsonFile(0);
+                themes = loadThemesFromJsonFile(gameMode);
             }
             return themes;
         } else if (gameMode == 1) { // Picture Game Mode
             List<Theme> themes = loadThemesFromDatFile(gameMode);
             if (themes.isEmpty()) {
-                themes = loadThemesFromJsonFile(1);    
+                themes = loadThemesFromJsonFile(gameMode);    
             }
             return themes;
         }
@@ -74,7 +74,7 @@ public class ThemeLoader {
     }
 
     private static void saveThemes(List<Theme> themes, int gameMode) {
-        String filePath = (gameMode == 0) ? PICT_THEME_SAVE_FILE_PATH : WORDS_THEME_SAVE_FILE_PATH;
+        String filePath = (gameMode == 1) ? PICT_THEME_SAVE_FILE_PATH : WORDS_THEME_SAVE_FILE_PATH;
 
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
             oos.writeObject(themes);

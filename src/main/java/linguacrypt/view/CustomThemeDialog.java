@@ -18,7 +18,7 @@ public class CustomThemeDialog {
     private TextArea wordsTextArea;
     private ComboBox<String> existingThemesComboBox;
 
-    public CustomThemeDialog() {
+    public CustomThemeDialog() {        
         Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.setTitle("Add Custom Theme");

@@ -26,11 +26,7 @@ public class Grid implements Serializable {
         this.grid = new Card[size][size];
         this.gridWords = new ArrayList<>();
         this.gameMode = gameMode;
-        if (gameMode == 0) {
-            this.themeWords = themeWords;
-        } else {
-            this.themeWords = null;
-        }
+        this.themeWords = themeWords;
     }
 
     public void initGrid(int turn) {
@@ -62,10 +58,9 @@ public class Grid implements Serializable {
                     }
                     gridWords.add(randomWord);
                 } else if (gameMode == 1) {
-                    List<String> themePictures = loadPicturesFromFile("pictures/picturesPath.txt");
-                    randomImage = themePictures.get(random.nextInt(themePictures.size()));
+                    randomImage = themeWords.get(random.nextInt(themeWords.size()));
                     while (gridWords.contains(randomImage)){
-                        randomImage = themePictures.get(random.nextInt(themePictures.size()));
+                        randomImage = themeWords.get(random.nextInt(themeWords.size()));
                     }
                     gridWords.add(randomImage);
                 }
@@ -133,25 +128,5 @@ public class Grid implements Serializable {
                 this.grid[i][j].setSelected(originalCard.isSelected());
             }
         }
-    }
-
-    private List<String> loadPicturesFromFile(String filePath) {
-        List<String> pictures = new ArrayList<>();   
-        try {
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(filePath);
-            if (inputStream == null) {
-                throw new FileNotFoundException(filePath + " not found!");
-            }
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                pictures.add(line);
-            }
-            reader.close();
-        } catch(IOException e) {
-            e.printStackTrace();
-            System.err.println(filePath + " not found!");
-        }
-        return pictures;
     }
 }
