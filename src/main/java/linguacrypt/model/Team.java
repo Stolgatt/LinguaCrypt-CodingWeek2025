@@ -63,4 +63,8 @@ public class Team implements Serializable{
         }
         return playersNames;
     }
+
+    public void removePlayer(Player player) {
+        this.players.remove(player);
+    }
 }

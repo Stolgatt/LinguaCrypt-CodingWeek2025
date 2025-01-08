@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="linguacrypt.view.LobbyView" alignment="CENTER" style="-fx-background-color: black;">
+    <children>
+        <VBox alignment="TOP_CENTER" spacing="10.0" prefWidth="600.0" prefHeight="400.0">
+            <!-- Server Info -->
+            <Label fx:id="labelServerIP" text="Private Server IP Address: X.X.X.X" textFill="WHITE" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+            
+            <!-- User List -->
+            <Label text="Connected Players:" textFill="WHITE" />
+            <ListView fx:id="listViewUsers" style="-fx-background-color: black; -fx-text-fill: white;" prefHeight="200.0" />
+            
+            <!-- Chat Section -->
+            <Label text="Chat:" textFill="WHITE" />
+            <TextArea fx:id="textAreaChat" editable="false" wrapText="true" prefHeight="100.0" style="-fx-background-color: black; -fx-text-fill: white;" />
+            <HBox spacing="10.0" alignment="CENTER">
+                <TextField fx:id="textFieldChatMessage" promptText="Type your message..." prefWidth="400.0" />
+                <Button fx:id="buttonSendMessage" text="Send" onAction="#sendMessage" />
+            </HBox>
+
+            <!-- Control Buttons -->
+            <HBox spacing="20.0" alignment="CENTER">
+                <Button fx:id="buttonStartGame" text="Start Game" onAction="#startGame" style="-fx-background-color: #007bff; -fx-text-fill: white;" />
+                <Button fx:id="buttonBack" text="Back" onAction="#goBackToMainMenu" style="-fx-background-color: #6c757d; -fx-text-fill: white;" />
+            </HBox>
+        </VBox>
+    </children>
+</StackPane>

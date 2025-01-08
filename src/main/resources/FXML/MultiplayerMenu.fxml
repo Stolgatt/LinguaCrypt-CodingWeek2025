@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="linguacrypt.view.MultiplayerMenuView" alignment="CENTER" style="-fx-background-color: black;" prefHeight="400.0" prefWidth="600.0">
+    <children>
+        <!-- Host View -->
+        <VBox fx:id="hostView" alignment="TOP_CENTER" spacing="10.0" visible="false">
+            <Label text="Create Room" textFill="WHITE" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+            
+            <!-- Nickname -->
+            <Label text="Nickname:" textFill="WHITE" />
+            <TextField fx:id="textFieldNicknameHost" promptText="Enter your nickname" prefWidth="200.0" />
+            
+            <!-- Max Team Size -->
+            <Label text="Max Team Size:" textFill="WHITE" />
+            <HBox spacing="5.0" alignment="CENTER">
+                <Button fx:id="buttonDecreaseTeamSize" text="-" onAction="#decreaseTeamSize" />
+                <Label fx:id="labelTeamSize" text="4" textFill="WHITE" />
+                <Button fx:id="buttonIncreaseTeamSize" text="+" onAction="#increaseTeamSize" />
+            </HBox>
+            
+            <!-- Grid Size -->
+            <Label text="Grid Size:" textFill="WHITE" />
+            <HBox spacing="5.0" alignment="CENTER">
+                <Button fx:id="buttonDecreaseGridSize" text="-" onAction="#decreaseGridSize" />
+                <Label fx:id="labelGridSize" text="5" textFill="WHITE" />
+                <Button fx:id="buttonIncreaseGridSize" text="+" onAction="#increaseGridSize" />
+            </HBox>
+            
+            <!-- Timer -->
+            <Label text="Timer (s):" textFill="WHITE" />
+            <HBox spacing="5.0" alignment="CENTER">
+                <Button fx:id="buttonDecreaseTimer" text="-" onAction="#decreaseTimer" />
+                <Label fx:id="labelTimer" text="60" textFill="WHITE" />
+                <Button fx:id="buttonIncreaseTimer" text="+" onAction="#increaseTimer" />
+            </HBox>
+            
+            <!-- Theme Selection -->
+            <Label text="Theme:" textFill="WHITE" />
+            <ComboBox fx:id="comboBoxTheme" promptText="Select Theme" prefWidth="200.0" />
+            
+            <!-- Buttons -->
+            <Button fx:id="buttonCreateRoom" text="Create Room" onAction="#createRoom" prefWidth="200.0" />
+            <Button text="Back" onAction="#goBackToMainMenu" prefWidth="200.0" />
+        </VBox>
+
+         <!-- Join View -->
+        <VBox fx:id="joinView" alignment="TOP_CENTER" spacing="10.0" visible="false">
+            <Label text="Join Room" textFill="WHITE" style="-fx-font-size: 24px;" />
+            <Label text="Nickname:" textFill="WHITE" />
+            <TextField fx:id="textFieldNicknameJoin" promptText="Enter your nickname" />
+            <Label text="Address:" textFill="WHITE" />
+            <TextField fx:id="textFieldAddress" promptText="Enter server address" />
+            <Label text="Team:" textFill="WHITE" />
+            <ComboBox fx:id="comboBoxTeam" promptText="Select your team" />
+            <Button text="Join Room" onAction="#joinRoom" />
+        </VBox>
+    </children>
+</StackPane>

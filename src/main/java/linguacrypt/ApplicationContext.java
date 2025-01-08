@@ -10,6 +10,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import linguacrypt.controller.*;
 import linguacrypt.model.Game;
+import linguacrypt.networking.Client;
+import linguacrypt.networking.Server;
+import linguacrypt.view.EditTeamView;
+import linguacrypt.view.GameView;
+import linguacrypt.view.LobbyView;
+import linguacrypt.view.MainMenuView;
+import linguacrypt.view.MultiplayerMenuView;
+import linguacrypt.view.ProfileMenuView;
 import linguacrypt.view.*;
 
 public class ApplicationContext {
@@ -18,6 +26,9 @@ public class ApplicationContext {
 
     /** Instance unique de ApplicationContext (Singleton). */
     private static ApplicationContext instance;
+
+    private Server server;
+    private Client client;
 
     /** Stage principal */
     private Stage primaryStage;
@@ -28,6 +39,7 @@ public class ApplicationContext {
     private Node MainMenuNode;
     private Node GameNode;
     private Node ProfileMenuNode;
+    private Node multplayerMenuNode;
     private Node SoloGameNode;
     /** Références aux contrôleurs. */
     private MainMenuController mainMenuController;
@@ -41,6 +53,10 @@ public class ApplicationContext {
     private EditTeamView editTeamView;
     private GameView gameView;
     private ProfileMenuView profileMenuView;
+    private MultiplayerMenuView multiplayerMenuView;
+
+        private Node lobbyNode;
+    private LobbyView lobbyView;
     private SoloGameView soloGameView;
 
     /** Modèles */
@@ -122,6 +138,15 @@ public class ApplicationContext {
         profileMenuView = profileMenuLoader.getController();
         profileMenuController = new ProfileMenuController(game, profileMenuView);
 
+        FXMLLoader mpMenuloader = new FXMLLoader(getClass().getResource("/FXML/MultiplayerMenu.fxml"));
+        multplayerMenuNode = mpMenuloader.load();
+        multiplayerMenuView = mpMenuloader.getController();
+
+        // Load Lobby components
+        FXMLLoader lobbyLoader = new FXMLLoader(getClass().getResource("/FXML/Lobby.fxml"));
+        lobbyNode = lobbyLoader.load();
+        lobbyView = lobbyLoader.getController();
+
         } catch (IOException e) {
             System.err.println("Erreur lors du chargement des composants de l'application : " + e.getMessage());
             //noinspection CallToPrintStackTrace
@@ -133,7 +158,18 @@ public class ApplicationContext {
 
     public Stage getPrimaryStage() {return primaryStage;}
 
-    public void setPrimaryStage(Stage primaryStage) {this.primaryStage = primaryStage;}
+    public void setPrimaryStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+               // Stop server and client on application close
+               primaryStage.setOnCloseRequest(event -> {
+                if (server != null) {
+                    server.stop();
+                }
+                if (client != null) {
+                    client.disconnect();
+                }
+            });
+    }
 
     public void setGame(Game game){
         this.game = game; 
@@ -144,9 +180,10 @@ public class ApplicationContext {
         editTeamController.setGame(game);
         profileMenuController.setGame(game);
         profileMenuView.setGame(game);
-        soloGameController.setGame(game);
-        soloGameView.setGame(game);
-        soloGameView.setTimer();
+    }
+
+    public Game getGame(){
+        return game;
     }
 
     public Node getEditTeamNode(){
@@ -164,6 +201,35 @@ public class ApplicationContext {
     }
 
     public Node getProfileMenuNode() {return ProfileMenuNode;}
+    public Node getMPMenuNode() {return multplayerMenuNode;}
+
+    public MultiplayerMenuView getMPMenuView(){
+        return multiplayerMenuView;
+    }
+
+    public Node getLobbyNode() {
+        return lobbyNode;
+    }
+
+    public LobbyView getLobbyView() {
+        return lobbyView;
+    }
+
+    public Server getServer() {
+        return server;
+    }
+
+    public void setServer(Server server) {
+        this.server = server;
+    }
+
+        public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
 
     //endregion
 
