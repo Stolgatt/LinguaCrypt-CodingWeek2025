@@ -13,8 +13,11 @@ import linguacrypt.controller.GameController;
 import linguacrypt.controller.MainMenuController;
 import linguacrypt.controller.ProfileMenuController;
 import linguacrypt.model.Game;
+import linguacrypt.networking.Client;
+import linguacrypt.networking.Server;
 import linguacrypt.view.EditTeamView;
 import linguacrypt.view.GameView;
+import linguacrypt.view.LobbyView;
 import linguacrypt.view.MainMenuView;
 import linguacrypt.view.MultiplayerMenuView;
 import linguacrypt.view.ProfileMenuView;
@@ -25,6 +28,9 @@ public class ApplicationContext {
 
     /** Instance unique de ApplicationContext (Singleton). */
     private static ApplicationContext instance;
+
+    private Server server;
+    private Client client;
 
     /** Stage principal */
     private Stage primaryStage;
@@ -48,6 +54,9 @@ public class ApplicationContext {
     private GameView gameView;
     private ProfileMenuView profileMenuView;
     private MultiplayerMenuView multiplayerMenuView;
+
+        private Node lobbyNode;
+    private LobbyView lobbyView;
 
     /** Modèles */
     private Game game;
@@ -127,6 +136,11 @@ public class ApplicationContext {
         multplayerMenuNode = mpMenuloader.load();
         multiplayerMenuView = mpMenuloader.getController();
 
+        // Load Lobby components
+        FXMLLoader lobbyLoader = new FXMLLoader(getClass().getResource("/FXML/Lobby.fxml"));
+        lobbyNode = lobbyLoader.load();
+        lobbyView = lobbyLoader.getController();
+
         } catch (IOException e) {
             System.err.println("Erreur lors du chargement des composants de l'application : " + e.getMessage());
             //noinspection CallToPrintStackTrace
@@ -138,7 +152,18 @@ public class ApplicationContext {
 
     public Stage getPrimaryStage() {return primaryStage;}
 
-    public void setPrimaryStage(Stage primaryStage) {this.primaryStage = primaryStage;}
+    public void setPrimaryStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+               // Stop server and client on application close
+               primaryStage.setOnCloseRequest(event -> {
+                if (server != null) {
+                    server.stop();
+                }
+                if (client != null) {
+                    client.disconnect();
+                }
+            });
+    }
 
     public void setGame(Game game){
         this.game = game; 
@@ -169,6 +194,30 @@ public class ApplicationContext {
 
     public MultiplayerMenuView getMPMenuView(){
         return multiplayerMenuView;
+    }
+
+    public Node getLobbyNode() {
+        return lobbyNode;
+    }
+
+    public LobbyView getLobbyView() {
+        return lobbyView;
+    }
+
+    public Server getServer() {
+        return server;
+    }
+
+    public void setServer(Server server) {
+        this.server = server;
+    }
+
+        public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     //endregion

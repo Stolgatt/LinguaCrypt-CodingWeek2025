@@ -1,9 +1,8 @@
 package linguacrypt.view;
 
+import java.io.IOException;
 import java.util.List;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -11,6 +10,8 @@ import linguacrypt.ApplicationContext;
 import linguacrypt.model.Game;
 import linguacrypt.model.GameConfiguration;
 import linguacrypt.model.Theme;
+import linguacrypt.networking.Client;
+import linguacrypt.networking.Server;
 import linguacrypt.utils.ThemeLoader;
 
 public class MultiplayerMenuView {
@@ -25,7 +26,7 @@ public class MultiplayerMenuView {
     private Label labelTeamSize, labelGridSize, labelTimer;
 
     @FXML
-    private ComboBox<String> comboBoxTheme;
+    private ComboBox<String> comboBoxTheme, comboBoxTeam;
 
     private int teamSize = 4;
     private int gridSize = 5;
@@ -40,11 +41,16 @@ public class MultiplayerMenuView {
         labelGridSize.setText(String.valueOf(gridSize));
         labelTimer.setText(String.valueOf(timer));
 
+        // Load themes
         List<Theme> themes = ThemeLoader.loadThemes();
-            for (Theme theme : themes) {
-                comboBoxTheme.getItems().add(theme.getName());
-                comboBoxTheme.getSelectionModel().selectFirst();
-            }
+        for (Theme theme : themes) {
+            comboBoxTheme.getItems().add(theme.getName());
+        }
+        comboBoxTheme.getSelectionModel().selectFirst();
+
+        // Initialize team selection
+        comboBoxTeam.getItems().addAll("Blue Team", "Red Team");
+        comboBoxTeam.getSelectionModel().selectFirst();
     }
 
     @FXML
@@ -63,7 +69,7 @@ public class MultiplayerMenuView {
 
     @FXML
     private void decreaseTeamSize() {
-        if (teamSize > 2) { // Minimum team size
+        if (teamSize > 2) {
             teamSize--;
             labelTeamSize.setText(String.valueOf(teamSize));
         }
@@ -71,7 +77,7 @@ public class MultiplayerMenuView {
 
     @FXML
     private void increaseTeamSize() {
-        if (teamSize < 10) { // Maximum team size
+        if (teamSize < 10) {
             teamSize++;
             labelTeamSize.setText(String.valueOf(teamSize));
         }
@@ -79,7 +85,7 @@ public class MultiplayerMenuView {
 
     @FXML
     private void decreaseGridSize() {
-        if (gridSize > 3) { // Minimum grid size
+        if (gridSize > 3) {
             gridSize--;
             labelGridSize.setText(String.valueOf(gridSize));
         }
@@ -87,7 +93,7 @@ public class MultiplayerMenuView {
 
     @FXML
     private void increaseGridSize() {
-        if (gridSize < 15) { // Maximum grid size
+        if (gridSize < 15) {
             gridSize++;
             labelGridSize.setText(String.valueOf(gridSize));
         }
@@ -95,7 +101,7 @@ public class MultiplayerMenuView {
 
     @FXML
     private void decreaseTimer() {
-        if (timer > 10) { // Minimum timer
+        if (timer > 10) {
             timer -= 10;
             labelTimer.setText(String.valueOf(timer));
         }
@@ -103,7 +109,7 @@ public class MultiplayerMenuView {
 
     @FXML
     private void increaseTimer() {
-        if (timer < 120) { // Maximum timer
+        if (timer < 120) {
             timer += 10;
             labelTimer.setText(String.valueOf(timer));
         }
@@ -131,7 +137,7 @@ public class MultiplayerMenuView {
         System.out.println("Timer: " + timer);
         System.out.println("Theme: " + selectedTheme);
 
-        // Configure GameConfiguration instance
+        // Configure GameConfiguration
         GameConfiguration config = GameConfiguration.getInstance();
         config.setMaxTeamMember(teamSize);
         config.setGridSize(gridSize);
@@ -139,16 +145,26 @@ public class MultiplayerMenuView {
         config.setTheme(selectedTheme);
 
         // Create a new game instance
-        Game game = new Game(config);
+        context.setGame(new Game(config));
 
-        // Transition to the lobby (implement lobby logic)
-        System.out.println("Transitioning to the lobby...");
+        // Transition to the lobby
+        try {
+            Server server = new Server(nickname);
+            server.start();
+
+            context.setServer(server);
+            context.getRoot().setCenter(context.getLobbyNode());
+            context.getLobbyView().addPlayer(nickname);
+        } catch (IOException e) {
+            System.out.println("Error starting server: " + e.getMessage());
+        }
     }
 
     @FXML
     private void joinRoom() {
         String nickname = textFieldNicknameJoin.getText();
         String address = textFieldAddress.getText();
+        int teamId = comboBoxTeam.getSelectionModel().getSelectedIndex();
 
         if (nickname.isEmpty() || nickname.length() < 3 || nickname.length() > 15) {
             System.out.println("Nickname must be 3-15 characters long.");
@@ -163,13 +179,20 @@ public class MultiplayerMenuView {
         System.out.println("Joining room with:");
         System.out.println("Nickname: " + nickname);
         System.out.println("Address: " + address);
+        System.out.println("Team: " + teamId);
 
-        // Implement client logic here to join the server
+        try {
+            Client client = new Client(address, Server.PORT, nickname, teamId);
+            context.setClient(client);
+            context.getRoot().setCenter(context.getLobbyNode());
+        } catch (IOException e) {
+            System.out.println("Error connecting to server: " + e.getMessage());
+        }
     }
 
     @FXML
     private void goBackToMainMenu() {
-        // Logic to return to the main menu
         System.out.println("Returning to main menu...");
+        context.getRoot().setCenter(context.getMainMenuNode());
     }
 }

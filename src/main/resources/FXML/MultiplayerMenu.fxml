@@ -51,15 +51,16 @@
             <Button text="Back" onAction="#goBackToMainMenu" prefWidth="200.0" />
         </VBox>
 
-        <!-- Join View -->
+         <!-- Join View -->
         <VBox fx:id="joinView" alignment="TOP_CENTER" spacing="10.0" visible="false">
-            <Label text="Join Room" textFill="WHITE" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+            <Label text="Join Room" textFill="WHITE" style="-fx-font-size: 24px;" />
             <Label text="Nickname:" textFill="WHITE" />
-            <TextField fx:id="textFieldNicknameJoin" promptText="Enter your nickname" prefWidth="200.0" />
+            <TextField fx:id="textFieldNicknameJoin" promptText="Enter your nickname" />
             <Label text="Address:" textFill="WHITE" />
-            <TextField fx:id="textFieldAddress" promptText="Enter server address (e.g., localhost)" prefWidth="200.0" />
-            <Button fx:id="buttonJoinRoom" text="Join Room" onAction="#joinRoom" prefWidth="200.0" />
-            <Button text="Back" onAction="#goBackToMainMenu" prefWidth="200.0" />
+            <TextField fx:id="textFieldAddress" promptText="Enter server address" />
+            <Label text="Team:" textFill="WHITE" />
+            <ComboBox fx:id="comboBoxTeam" promptText="Select your team" />
+            <Button text="Join Room" onAction="#joinRoom" />
         </VBox>
     </children>
 </StackPane>
