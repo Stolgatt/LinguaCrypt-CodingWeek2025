@@ -8,15 +8,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import linguacrypt.controller.EditTeamController;
-import linguacrypt.controller.GameController;
-import linguacrypt.controller.MainMenuController;
-import linguacrypt.controller.ProfileMenuController;
+import linguacrypt.controller.*;
 import linguacrypt.model.Game;
-import linguacrypt.view.EditTeamView;
-import linguacrypt.view.GameView;
-import linguacrypt.view.MainMenuView;
-import linguacrypt.view.ProfileMenuView;
+import linguacrypt.view.*;
 
 public class ApplicationContext {
 
@@ -34,17 +28,20 @@ public class ApplicationContext {
     private Node MainMenuNode;
     private Node GameNode;
     private Node ProfileMenuNode;
+    private Node SoloGameNode;
     /** Références aux contrôleurs. */
     private MainMenuController mainMenuController;
     private EditTeamController editTeamController;
     private GameController gameController;
     private ProfileMenuController profileMenuController;
+    private SoloGameController soloGameController;
 
     /** Vues. */
     private MainMenuView mainMenuView;
     private EditTeamView editTeamView;
     private GameView gameView;
     private ProfileMenuView profileMenuView;
+    private SoloGameView soloGameView;
 
     /** Modèles */
     private Game game;
@@ -114,6 +111,11 @@ public class ApplicationContext {
         GameNode = gameLoader.load();
         gameView = gameLoader.getController();
         gameController = new GameController(game, gameView);
+        //Load SoloGameView components
+        FXMLLoader soloGameLoader = new FXMLLoader(getClass().getResource("/FXML/SoloGame.fxml"));
+        SoloGameNode = soloGameLoader.load();
+        soloGameView = soloGameLoader.getController();
+        soloGameController = new SoloGameController(game, soloGameView);
 
         FXMLLoader profileMenuLoader = new FXMLLoader(getClass().getResource("/FXML/ProfileMenu.fxml"));
         ProfileMenuNode = profileMenuLoader.load();
@@ -142,6 +144,9 @@ public class ApplicationContext {
         editTeamController.setGame(game);
         profileMenuController.setGame(game);
         profileMenuView.setGame(game);
+        soloGameController.setGame(game);
+        soloGameView.setGame(game);
+        soloGameView.setTimer();
     }
 
     public Node getEditTeamNode(){
@@ -152,6 +157,7 @@ public class ApplicationContext {
     public Node getMainMenuNode() {
         return MainMenuNode;
     }
+    public Node getSoloGameNode(){return SoloGameNode;}
 
     public Node getGameNode() {
         return GameNode;
