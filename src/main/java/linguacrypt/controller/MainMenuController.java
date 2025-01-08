@@ -26,7 +26,7 @@ public class MainMenuController {
         // Retrieve game configuration and personalize settings
         GameConfiguration config = GameConfiguration.getInstance();
         switch (config.getGameMode()) {
-            case 0:                                 // Words Game Mode
+            case 0: // Words Game Mode
                 GameConfigurationDialog dialog = new GameConfigurationDialog();
                 if (dialog.showGameConfigurationDialog()) {
                     config.setWordTheme(dialog.getSelectedTheme());
@@ -34,7 +34,7 @@ public class MainMenuController {
                     context.getRoot().setCenter(context.getEditTeamNode());
                 }
                 break;
-            case 1:                                 // Picture Game Mode
+            case 1: // Picture Game Mode
                 PictGameConfigurationDialog pictDialog = new PictGameConfigurationDialog();
                 if (pictDialog.showGameConfigurationDialog()) {
                     config.setPictTheme(pictDialog.getSelectedTheme());
@@ -42,38 +42,17 @@ public class MainMenuController {
                     context.getRoot().setCenter(context.getEditTeamNode());
                 }
                 break;
+            case 2: // Solo Game Mode
+                SoloModeConfigurationDialog soloDialog = new SoloModeConfigurationDialog();
+                if (soloDialog.showSoloGameConfigurationDialog()) {
+                    context.getRoot().setCenter(context.getSoloGameNode());
+                }
+                break;
             default:
                 config.setGameMode(0);
                 break;
         }
-                    // Retrieve game configuration and personalize settings
-                    GameConfiguration config = GameConfiguration.getInstance();
-                    switch (config.getGameMode()) {
-                        case 0:                                 // Words Game Mode
-                            GameConfigurationDialog dialog = new GameConfigurationDialog();
-                            if (dialog.showGameConfigurationDialog()) {
-                                config.setTheme(dialog.getSelectedTheme());
-                                context.setGame(new Game(config));
-                                context.getRoot().setCenter(context.getEditTeamNode());
-                            }
-                            break;
-                        case 1:                                 // Picture Game Mode
-                            PictGameConfigurationDialog pictDialog = new PictGameConfigurationDialog();
-                            if (pictDialog.showGameConfigurationDialog()) {
-                                context.setGame(new Game(config));
-                                context.getRoot().setCenter(context.getEditTeamNode());
-                            }
-                            break;
-                        case 2:                                 // Solo Game Mode
-                    SoloModeConfigurationDialog soloDialog = new SoloModeConfigurationDialog();
-                    if (soloDialog.showSoloGameConfigurationDialog()) {
-                        context.getRoot().setCenter(context.getSoloGameNode());
-                    }
-                    break;
-                default:
-                            config.setGameMode(0);
-                            break;
-                    }
+
     }
 
     private void handleProfileMenu() {

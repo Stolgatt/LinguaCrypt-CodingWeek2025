@@ -146,4 +146,28 @@ public class Grid implements Serializable {
             }
         }
     }
+
+    public List<String> getRemainingWordsForTeam(int teamID){
+        List<String> remainingWords = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (!grid[i][j].isSelected() && teamID + 1 ==grid[i][j].getCouleur()) {
+                    remainingWords.add(grid[i][j].getWord());
+                }
+            }
+        }
+        return remainingWords;
+    }
+    public List<String> getRemainingWords(){
+        List<String> remainingWords = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (!grid[i][j].isSelected()){
+                    remainingWords.add(grid[i][j].getWord());
+                }
+            }
+        }
+        return remainingWords;
+    }
+
 }

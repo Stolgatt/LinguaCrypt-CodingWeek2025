@@ -44,17 +44,18 @@ public class Game implements Serializable {
                 setUpGame();
                 break;
             case 1:                     // Picture Game Mode
-                this.themeWords = loadThemeWords(gConfig.getPictTheme());
-                this.grid = new Grid(gConfig.getGridSize(), themeWords, 1);
+            this.themeWords = loadThemeWords(gConfig.getPictTheme());
+            this.grid = new Grid(gConfig.getGridSize(), themeWords, 1);
                 setUpGame();
                 break;
             case 2:                     // Solo Game Mode
-                this.themeWords = loadThemeWords(gConfig.getTheme());
+                this.themeWords = loadThemeWords(gConfig.getWordTheme());
                 this.grid = new Grid(gConfig.getGridSize(), themeWords, 2);
                 break;
             default:
                 break;
         }
+
     }
 
     private List<String> loadThemeWords(String themeName) {

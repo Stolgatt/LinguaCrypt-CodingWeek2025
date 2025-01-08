@@ -15,7 +15,7 @@ public class ThemeLoader {
     private static final String DEFAULT_PICTS_THEME_FILE_PATH = "/pictThemes.json"; // File for picture themes
 
     public static List<Theme> loadThemes(int gameMode) {
-        if (gameMode == 0) { // Word Game Mode
+        if (gameMode == 0 || gameMode == 2) { // Word Game Mode
             List<Theme> themes = loadThemesFromDatFile(gameMode);
             if (themes.isEmpty()) {
                 themes = loadThemesFromJsonFile(gameMode);
