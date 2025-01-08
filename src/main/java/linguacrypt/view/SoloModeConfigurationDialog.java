@@ -64,7 +64,7 @@ public class SoloModeConfigurationDialog {
 
             // Create a ComboBox for themes
             themeComboBox = new ComboBox<>();
-            List<Theme> themes = ThemeLoader.loadThemes();
+            List<Theme> themes = ThemeLoader.loadThemes(0);
             for (Theme theme : themes) {
                 themeComboBox.getItems().add(theme.getName());
                 themeComboBox.getSelectionModel().selectFirst();
@@ -112,7 +112,7 @@ public class SoloModeConfigurationDialog {
                 // Save the validated input values into the configuration instance
                 config.setDifficultyLevel(difficulty);
                 config.setGridSize(gridSize);
-                config.setTheme(themeComboBox.getValue());
+                config.setWordTheme(themeComboBox.getValue());
                 config.setTimeTurn(timeTurn);
                 game = new Game(config);
                 tryAddPlayer(name,spy);

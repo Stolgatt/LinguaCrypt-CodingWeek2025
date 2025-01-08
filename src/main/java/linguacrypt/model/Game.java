@@ -39,25 +39,27 @@ public class Game implements Serializable {
 
         switch (gConfig.getGameMode()) {
             case 0:                     // Words Game Mode
-                this.themeWords = loadThemeWords(gConfig.getTheme());
+                this.themeWords = loadThemeWords(gConfig.getWordTheme());
                 this.grid = new Grid(gConfig.getGridSize(), themeWords, 0);
                 setUpGame();
                 break;
             case 1:                     // Picture Game Mode
-                this.grid = new Grid(gConfig.getGridSize(), null, 1);
+            this.themeWords = loadThemeWords(gConfig.getPictTheme());
+            this.grid = new Grid(gConfig.getGridSize(), themeWords, 1);
                 setUpGame();
                 break;
             case 2:                     // Solo Game Mode
-                this.themeWords = loadThemeWords(gConfig.getTheme());
+                this.themeWords = loadThemeWords(gConfig.getWordTheme());
                 this.grid = new Grid(gConfig.getGridSize(), themeWords, 2);
                 break;
             default:
                 break;
         }
+
     }
 
     private List<String> loadThemeWords(String themeName) {
-        List<Theme> themes = ThemeLoader.loadThemes();
+        List<Theme> themes = ThemeLoader.loadThemes(gConfig.getGameMode());
         for (Theme theme : themes) {
             if (theme.getName().equals(themeName)) {
                 return theme.getWords();
@@ -230,7 +232,17 @@ public class Game implements Serializable {
         }
         gameStat.setDuree(System.currentTimeMillis()-startTime);
         gameStat.setNombreDeTours(nbTour);
-        gameStat.setTheme(gConfig.getTheme());
+        switch (gConfig.getGameMode()){
+            case 0:
+                gameStat.setTheme(gConfig.getWordTheme());
+                break;
+            case 1:
+                gameStat.setTheme(gConfig.getPictTheme());
+                break;
+            default:
+                gameStat.setTheme("None");
+                break;
+        }
     }
 
     public void setUpSoloGame(Player player){
