@@ -3,6 +3,8 @@ package linguacrypt.view;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -56,7 +58,12 @@ private ListView<HBox> listViewChat;
         Client client = context.getClient();
 
         if (server != null) {
-            labelServerIP.setText("Server running on port: " + Server.PORT);
+            try {
+                labelServerIP.setText("Server running on port: " + InetAddress.getLocalHost().getHostAddress());
+            } catch (UnknownHostException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             buttonStartGame.setVisible(true); // Only the host can start the game
         } else if (client != null) {
             labelServerIP.setText("Connected to server at: " + client.getSocket().getInetAddress().getHostAddress());

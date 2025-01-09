@@ -10,7 +10,7 @@ import linguacrypt.model.players.Player;
 
 public class Server {
     public static final int PORT = 9001;
-    private ServerSocket serverSocket;
+    private static ServerSocket serverSocket;
     private ArrayList<ClientHandler> clients = new ArrayList<>();
     private String hostNickname;
     private ApplicationContext context = ApplicationContext.getInstance();
@@ -57,6 +57,10 @@ public class Server {
         } catch (IOException e) {
             System.out.println("Error stopping server: " + e.getMessage());
         }
+    }
+
+    public static ServerSocket getServerSocket() {
+        return serverSocket;
     }
 
     public void broadcastPlayerList() {
