@@ -6,23 +6,27 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
+import linguacrypt.ApplicationContext;
 import linguacrypt.model.game.Card;
 import linguacrypt.model.game.Grid;
 
 import java.util.function.BiConsumer;
 
 public class GameViewUtils {
+
     public static void initializeWordGrid(GridPane gameGrid, Grid grid, BiConsumer<Integer, Integer> onCardClicked){
         // Parcours et affichage des cartes dans la grille
+        int cardHeight = ApplicationContext.getInstance().cardHeight;
+        int cardWidth = ApplicationContext.getInstance().cardWidth;
         for (int row = 0; row < grid.getGrid().length; row++) {
             for (int col = 0; col < grid.getGrid()[row].length; col++) {
                 Card card = grid.getCard(row, col);
 
                 // Créer un bouton
                 Button cardButton = new Button();
-                cardButton.setPrefSize(100, 50); // Fixe la taille du bouton
-                cardButton.setMaxSize(100, 50);
-                cardButton.setMinSize(100, 50);
+                cardButton.setPrefSize(cardWidth, cardHeight); // Fixe la taille du bouton
+                cardButton.setMaxSize(cardWidth, cardHeight);
+                cardButton.setMinSize(cardWidth, cardHeight);
                 cardButton.setStyle("-fx-padding: 0; -fx-background-color: transparent;"); // Supprime les marges et le fond
 
                 // Créer un Label pour afficher le texte

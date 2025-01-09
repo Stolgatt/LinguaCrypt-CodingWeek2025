@@ -38,6 +38,7 @@ public class GameView implements Observer {
     @FXML private GridPane gameGrid; // Lié à game.fxml
     @FXML private Button btnNextTurn;
     @FXML private Button btnGuess;
+    @FXML private Label whoPlays;
     @FXML private Label labelHint;
 
     @FXML private ImageView imageViewRedInfo;
@@ -60,6 +61,8 @@ public class GameView implements Observer {
 
     private Game game;
     private ApplicationContext context = ApplicationContext.getInstance();
+    private int cardHeight = context.cardHeight;
+    private int cardWidth = context.cardWidth;
     private Runnable onNextTurn;
     private Runnable OnGiveHint;
     private BiConsumer<Integer, Integer> onCardClicked;
@@ -139,7 +142,8 @@ public class GameView implements Observer {
                 ImageView imageView = new ImageView(image);
     
                 // Configurer la taille de l'image
-                imageView.setFitWidth(100);  // Largeur fixe
+                imageView.setFitWidth(100);
+
                 imageView.setFitHeight(100); // Hauteur fixe
                 imageView.setPreserveRatio(true); // Conserver les proportions
     
@@ -233,15 +237,15 @@ public class GameView implements Observer {
                 }
 
                 ImageView imageView = new ImageView(image);
-                imageView.setFitWidth(100);
-                imageView.setFitHeight(50);
+                imageView.setFitWidth(cardWidth);
+                imageView.setFitHeight(cardHeight);
                 imageView.setPreserveRatio(false);
                 imageView.setSmooth(true);
 
                 StackPane stackPane = new StackPane();
-                stackPane.setPrefSize(100, 50);
+                stackPane.setPrefSize(cardWidth, cardHeight);
                 stackPane.getChildren().addAll(imageView, cardLabel);
-                cardLabel.setTranslateY(10);
+                cardLabel.setTranslateY(cardHeight/5);
                 cardLabel.setFont(customFont);
                 cardButton.setGraphic(stackPane);
                 cardButton.setContentDisplay(ContentDisplay.CENTER);
@@ -250,13 +254,14 @@ public class GameView implements Observer {
 
         //Check if button can be visible or not
         if (game.isTurnBegin()==1){
+            drawSpyUI();
             drawSpyDialogueBox();
         }
         else if (game.isTurnBegin()==2){
-            btnGuess.setVisible(false);
-            btnNextTurn.setVisible(true);
+            drawAgentUI();
         }
         else{
+            drawSpyUI();
             btnNextTurn.setVisible(false);
             btnGuess.setVisible(true);
         }
@@ -412,44 +417,36 @@ public class GameView implements Observer {
         }
     }
     public void updateBlueTeamVBox() {
-        // Mise à jour de l'image pour l'équipe bleue
-        imageViewBlueInfo.setImage(blueBack); // Assurez-vous que vous avez l'image blueBack correctement définie
+        imageViewBlueInfo.setImage(blueBack);
         imageViewBlueInfo.setVisible(true);
         imageViewBlueInfo.setFitWidth(100);
         imageViewBlueInfo.setFitHeight(50);
         imageViewBlueInfo.setPreserveRatio(false);
         imageViewBlueInfo.setSmooth(true);
 
-        // Variables pour le nom de l'espion et des agents bleus
         String spyName = "";
         List<String> blueAgentNames = new ArrayList<>();
 
-        // Récupérer les joueurs de l'équipe bleue
         for (Player p : game.getBlueTeam().getPlayers()) {
             if (p.getIsSpy()) {
-                spyName = p.getName(); // Si c'est l'espion, on le garde dans spyName
+                spyName = p.getName();
             } else {
-                blueAgentNames.add(p.getName()); // Sinon, on ajoute l'agent à la liste
+                blueAgentNames.add(p.getName());
             }
         }
 
-        // Mise à jour de la police de l'espion et des agents
-        BlueSpy.setFont(Font.font(customFont.getName(), customFont.getSize() + 4));
-        BlueAgent.setFont(Font.font(customFont.getName(), customFont.getSize() + 4));
+        BlueSpy.setFont(Font.font(customFont.getName(), customFont.getSize() + 8));
+        BlueAgent.setFont(Font.font(customFont.getName(), customFont.getSize() + 8));
 
-        // Mise à jour de la police et du texte de l'espion
         BlueSpyName.setFont(customFont);
         BlueSpyName.setTextFill(Color.WHITE);
 
-        // Mise à jour de la police et du texte des mots restants
         nbMotBlueRestant.setFont(customFont);
         nbMotBlueRestant.setTextFill(Color.WHITE);
         nbMotBlueRestant.setText(game.getBlueRemaining() + "");
 
-        // Mise à jour du nom de l'espion
         BlueSpyName.setText(spyName);
 
-        // Vider les enfants de BlueAgentName et ajouter les agents bleus
         BlueAgentName.getChildren().clear();
         for (String agentName : blueAgentNames) {
             Label agentLabel = new Label(agentName);
@@ -457,5 +454,66 @@ public class GameView implements Observer {
             agentLabel.setTextFill(Color.WHITE);
             BlueAgentName.getChildren().add(agentLabel);
         }
+    }
+
+    public void drawAgentUI(){
+        String message;
+        ArrayList<Player> players;
+        if (game.getTurn() == 0){
+            players = game.getBlueTeam().getPlayers();
+        }
+        else{
+            players = game.getRedTeam().getPlayers();
+        }
+        players.removeIf(Player::getIsSpy);
+        if (players.size() == 1){
+            message = "A toi de deviner : " + players.getFirst().getName() + ".";
+        }
+        else{
+            message = "A vous de deviner : ";
+            for (Player player : players){
+                message += player.getName() +", ";
+            }
+            message = message.substring(0, message.length() - 2) + ".";
+        }
+        whoPlays.setText(message);
+        whoPlays.setFont(Font.font(customFont.getName(), customFont.getSize() + 20));
+        whoPlays.setTextFill(Color.WHITE);
+
+        message = "Votre espion vous a donné comme indice : " + game.hintToString();
+        labelHint.setText(message);
+        labelHint.setFont(Font.font(customFont.getName(), customFont.getSize() + 20));
+        labelHint.setTextFill(Color.WHITE);
+        btnNextTurn.setVisible(true);
+    }
+
+    public void drawSpyUI(){
+        String message ="";
+        Player spy = null;
+        if (game.getTurn() == 0){
+            for(Player p: game.getBlueTeam().getPlayers()){
+                if (p.getIsSpy()){
+                    spy = p;
+                    break;
+                }
+            }
+        }
+        else{
+            for(Player p: game.getRedTeam().getPlayers()){
+                if (p.getIsSpy()){
+                    spy = p;
+                    break;
+                }
+            }
+        }
+        message = "Choisis un indice pour tes Agents, ";
+        if (spy != null){
+            message += spy.getName() + ".";
+        }
+        whoPlays.setText(message);
+        whoPlays.setFont(Font.font(customFont.getName(), customFont.getSize() + 20));
+        whoPlays.setTextFill(Color.WHITE);
+
+        labelHint.setText("");
     }
 }

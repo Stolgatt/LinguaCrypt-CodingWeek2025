@@ -14,19 +14,25 @@
             <HBox alignment="CENTER" style="-fx-padding: 20;">
                 <Label text="Time left to play:"/>
                 <Label fx:id="timerLabel" text="00:00"/>
-                <Label fx:id="labelHint" text="" />
+
             </HBox>
         </VBox>
     </top>
-        
+
     <center>
-        <GridPane fx:id="gameGrid"
-                  hgap="10"
-                  vgap="10"
-                  alignment="CENTER"
-                  style="-fx-padding: 5;">
-            <!-- Everything will be added dynamically -->
-        </GridPane>
+        <VBox alignment="CENTER" spacing="10" style="-fx-padding: 20;">
+            <VBox alignment="CENTER">
+                <Label fx:id="whoPlays" text="" />
+                <Label fx:id="labelHint" text="" />
+            </VBox>
+            <GridPane fx:id="gameGrid"
+                      hgap="10"
+                      vgap="10"
+                      alignment="CENTER"
+                      style="-fx-padding: 5;">
+                <!-- Everything will be added dynamically -->
+            </GridPane>
+        </VBox>
     </center>
     <bottom>
         <HBox alignment="CENTER" style="-fx-padding: 20;">
@@ -68,8 +74,8 @@
                      -fx-pref-height: 200px;"
                   AnchorPane.topAnchor="250.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
                 <HBox fx:id="BlueInfo" style="-fx-padding: 5; -fx-spacing: 10px;">
-                    <Label fx:id="nbMotBlueRestant"/>
                     <ImageView fx:id="imageViewBlueInfo"/>
+                    <Label fx:id="nbMotBlueRestant"/>
                 </HBox>
                 <Label fx:id="BlueSpy" text="Espion" style="-fx-text-fill: #69B7CE;"/>
                 <Label fx:id="BlueSpyName" text="" style="-fx-padding: 5;"/>
