@@ -12,7 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import linguacrypt.ApplicationContext;
 import linguacrypt.model.Game;
-import linguacrypt.model.Player;
+import linguacrypt.model.players.Player;
 import linguacrypt.networking.Client;
 import linguacrypt.networking.Message;
 import linguacrypt.networking.MessageType;

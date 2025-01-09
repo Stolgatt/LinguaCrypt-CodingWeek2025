@@ -31,8 +31,8 @@
     </center>
     <bottom>
         <HBox spacing="20" alignment="CENTER" style="-fx-padding: 10;">
-            <Button text="Start" fx:id="launchGameButton" />
-            <Button text="Ajouter un Joueur" fx:id="addPlayerBtn" />
+            <Button text="Start" fx:id="launchGameButton"                             style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-pref-width: 200;" />
+            <Button text="Ajouter un Joueur" fx:id="addPlayerBtn"                             style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 30; -fx-pref-width: 200;" />
         </HBox>
     </bottom>
 </BorderPane>

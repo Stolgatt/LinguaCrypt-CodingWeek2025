@@ -1,13 +1,11 @@
-package linguacrypt.model.AI;
+package linguacrypt.model.players.AI;
 
-import linguacrypt.model.Card;
-import linguacrypt.model.Grid;
-import linguacrypt.model.Hint;
-import linguacrypt.model.Player;
+import linguacrypt.model.game.Grid;
+import linguacrypt.model.game.Hint;
+import linguacrypt.model.players.Player;
 import linguacrypt.model.statistique.PlayerStat;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 

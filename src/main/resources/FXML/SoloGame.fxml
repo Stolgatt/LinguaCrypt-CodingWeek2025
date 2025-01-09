@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="linguacrypt.view.SoloGameView">
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="linguacrypt.view.gameView.SoloGameView">
     <top>
         <VBox>
             <fx:include fx:id="menuBar" source="/FXML/menuBar.fxml"/>

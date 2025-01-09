@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="linguacrypt.view.GameView">
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="linguacrypt.view.gameView.GameView">
     <top>
         <VBox>
             <fx:include fx:id="menuBar" source="/FXML/menuBar.fxml"/>

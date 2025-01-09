@@ -1,4 +1,4 @@
-package linguacrypt.model;
+package linguacrypt.model.players;
 
 import linguacrypt.model.statistique.PlayerStat;
 

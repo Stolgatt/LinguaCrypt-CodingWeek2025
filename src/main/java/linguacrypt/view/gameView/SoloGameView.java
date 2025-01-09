@@ -1,4 +1,4 @@
-package linguacrypt.view;
+package linguacrypt.view.gameView;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -9,9 +9,14 @@ import javafx.scene.layout.VBox;
 import linguacrypt.ApplicationContext;
 import linguacrypt.controller.TimerController;
 import linguacrypt.model.*;
-import linguacrypt.model.AI.AISpy;
+import linguacrypt.model.Game;
+import linguacrypt.model.game.Grid;
+import linguacrypt.model.game.Card;
+import linguacrypt.view.DialogBox.EndGameDialog;
+import linguacrypt.view.DialogBox.EndOfTurnDialog;
+import linguacrypt.view.MenuBarView;
+import linguacrypt.view.Observer;
 
-import java.io.IOException;
 import java.util.function.BiConsumer;
 
 public class SoloGameView implements Observer {
@@ -44,7 +49,7 @@ public class SoloGameView implements Observer {
     public void setGame(Game game) {
         this.game = game;
         game.ajouterObservateur(this);
-        initializeGrid(game.getGrid());
+        GameViewUtils.initializeWordGrid(gameGrid,game.getGrid(),onCardClicked);
         reagir();
     }
     public void setOnNextTurn(Runnable onNextTurn) {
@@ -67,23 +72,6 @@ public class SoloGameView implements Observer {
         });
     }
 
-    private void initializeGrid(Grid grid){
-        // Parcours et affichage des cartes dans la grille
-        for (int row = 0; row < grid.getGrid().length; row++) {
-            for (int col = 0; col < grid.getGrid()[row].length; col++) {
-                Card card = grid.getCard(row, col);
-                Button cardButton = new Button(card.getWord());
-                cardButton.setPrefSize(100, 50);
-
-                // Ajout d'un événement clic
-                int finalRow = row;
-                int finalCol = col;
-                cardButton.setOnAction(e -> {if (onCardClicked != null) onCardClicked.accept(finalRow, finalCol);});
-
-                gameGrid.add(cardButton, col, row);
-            }
-        }
-    }
 
     public void reagir() {
         if (game.getgConfig().getGameMode()!=2){return;}
@@ -168,32 +156,11 @@ public class SoloGameView implements Observer {
                 drawSpyDialogueBox();
             }
         }
-        /*
-        else if (game.isTurnBegin()==2){
-            btnGuess.setVisible(false);
-            btnNextTurn.setVisible(true);
-        }
-        else{
-            btnNextTurn.setVisible(false);
-            btnGuess.setVisible(true);
-        }*/
-
         //draw the actual hint
         String message = game.hintToString();
         labelHint.setText("Indice pour ce tour : " + message);
 
         //check if game is over
-        /*
-        if (game.getIsWin() != -1 && game.getIsWin() != 2){
-            timerController.stopTimer();
-            drawWinningDialogueBox();
-            return;
-        }
-        if (game.getIsWin() == 2){
-            timerController.stopTimer();
-            drawLoosingDialogueBox();
-        }
-         */
         if (game.getIsWin()!=-1){
             EndGameDialog.showEndGameDialog(game);
         }
@@ -282,7 +249,7 @@ public class SoloGameView implements Observer {
                 try {
                     int number = Integer.parseInt(numberText);
                     if (word.trim().isEmpty() || word.contains(" ")) {
-                        showError("Le mot doit être unique et sans espaces.");
+                        GameViewUtils.showError("Le mot doit être unique et sans espaces.");
                         return null;
                     }
                     if (number > 0) {
@@ -294,11 +261,11 @@ public class SoloGameView implements Observer {
                         resetTimer();
                         return null;
                     } else {
-                        showError("Le nombre doit être un entier positif.");
+                        GameViewUtils.showError("Le nombre doit être un entier positif.");
                         return null;
                     }
                 } catch (NumberFormatException e) {
-                    showError("Veuillez entrer un entier valide.");
+                    GameViewUtils.showError("Veuillez entrer un entier valide.");
                 }
             }
             return null;
@@ -307,58 +274,8 @@ public class SoloGameView implements Observer {
         game.notifierObservateurs();
     }
 
-    public void drawWinningDialogueBox() {
-        Dialog<Void> dialog = new Dialog<>();
-        dialog.setTitle("Winning Dialogue");
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setAlignment(Pos.CENTER);
-        String message = "";
-        if (game.isWinning() == 0){
-            message = "L'équipe bleue a gagné !";
-        }
-        else{
-            message = "L'équipe rouge a gagné !";
-        }
-        Label messageLabel = new Label(message);
-        grid.add(messageLabel, 0, 0);
-        dialog.getDialogPane().setContent(grid);
-        ButtonType okButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(okButtonType);
-        dialog.showAndWait();
-    }
-
-    public void drawLoosingDialogueBox() {
-        Dialog<Void> dialog = new Dialog<>();
-        dialog.setTitle("Loosing Dialogue");
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setAlignment(Pos.CENTER);
-        String message = "";
-        if (game.getTurn() == 0){
-            message = "L'équipe bleue a perdu ! Elle a trouvé l'assassin ...";
-        }
-        else{
-            message =  "L'équipe rouge a perdu ! Elle a trouvé l'assassin ...";
-        }
-        Label messageLabel = new Label(message);
-        grid.add(messageLabel, 0, 0);
-        dialog.getDialogPane().setContent(grid);
-        ButtonType okButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(okButtonType);
-        dialog.showAndWait();
-    }
-
     public TimerController getTimerController() {return timerController;}
 
 
-    private void showError(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
+
 }

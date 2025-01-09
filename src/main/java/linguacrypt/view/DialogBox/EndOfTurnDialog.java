@@ -1,4 +1,4 @@
-package linguacrypt.view;
+package linguacrypt.view.DialogBox;
 
 import javafx.application.Platform;
 import javafx.scene.control.Alert;

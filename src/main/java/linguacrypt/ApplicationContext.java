@@ -4,8 +4,6 @@ import java.io.IOException;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import linguacrypt.controller.*;
@@ -13,12 +11,12 @@ import linguacrypt.model.Game;
 import linguacrypt.networking.Client;
 import linguacrypt.networking.Server;
 import linguacrypt.view.EditTeamView;
-import linguacrypt.view.GameView;
+import linguacrypt.view.gameView.GameView;
 import linguacrypt.view.LobbyView;
 import linguacrypt.view.MainMenuView;
 import linguacrypt.view.MultiplayerMenuView;
 import linguacrypt.view.ProfileMenuView;
-import linguacrypt.view.*;
+import linguacrypt.view.gameView.SoloGameView;
 
 public class ApplicationContext {
 
@@ -180,6 +178,9 @@ public class ApplicationContext {
         editTeamController.setGame(game);
         profileMenuController.setGame(game);
         profileMenuView.setGame(game);
+        soloGameController.setGame(game);
+        soloGameView.setGame(game);
+        soloGameView.setTimer();
     }
 
     public Game getGame(){

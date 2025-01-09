@@ -1,4 +1,4 @@
-package linguacrypt.model.AI;
+package linguacrypt.model.players.AI;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

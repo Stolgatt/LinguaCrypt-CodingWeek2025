@@ -16,7 +16,7 @@
     </top>
     <center>
         <VBox alignment="CENTER" spacing="10" styleClass="stat-menu">
-            <Label fx:id ="statTitle" text="Statistiques du Joueur" styleClass="menu-title" />
+            <Label fx:id ="statTitle" text="Veuillez choisir un Joueur pour voir ses statistiques" styleClass="menu-title" />
             <GridPane hgap="20" vgap="10" alignment="CENTER" styleClass="stat-grid">
                 <Label text="Parties Jouées :" styleClass="stat-label" GridPane.rowIndex="0" GridPane.columnIndex="0" />
                 <Label fx:id="partiesJoueesLabel" styleClass="stat-value" GridPane.rowIndex="0" GridPane.columnIndex="1" />
