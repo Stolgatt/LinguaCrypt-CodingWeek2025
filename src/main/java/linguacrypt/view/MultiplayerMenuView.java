@@ -156,7 +156,7 @@ public class MultiplayerMenuView {
             context.setServer(server);
             context.getLobbyView().initialize();
             context.getRoot().setCenter(context.getLobbyNode());
-            context.getLobbyView().addPlayer(nickname);
+            context.getLobbyView().addPlayer(nickname, 0);
         } catch (IOException e) {
             System.out.println("Error starting server: " + e.getMessage());
         }

@@ -1,6 +1,7 @@
 package linguacrypt.networking;
 
 import linguacrypt.ApplicationContext;
+import linguacrypt.model.Game;
 
 import java.io.*;
 import java.net.Socket;
@@ -10,7 +11,7 @@ public class Client {
     private Socket socket;
     private ObjectInputStream input;
     private ObjectOutputStream output;
-    private User user; // Updated: Store the `User` instance
+    private User user; // Updated: Store the User instance
     private ApplicationContext context = ApplicationContext.getInstance();
 
     public Client(String serverAddress, int port, String nickname, int teamId) throws IOException {
@@ -51,7 +52,7 @@ public class Client {
             case CHAT:
                 System.out.println(message.getNickname() + ": " + message.getContent());
                 Platform.runLater(() -> {
-                    context.getLobbyView().addChatMessage(message.getNickname(), message.getContent());
+                    context.getLobbyView().addChatMessage(message.getNickname(), message.getContent(), message.getTeam());
                 });
                 break;
             case CONNECT_OK:
@@ -63,22 +64,44 @@ public class Client {
             case USER_JOINED:
                 System.out.println(message.getNickname() + " joined the game.");
                 Platform.runLater(() -> {
-                    context.getLobbyView().addPlayer(message.getNickname());
+                    context.getLobbyView().addPlayer(message.getNickname(), message.getTeam());
                 });
                 break;
             case USER_LEFT:
                 System.out.println(message.getNickname() + " left the game.");
                 Platform.runLater(() -> {
-                    context.getLobbyView().removePlayer(message.getNickname());
+                    context.getLobbyView().removePlayer(message.getNickname(), message.getTeam());
                 });
                 break;
             case PLAYER_LIST:
-                
+
                 Platform.runLater(() -> {
                     ApplicationContext.getInstance().getLobbyView().refreshUserList();
                     ApplicationContext.getInstance().getLobbyView().handlePlayerListUpdate(message.getContent());
                 });
                 break;
+            case GAME_START:
+                System.out.println("Game is starting...");
+
+                // Deserialize the game object
+                byte[] serializedGame = message.getSerializedGame();
+                try (ByteArrayInputStream bis = new ByteArrayInputStream(serializedGame);
+                        ObjectInputStream ois = new ObjectInputStream(bis)) {
+                    Game game = (Game) ois.readObject();
+
+                    // Update the client's game instance
+                    ApplicationContext.getInstance().setGame(game);
+
+                    // Transition to the game view
+                    Platform.runLater(() -> {
+                        ApplicationContext.getInstance().getRoot().setCenter(
+                                ApplicationContext.getInstance().getGameNode());
+                    });
+                } catch (IOException | ClassNotFoundException e) {
+                    System.out.println("Error deserializing game: " + e.getMessage());
+                }
+                break;
+
             default:
                 System.out.println("Unhandled message type: " + message.getType());
         }
@@ -98,8 +121,8 @@ public class Client {
     }
 
     public void disconnect() {
-            sendMessage(new Message(MessageType.DISCONNECT, user.getNickname(), ""));
-            closeConnection();
+        sendMessage(new Message(MessageType.DISCONNECT, user.getNickname(), ""));
+        closeConnection();
     }
 
     public User getUser() {

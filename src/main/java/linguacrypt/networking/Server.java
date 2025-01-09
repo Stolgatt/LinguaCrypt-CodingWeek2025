@@ -38,7 +38,7 @@ public class Server {
                 while (true) {
                     Socket clientSocket = serverSocket.accept();
                     System.out.println("New client connected: " + clientSocket.getInetAddress());
-
+                    
                     // Create a new ClientHandler for the connected client
                     ClientHandler clientHandler = new ClientHandler(clientSocket);
                     clients.add(clientHandler);
@@ -73,6 +73,11 @@ public class Server {
     public void broadcastMessage(Message message) {
         for (ClientHandler client : clients) {
             client.sendMessage(message);
+        }
+
+        // Let the server (host) handle the message as well
+        if (message.getType() == MessageType.CHAT || message.getType() == MessageType.USER_JOINED) {
+            ApplicationContext.getInstance().getLobbyView().addChatMessage(message.getNickname(), message.getContent(), message.getTeam());
         }
     }
 
@@ -122,7 +127,7 @@ public class Server {
 
                 // Add the chat message to the LobbyView's chat area
                 Platform.runLater(() -> {
-                    context.getLobbyView().addChatMessage(message.getNickname(), message.getContent());
+                    context.getLobbyView().addChatMessage(message.getNickname(), message.getContent(), message.getTeam());
                 });
                 break;
 

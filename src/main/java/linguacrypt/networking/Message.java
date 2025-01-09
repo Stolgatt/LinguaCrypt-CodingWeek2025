@@ -8,6 +8,7 @@ public class Message implements Serializable {
     private String nickname;
     private String content;
     private int team; // Add this field for the team
+    private byte[] serializedGame;
 
     // Constructors
     public Message(MessageType type, String nickname, String content, int team) {
@@ -56,6 +57,14 @@ public class Message implements Serializable {
 
     public void setTeam(int team) { // Setter for team
         this.team = team;
+    }
+
+    public byte[] getSerializedGame() {
+        return serializedGame;
+    }
+
+    public void setSerializedGame(byte[] serializedGame) {
+        this.serializedGame = serializedGame;
     }
 
     @Override
