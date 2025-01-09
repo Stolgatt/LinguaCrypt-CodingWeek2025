@@ -1,5 +1,6 @@
 package linguacrypt.view.gameView;
 
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import linguacrypt.model.game.Card;
@@ -24,5 +25,12 @@ public class GameViewUtils {
                 gameGrid.add(cardButton, col, row);
             }
         }
+    }
+    public static void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

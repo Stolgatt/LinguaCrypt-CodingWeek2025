@@ -265,7 +265,7 @@ public class GameView implements Observer {
                 try {
                     int number = Integer.parseInt(numberText);
                     if (word.trim().isEmpty() || word.contains(" ")) {
-                        showError("Le mot doit être unique et sans espaces.");
+                        GameViewUtils.showError("Le mot doit être unique et sans espaces.");
                         return null;
                     }
                     if (number > 0) {
@@ -276,11 +276,11 @@ public class GameView implements Observer {
                         resetTimer();
                         return null;
                     } else {
-                        showError("Le nombre doit être un entier positif.");
+                        GameViewUtils.showError("Le nombre doit être un entier positif.");
                         return null;
                     }
                 } catch (NumberFormatException e) {
-                    showError("Veuillez entrer un entier valide.");
+                    GameViewUtils.showError("Veuillez entrer un entier valide.");
                 }
             }
             return null;
@@ -331,15 +331,6 @@ public class GameView implements Observer {
         ButtonType okButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(okButtonType);
         dialog.showAndWait();
-    }
-
-
-    private void showError(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 
     public void nextTurn() {

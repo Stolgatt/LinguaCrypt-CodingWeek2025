@@ -249,7 +249,7 @@ public class SoloGameView implements Observer {
                 try {
                     int number = Integer.parseInt(numberText);
                     if (word.trim().isEmpty() || word.contains(" ")) {
-                        showError("Le mot doit être unique et sans espaces.");
+                        GameViewUtils.showError("Le mot doit être unique et sans espaces.");
                         return null;
                     }
                     if (number > 0) {
@@ -261,11 +261,11 @@ public class SoloGameView implements Observer {
                         resetTimer();
                         return null;
                     } else {
-                        showError("Le nombre doit être un entier positif.");
+                        GameViewUtils.showError("Le nombre doit être un entier positif.");
                         return null;
                     }
                 } catch (NumberFormatException e) {
-                    showError("Veuillez entrer un entier valide.");
+                    GameViewUtils.showError("Veuillez entrer un entier valide.");
                 }
             }
             return null;
@@ -274,58 +274,8 @@ public class SoloGameView implements Observer {
         game.notifierObservateurs();
     }
 
-    public void drawWinningDialogueBox() {
-        Dialog<Void> dialog = new Dialog<>();
-        dialog.setTitle("Winning Dialogue");
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setAlignment(Pos.CENTER);
-        String message = "";
-        if (game.isWinning() == 0){
-            message = "L'équipe bleue a gagné !";
-        }
-        else{
-            message = "L'équipe rouge a gagné !";
-        }
-        Label messageLabel = new Label(message);
-        grid.add(messageLabel, 0, 0);
-        dialog.getDialogPane().setContent(grid);
-        ButtonType okButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(okButtonType);
-        dialog.showAndWait();
-    }
-
-    public void drawLoosingDialogueBox() {
-        Dialog<Void> dialog = new Dialog<>();
-        dialog.setTitle("Loosing Dialogue");
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setAlignment(Pos.CENTER);
-        String message = "";
-        if (game.getTurn() == 0){
-            message = "L'équipe bleue a perdu ! Elle a trouvé l'assassin ...";
-        }
-        else{
-            message =  "L'équipe rouge a perdu ! Elle a trouvé l'assassin ...";
-        }
-        Label messageLabel = new Label(message);
-        grid.add(messageLabel, 0, 0);
-        dialog.getDialogPane().setContent(grid);
-        ButtonType okButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(okButtonType);
-        dialog.showAndWait();
-    }
-
     public TimerController getTimerController() {return timerController;}
 
 
-    private void showError(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
+
 }
