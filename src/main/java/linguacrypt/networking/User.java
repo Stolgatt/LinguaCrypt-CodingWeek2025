@@ -10,6 +10,7 @@ public class User implements Serializable {
     private String nickname;
     private InetAddress address;
     private int teamId;
+    private Player player;
 
     public User(String nickname, InetAddress address, int teamId) {
         this.nickname = nickname;
@@ -42,10 +43,14 @@ public class User implements Serializable {
         this.teamId = teamId;
     }
 
-    // Convert User to Player
     public Player toPlayer() {
-        Player player = new Player(nickname, false,"", new PlayerStat()); // Assuming Player has a constructor that accepts a nickname
-        //player.setTeamId(teamId); // Assuming Player has a setTeamId method
+        if (player == null) { // Avoid reinitialization
+            player = new Player(nickname, false, "", new PlayerStat());
+        }
+        return player;
+    }
+
+    public Player getPlayer(){
         return player;
     }
 

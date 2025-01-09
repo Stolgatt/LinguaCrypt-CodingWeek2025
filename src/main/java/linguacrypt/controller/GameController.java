@@ -1,6 +1,13 @@
 package linguacrypt.controller;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
+import linguacrypt.ApplicationContext;
 import linguacrypt.model.Game;
+import linguacrypt.networking.Message;
+import linguacrypt.networking.MessageType;
 import linguacrypt.view.DialogBox.EndOfTurnDialog;
 import linguacrypt.view.gameView.GameView;
 import linguacrypt.view.gameView.GameViewUtils;
@@ -8,6 +15,7 @@ import linguacrypt.view.gameView.GameViewUtils;
 public class GameController {
     private Game game;
     private GameView view;
+    private ApplicationContext context = ApplicationContext.getInstance();
     public GameController(Game game,GameView view) {
         this.game = game;
         setView(view);
@@ -31,14 +39,19 @@ public class GameController {
 
     public void nextTurn() {
         int currentTurn = game.getTurn();
+        game.setCurrentHint(null);
         game.setTurn((currentTurn + 1) % 2);
         game.setTurnBegin(0);
         game.setNbTour(game.getNbTour() + 1);
+        context.broadcastGameUpdate();
         game.notifierObservateurs();
     }
 
     public void CardClicked(int row, int col) {
-        if (game.isTurnBegin()!=2){return;}
+        if (game.isTurnBegin()!=2 || (context.getServer() != null && context.getServer().getServerUser().getPlayer().getIsSpy())
+                                  || (context.getClient() != null && context.getClient().getUser().getPlayer().getIsSpy())
+                                  || (context.getServer() != null && context.getServer().getServerUser().getTeamId() != game.getTurn())
+                                  || (context.getClient() != null && context.getClient().getUser().getTeamId() != game.getTurn())){return;}
         if (game.getGrid().getCard(row, col).isSelected()){return;}
         game.flipCard(row,col);
 
@@ -71,6 +84,8 @@ public class GameController {
 
         }
 
+        
+        context.broadcastGameUpdate();
         game.notifierObservateurs();
     }
 
@@ -95,9 +110,14 @@ public class GameController {
             return;
         }
         game.setTurnBegin(2);
-        game.setCurrentHint(hint);
 
+        game.setCurrentHint(hint);
         game.setCurrentNumberWord(number);
+
+    
+        context.broadcastGameUpdate();
         game.notifierObservateurs();
     }
+
+    
 }
