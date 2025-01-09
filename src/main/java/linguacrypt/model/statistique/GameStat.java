@@ -1,7 +1,5 @@
 package linguacrypt.model.statistique;
 
-import linguacrypt.model.Theme;
-
 public class GameStat {
     private long duree;
     private int equipeGagnante;

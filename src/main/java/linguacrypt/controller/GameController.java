@@ -1,8 +1,7 @@
 package linguacrypt.controller;
 
 import linguacrypt.model.Game;
-import linguacrypt.model.GameConfiguration;
-import linguacrypt.view.EndOfTurnDialog;
+import linguacrypt.view.DialogBox.EndOfTurnDialog;
 import linguacrypt.view.GameView;
 
 public class GameController {

@@ -9,9 +9,11 @@ import javafx.scene.layout.VBox;
 import linguacrypt.ApplicationContext;
 import linguacrypt.controller.TimerController;
 import linguacrypt.model.*;
-import linguacrypt.model.AI.AISpy;
+import linguacrypt.model.Game;
+import linguacrypt.model.Game.Grid;
+import linguacrypt.view.DialogBox.EndGameDialog;
+import linguacrypt.view.DialogBox.EndOfTurnDialog;
 
-import java.io.IOException;
 import java.util.function.BiConsumer;
 
 public class SoloGameView implements Observer {

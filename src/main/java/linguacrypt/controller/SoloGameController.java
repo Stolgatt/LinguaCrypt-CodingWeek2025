@@ -1,11 +1,9 @@
 package linguacrypt.controller;
 
-import linguacrypt.model.AI.AIAgent;
-import linguacrypt.model.AI.AISpy;
+import linguacrypt.model.Player.AI.AIAgent;
 import linguacrypt.model.Game;
-import linguacrypt.model.Hint;
-import linguacrypt.view.EndOfTurnDialog;
-import linguacrypt.view.GameView;
+import linguacrypt.model.Game.Hint;
+import linguacrypt.view.DialogBox.EndOfTurnDialog;
 import linguacrypt.view.SoloGameView;
 
 import java.io.IOException;

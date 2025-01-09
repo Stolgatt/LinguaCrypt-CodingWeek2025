@@ -2,7 +2,7 @@ package linguacrypt.utils;
 
 import linguacrypt.model.Game;
 import linguacrypt.model.GameConfiguration;
-import linguacrypt.model.Player;
+import linguacrypt.model.Player.Player;
 
 import java.io.*;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package linguacrypt.model;
+package linguacrypt.model.Game;
 
 public class Hint {
     private String word;

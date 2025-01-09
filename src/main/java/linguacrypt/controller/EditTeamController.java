@@ -1,17 +1,9 @@
 package linguacrypt.controller;
 
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 import linguacrypt.ApplicationContext;
 import linguacrypt.model.Game;
-import linguacrypt.model.Player;
 import linguacrypt.view.EditTeamView;
-import linguacrypt.view.GameView;
-
-import java.io.IOException;
 
 public class EditTeamController {
     private Game game;

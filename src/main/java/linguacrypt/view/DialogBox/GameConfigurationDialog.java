@@ -1,4 +1,4 @@
-package linguacrypt.view;
+package linguacrypt.view.DialogBox;
 
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -6,7 +6,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.geometry.Insets;
 import javafx.application.Platform;
 import linguacrypt.model.GameConfiguration;
-import linguacrypt.model.Theme;
+import linguacrypt.model.Game.Theme;
 
 import java.util.Optional;
 import java.util.List;

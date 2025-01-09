@@ -1,4 +1,4 @@
-package linguacrypt.model;
+package linguacrypt.model.Game;
 
 import java.io.Serializable;
 import java.util.List;

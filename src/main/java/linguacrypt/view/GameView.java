@@ -6,21 +6,17 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.fxml.FXMLLoader;
 import linguacrypt.ApplicationContext;
-import linguacrypt.controller.GameController;
 import linguacrypt.controller.TimerController;
-import linguacrypt.model.Card;
+import Card;
 import linguacrypt.model.GameConfiguration;
-import linguacrypt.model.Grid;
+import linguacrypt.model.Game.Grid;
 import linguacrypt.model.Game;
 import linguacrypt.controller.MenuBarController;
+import linguacrypt.view.DialogBox.EndOfTurnDialog;
 
-import java.io.IOException;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class GameView implements Observer {
 

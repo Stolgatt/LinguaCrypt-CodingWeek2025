@@ -1,4 +1,4 @@
-package linguacrypt.view;
+package linguacrypt.view.DialogBox;
 
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import linguacrypt.model.GameConfiguration;
-import linguacrypt.model.Theme;
+import linguacrypt.model.Game.Theme;
 import linguacrypt.utils.ThemeLoader;
 
 import java.util.List;

@@ -1,7 +1,8 @@
 package linguacrypt.model;
 
-import linguacrypt.model.AI.AIAgent;
-import linguacrypt.model.AI.AISpy;
+import linguacrypt.model.Player.AI.AIAgent;
+import linguacrypt.model.Player.AI.AISpy;
+import linguacrypt.model.Player.Player;
 import linguacrypt.model.statistique.GameStat;
 import linguacrypt.model.statistique.PlayerStat;
 import linguacrypt.utils.StatLoader;
@@ -13,7 +14,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.List;
-import linguacrypt.model.Theme;
 
 public class Game implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -182,7 +182,7 @@ public class Game implements Serializable {
         return this.gConfig;
     }
 
-    public int addPlayer(int teamId,Player player) throws IOException, ClassNotFoundException {
+    public int addPlayer(int teamId, Player player) throws IOException, ClassNotFoundException {
         boolean alreadyExists = false;
         ArrayList<Player> playerList = gConfig.getPlayerList();
         if (playerList == null){

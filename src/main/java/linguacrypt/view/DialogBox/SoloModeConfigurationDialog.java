@@ -1,16 +1,14 @@
-package linguacrypt.view;
+package linguacrypt.view.DialogBox;
 
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import linguacrypt.ApplicationContext;
-import linguacrypt.model.AI.AIAgent;
-import linguacrypt.model.AI.AISpy;
 import linguacrypt.model.Game;
 import linguacrypt.model.GameConfiguration;
-import linguacrypt.model.Player;
-import linguacrypt.model.Theme;
+import linguacrypt.model.Player.Player;
+import linguacrypt.model.Game.Theme;
 import linguacrypt.model.statistique.PlayerStat;
 import linguacrypt.utils.ThemeLoader;
 
