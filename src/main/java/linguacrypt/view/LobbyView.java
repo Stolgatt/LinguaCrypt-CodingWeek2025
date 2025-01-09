@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,6 +32,12 @@ public class LobbyView {
     @FXML
     private ListView<String> listViewRedTeam;
 
+    @FXML
+    private Button setBlueSpy;
+
+    @FXML
+    private Button setRedSpy;
+
 @FXML
 private ListView<HBox> listViewChat;
 
@@ -50,6 +57,7 @@ private ListView<HBox> listViewChat;
         listViewBlueTeam.setItems(blueTeamList);
         listViewRedTeam.setItems(redTeamList);
 
+
         // Refresh the user lists based on the current game instance
         refreshUserList();
 
@@ -68,6 +76,8 @@ private ListView<HBox> listViewChat;
         } else if (client != null) {
             labelServerIP.setText("Connected to server at: " + client.getSocket().getInetAddress().getHostAddress());
             buttonStartGame.setVisible(false); // Hide start game button for clients
+            setBlueSpy.setVisible(false);
+            setRedSpy.setVisible(false);
         }
     }
 
@@ -83,6 +93,33 @@ private ListView<HBox> listViewChat;
                 redTeamList.add(player.getName());
             }
         }
+    }
+
+    @FXML
+    private void setBlueSpy(){
+        ArrayList<Player> players = context.getGame().getBlueTeam().getPlayers();
+        for (Player player : players) {
+            if(player.getName() == listViewBlueTeam.getSelectionModel().getSelectedItem()){
+                player.setIsSpy(true);
+                
+            }
+        }
+        context.getGame().notifierObservateurs();
+        context.broadcastGameUpdate();
+    }
+    @FXML
+    private void setRedSpy(){
+
+        ArrayList<Player> players = context.getGame().getBlueTeam().getPlayers();
+        for (Player player : players) {
+            if(player.getName() == listViewRedTeam.getSelectionModel().getSelectedItem()){
+                player.setIsSpy(true);
+                
+            }
+        }
+        context.getGame().notifierObservateurs();
+        context.broadcastGameUpdate();
+        
     }
 
     @FXML
@@ -137,8 +174,11 @@ private ListView<HBox> listViewChat;
                 return;
             }
 
+            game.notifierObservateurs();
             // Broadcast the GAME_START message to all clients
             context.getServer().broadcastMessage(message);
+
+
             // Switch to game view
             context.getRoot().setCenter(context.getGameNode());
         }

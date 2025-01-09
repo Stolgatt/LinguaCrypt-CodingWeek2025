@@ -2,6 +2,7 @@ package linguacrypt.model;
 
 import linguacrypt.model.players.*;
 import linguacrypt.model.players.AI.*;
+import linguacrypt.ApplicationContext;
 import linguacrypt.model.game.*;
 import linguacrypt.model.statistique.*;
 
@@ -14,6 +15,9 @@ import java.io.ObjectInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+
+import javafx.application.Application;
+
 import java.util.List;
 
 public class Game implements Serializable {
@@ -299,4 +303,20 @@ public class Game implements Serializable {
         }
         return c;
     }
+
+    public Player getPlayerByNickname(String nickname) {
+        for (Player player : ApplicationContext.getInstance().getGame().getBlueTeam().getPlayers()) {
+            if (player.getName().equals(nickname)) {
+                return player;
+            }
+        }
+        for (Player player : ApplicationContext.getInstance().getGame().getBlueTeam().getPlayers()) {
+            if (player.getName().equals(nickname)) {
+                return player;
+            }
+        }
+        return null; // Not found
+    }
+
+
 }

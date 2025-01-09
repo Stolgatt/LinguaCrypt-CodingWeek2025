@@ -28,6 +28,13 @@ public class Player implements Serializable{
     public void setUrlAvatar(String urlAvatar) {this.urlAvatar = urlAvatar;}
     public PlayerStat getStat() {return playerStat;}
 
+    public void copyFrom(Player other) {
+        this.name = other.name;
+        this.isSpy = other.isSpy;
+        this.playerStat = other.playerStat; // Assuming deep copy or reference sharing is acceptable
+        // Copy any other relevant fields
+    }
+
 
 
 }
