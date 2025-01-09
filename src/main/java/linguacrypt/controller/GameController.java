@@ -49,7 +49,9 @@ public class GameController {
 
     public void CardClicked(int row, int col) {
         if (game.isTurnBegin()!=2 || (context.getServer() != null && context.getServer().getServerUser().getPlayer().getIsSpy())
-                                  || (context.getClient() != null && context.getClient().getUser().getPlayer().getIsSpy())){return;}
+                                  || (context.getClient() != null && context.getClient().getUser().getPlayer().getIsSpy())
+                                  || (context.getServer() != null && context.getServer().getServerUser().getTeamId() != game.getTurn())
+                                  || (context.getClient() != null && context.getClient().getUser().getTeamId() != game.getTurn())){return;}
         if (game.getGrid().getCard(row, col).isSelected()){return;}
         game.flipCard(row,col);
 

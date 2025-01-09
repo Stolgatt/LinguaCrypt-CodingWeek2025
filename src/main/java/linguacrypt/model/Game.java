@@ -315,6 +315,7 @@ public class Game implements Serializable {
                 return player;
             }
         }
+        System.out.println(nickname + "not found");
         return null; // Not found
     }
 

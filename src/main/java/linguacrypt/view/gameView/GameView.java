@@ -282,26 +282,45 @@ public class GameView implements Observer {
         }
 
         //Draw UI
-        if (game.isTurnBegin()==2 || (isMulti && !isSpy)){
-            drawAgentUI();
-            btnNextTurn.setVisible(true);
+
+        //In multi, check if its the good team to play, if not : disable all button
+        if( (context.getServer() != null && context.getServer().getServerUser().getTeamId() != game.getTurn())
+        || (context.getClient() != null && context.getClient().getUser().getTeamId() != game.getTurn())){
+            btnNextTurn.setVisible(false);
             btnGuess.setVisible(false);
             hintField.setText("");
             countField.setText("");
             hintField.setVisible(false);
             countField.setVisible(false);
-        }
-        else{
-            if(!isMulti || isSpy){
-
-                btnNextTurn.setVisible(false);
-                btnGuess.setVisible(true);
-                hintField.setVisible(true);
-                countField.setVisible(true);
-                drawSpyUI();
+            if((context.getServer() != null && context.getServer().getServerUser().getTeamId() != game.getTurn())
+            || (context.getClient() != null && context.getClient().getUser().getTeamId() != game.getTurn())){
+                whoPlays.setText("Waiting" + ((game.getTurn() != 0) ? " Blue " : " Red ") + "team to play");
             }
-        }
+            labelHint.setText("");
+        }else{
 
+            
+            if (game.isTurnBegin()==2 || (isMulti && !isSpy)){
+                drawAgentUI();
+                btnNextTurn.setVisible(true);
+                btnGuess.setVisible(false);
+                hintField.setText("");
+                countField.setText("");
+                hintField.setVisible(false);
+                countField.setVisible(false);
+            }
+            else{
+                if(!isMulti || isSpy){
+                    
+                    btnNextTurn.setVisible(false);
+                    btnGuess.setVisible(true);
+                    hintField.setVisible(true);
+                    countField.setVisible(true);
+                    drawSpyUI();
+                }
+            }
+            
+        }
         //check if game is over
         if (game.getIsWin()!=-1){
             EndGameDialog.showEndGameDialog(game);
@@ -476,6 +495,7 @@ public class GameView implements Observer {
     }
 
     public void drawSpyUI(){
+
         String message ="";
         Player spy = null;
         if (game.getTurn() == 0){
@@ -501,7 +521,10 @@ public class GameView implements Observer {
         whoPlays.setText(message);
         whoPlays.setFont(Font.font(customFont.getName(), customFont.getSize() + 20));
         whoPlays.setTextFill(Color.WHITE);
-
+        if((context.getServer() != null && context.getServer().getServerUser().getTeamId() != game.getTurn())
+        || (context.getClient() != null && context.getClient().getUser().getTeamId() != game.getTurn())){
+            whoPlays.setText("Waiting" + ((game.getTurn() != 0) ? " Blue " : " Red ") + "team to play");
+        }
         labelHint.setText("");
     }
 }

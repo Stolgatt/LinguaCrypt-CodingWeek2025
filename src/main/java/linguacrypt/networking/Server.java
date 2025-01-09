@@ -100,16 +100,21 @@ public class Server {
     private void addUserToGame(User user) {
         Game game = context.getGame();
         if (game != null) {
-            // Check if the player already exists in the game
-            Player existingPlayer = game.getPlayerByNickname(user.getNickname());
-            if (existingPlayer == null) {
+            Player player = game.getPlayerByNickname(user.getNickname());
+            if (player == null) {
+                // Create a new Player for the user if it doesn't already exist
+                player = user.toPlayer(); // Initialize Player in User
                 if (user.getTeamId() == 0) {
-                    game.getBlueTeam().addPlayer(user.toPlayer());
+                    game.getBlueTeam().addPlayer(player);
                 } else if (user.getTeamId() == 1) {
-                    game.getRedTeam().addPlayer(user.toPlayer());
+                    game.getRedTeam().addPlayer(player);
                 }
             } else {
-                System.out.println("User already exists in the game: " + user.getNickname());
+                // If the Player already exists, ensure the User's Player is linked
+                if (user.getPlayer() == null) {
+                    user.toPlayer();
+                }
+                user.getPlayer().copyFrom(player);
             }
         }
     
