@@ -142,7 +142,7 @@ public class MultiplayerMenuView {
         GameConfiguration config = GameConfiguration.getInstance();
         config.setMaxTeamMember(teamSize);
         config.setGridSize(gridSize);
-        config.setTimeTurn(timer);
+        config.setTimeTurn(-1);
         config.setWordTheme(selectedTheme);
 
         // Create a new game instance
