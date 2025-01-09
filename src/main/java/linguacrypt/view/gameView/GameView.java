@@ -232,17 +232,15 @@ public class GameView implements Observer {
                     image = new Image(getClass().getResourceAsStream("/image/front_white.png"));
                 }
 
-// Créer une ImageView pour l'image
                 ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(100);
                 imageView.setFitHeight(50);
                 imageView.setPreserveRatio(false);
                 imageView.setSmooth(true);
 
-// Utiliser un StackPane pour superposer l'image et le texte
                 StackPane stackPane = new StackPane();
-                stackPane.setPrefSize(100, 50); // Taille du StackPane
-                stackPane.getChildren().addAll(imageView, cardLabel); // Ajouter l'image et le texte dans le StackPane
+                stackPane.setPrefSize(100, 50);
+                stackPane.getChildren().addAll(imageView, cardLabel);
                 cardLabel.setTranslateY(10);
                 cardLabel.setFont(customFont);
                 cardButton.setGraphic(stackPane);
