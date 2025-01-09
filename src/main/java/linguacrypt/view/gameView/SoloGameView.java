@@ -1,7 +1,6 @@
 package linguacrypt.view.gameView;
 
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -16,7 +15,6 @@ import linguacrypt.controller.TimerController;
 import linguacrypt.model.*;
 import linguacrypt.model.Game;
 import linguacrypt.model.game.Grid;
-import linguacrypt.model.game.Card;
 import linguacrypt.view.DialogBox.EndGameDialog;
 import linguacrypt.view.DialogBox.EndOfTurnDialog;
 import linguacrypt.view.MenuBarView;
@@ -35,8 +33,8 @@ public class SoloGameView implements Observer {
     @FXML private Button btnGuess;
     @FXML private MenuBarView menuBarController;
     @FXML private Label timerLabel;
-    @FXML private TextField hintField;
-    @FXML private TextField countField;
+    @FXML private TextField hintFieldSolo;
+    @FXML private TextField countFieldSolo;
 
     private TimerController timerController;
 
@@ -45,7 +43,6 @@ public class SoloGameView implements Observer {
     private int cardHeight = context.cardHeight;
     private int cardWidth = context.cardWidth;
     private Runnable onNextTurn;
-    private Runnable OnGiveHint;
     private BiConsumer<Integer, Integer> onCardClicked;
 
     Image frontWhite = new Image(getClass().getResourceAsStream("/image/front_white.png"));
@@ -67,8 +64,9 @@ public class SoloGameView implements Observer {
     public void setOnNextTurn(Runnable onNextTurn) {
         this.onNextTurn = onNextTurn;
     }
-    public void setOnGiveHint(Runnable OnGiveHint) {
-        this.OnGiveHint = OnGiveHint;
+    private BiConsumer<String, String> onGiveHint;
+    public void setOnGiveHint(BiConsumer<String, String> onGiveHint) {
+        this.onGiveHint = onGiveHint;
     }
     public void setonCardClicked(BiConsumer<Integer, Integer> onCardClicked) {
         this.onCardClicked = onCardClicked;
@@ -80,7 +78,8 @@ public class SoloGameView implements Observer {
             resetTimer();
         });
         btnGuess.setOnAction(e -> {
-            if (OnGiveHint != null) OnGiveHint.run();
+            btnGuess.setVisible(false);
+            if (onGiveHint != null) onGiveHint.accept(hintFieldSolo.getText(), countFieldSolo.getText());
         });
     }
 
@@ -93,7 +92,7 @@ public class SoloGameView implements Observer {
         }
         motTrouve.getChildren().clear();
         Grid grid = game.getGrid();
-        Node root = context.getGameNode();
+        Node root = context.getSoloGameNode();
 
         //BACKGROUND COLOR
         root.setStyle("-fx-background-image: url('image/bg_blue.jpg'); -fx-background-size: cover;");
@@ -152,14 +151,14 @@ public class SoloGameView implements Observer {
         if (game.getBlueTeam().getPlayers().getFirst().getIsSpy()){
             btnNextTurn.setVisible(false);
             btnGuess.setVisible(true);
-            hintField.setVisible(true);
-            countField.setVisible(true);
+            hintFieldSolo.setVisible(true);
+            countFieldSolo.setVisible(true);
         }
         else{
             btnNextTurn.setVisible(true);
             btnGuess.setVisible(false);
-            hintField.setVisible(false);
-            countField.setVisible(false);
+            hintFieldSolo.setVisible(false);
+            countFieldSolo.setVisible(false);
         }
 
         //draw the actual hint
@@ -222,66 +221,6 @@ public class SoloGameView implements Observer {
             resetTimer();
         });
     }
-
-    public void drawSpyDialogueBox() {
-        spyDialog = new Dialog<>();
-        spyDialog.setTitle("Spy Dialogue");
-
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setAlignment(Pos.CENTER);
-
-        TextField wordField = new TextField();
-        wordField.setPromptText("Entrez un mot");
-
-        TextField numberField = new TextField();
-        numberField.setPromptText("Entrez un entier positif");
-
-        grid.add(new Label("Mot:"), 0, 0);
-        grid.add(wordField, 1, 0);
-        grid.add(new Label("Entier positif:"), 0, 1);
-        grid.add(numberField, 1, 1);
-
-        spyDialog.getDialogPane().setContent(grid);
-
-        ButtonType okButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
-        spyDialog.getDialogPane().getButtonTypes().addAll(okButtonType);
-
-        spyDialog.setResultConverter(dialogButton -> {
-            if (dialogButton == okButtonType) {
-                String word = wordField.getText();
-                String numberText = numberField.getText();
-                try {
-                    int number = Integer.parseInt(numberText);
-                    if (word.trim().isEmpty() || word.contains(" ")) {
-                        GameViewUtils.showError("Le mot doit être unique et sans espaces.");
-                        return null;
-                    }
-                    if (number > 0) {
-                        game.setCurrentHint(word);
-                        game.setCurrentNumberWord(number);
-                        game.setTurnBegin(2);
-                        System.out.println("WOUH");
-                        onNextTurn.run();
-                        resetTimer();
-                        return null;
-                    } else {
-                        GameViewUtils.showError("Le nombre doit être un entier positif.");
-                        return null;
-                    }
-                } catch (NumberFormatException e) {
-                    GameViewUtils.showError("Veuillez entrer un entier valide.");
-                }
-            }
-            return null;
-        });
-        spyDialog.showAndWait();
-        game.notifierObservateurs();
-    }
-
     public TimerController getTimerController() {return timerController;}
-
-
 
 }
