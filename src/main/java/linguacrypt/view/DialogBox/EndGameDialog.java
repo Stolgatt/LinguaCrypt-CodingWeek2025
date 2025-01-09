@@ -1,4 +1,4 @@
-package linguacrypt.view;
+package linguacrypt.view.DialogBox;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.ButtonBar;
@@ -8,7 +8,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import linguacrypt.ApplicationContext;
 import linguacrypt.model.Game;
-import linguacrypt.model.Team;
+import linguacrypt.model.players.Team;
+
 
 import java.io.IOException;
 

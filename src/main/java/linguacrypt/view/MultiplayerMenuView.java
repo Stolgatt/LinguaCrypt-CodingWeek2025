@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 import linguacrypt.ApplicationContext;
 import linguacrypt.model.Game;
 import linguacrypt.model.GameConfiguration;
-import linguacrypt.model.Theme;
+import linguacrypt.model.game.Theme;
 import linguacrypt.networking.Client;
 import linguacrypt.networking.Server;
 import linguacrypt.utils.ThemeLoader;
@@ -142,7 +142,7 @@ public class MultiplayerMenuView {
         GameConfiguration config = GameConfiguration.getInstance();
         config.setMaxTeamMember(teamSize);
         config.setGridSize(gridSize);
-        config.setTimeTurn(timer);
+        config.setTimeTurn(-1);
         config.setWordTheme(selectedTheme);
 
         // Create a new game instance
@@ -156,7 +156,7 @@ public class MultiplayerMenuView {
             context.setServer(server);
             context.getLobbyView().initialize();
             context.getRoot().setCenter(context.getLobbyNode());
-            context.getLobbyView().addPlayer(nickname);
+            context.getLobbyView().addPlayer(nickname, 0);
         } catch (IOException e) {
             System.out.println("Error starting server: " + e.getMessage());
         }

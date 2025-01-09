@@ -1,13 +1,21 @@
 package linguacrypt.controller;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
+import linguacrypt.ApplicationContext;
 import linguacrypt.model.Game;
-import linguacrypt.model.GameConfiguration;
-import linguacrypt.view.EndOfTurnDialog;
-import linguacrypt.view.GameView;
+import linguacrypt.networking.Message;
+import linguacrypt.networking.MessageType;
+import linguacrypt.view.DialogBox.EndOfTurnDialog;
+import linguacrypt.view.gameView.GameView;
+import linguacrypt.view.gameView.GameViewUtils;
 
 public class GameController {
     private Game game;
     private GameView view;
+    private ApplicationContext context = ApplicationContext.getInstance();
     public GameController(Game game,GameView view) {
         this.game = game;
         setView(view);
@@ -31,14 +39,19 @@ public class GameController {
 
     public void nextTurn() {
         int currentTurn = game.getTurn();
+        game.setCurrentHint(null);
         game.setTurn((currentTurn + 1) % 2);
         game.setTurnBegin(0);
         game.setNbTour(game.getNbTour() + 1);
+        context.broadcastGameUpdate();
         game.notifierObservateurs();
     }
 
     public void CardClicked(int row, int col) {
-        if (game.isTurnBegin()!=2){return;}
+        if (game.isTurnBegin()!=2 || (context.getServer() != null && context.getServer().getServerUser().getPlayer().getIsSpy())
+                                  || (context.getClient() != null && context.getClient().getUser().getPlayer().getIsSpy())
+                                  || (context.getServer() != null && context.getServer().getServerUser().getTeamId() != game.getTurn())
+                                  || (context.getClient() != null && context.getClient().getUser().getTeamId() != game.getTurn())){return;}
         if (game.getGrid().getCard(row, col).isSelected()){return;}
         game.flipCard(row,col);
 
@@ -71,11 +84,40 @@ public class GameController {
 
         }
 
+        
+        context.broadcastGameUpdate();
         game.notifierObservateurs();
     }
 
-    public void giveHint(){
-        game.setTurnBegin(1);
+    public void giveHint(String hint, String count) {
+        if (count == null || count.isEmpty()){
+            GameViewUtils.showError("Mettez au moins 0.");
+            game.setTurnBegin(0);
+            game.notifierObservateurs();
+            return;
+        }
+        int number = Integer.parseInt(count);
+        if (hint==null || hint.isEmpty()){
+            GameViewUtils.showError("Un mot doit être donner.");
+            game.setTurnBegin(0);
+            game.notifierObservateurs();
+            return;
+        }
+        if (hint.trim().isEmpty() || hint.contains(" ")) {
+            GameViewUtils.showError("Le mot doit être unique et sans espaces.");
+            game.setTurnBegin(0);
+            game.notifierObservateurs();
+            return;
+        }
+        game.setTurnBegin(2);
+
+        game.setCurrentHint(hint);
+        game.setCurrentNumberWord(number);
+
+    
+        context.broadcastGameUpdate();
         game.notifierObservateurs();
     }
+
+    
 }

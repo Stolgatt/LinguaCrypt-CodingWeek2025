@@ -10,24 +10,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 import linguacrypt.model.Game;
-import linguacrypt.model.Player;
-import linguacrypt.model.Team;
+import linguacrypt.model.players.*;
 import linguacrypt.model.statistique.PlayerStat;
 
-import javax.imageio.ImageIO;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 public class EditTeamView implements Observer {

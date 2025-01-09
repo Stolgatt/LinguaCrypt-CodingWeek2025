@@ -1,5 +1,6 @@
 package linguacrypt.model;
 
+import linguacrypt.model.players.Player;
 import linguacrypt.model.statistique.GameStat;
 import linguacrypt.utils.StatLoader;
 
@@ -17,6 +18,7 @@ public class GameConfiguration implements Serializable {
     private int maxTeamMember;                              // Number of players in each team
     private int gridSize;                                   // size of the grid of words (gridSize * gridSize words)
     private int maxGridSize = 15;
+    private int maxPictGridSize = 7;                            
     private String wordTheme;                                   // Themes for the words the players want to use
     private String pictTheme;                                   // Themes for the pictures the players want to use
     private int nbPlayer;                                   // Total number of player
@@ -123,6 +125,10 @@ public class GameConfiguration implements Serializable {
 
     public int getMaxGridSize(){
         return maxGridSize;
+    }
+
+    public int getPictMaxGridSize(){
+        return maxPictGridSize;
     }
 
     public ArrayList<Player> getPlayerList() {return playerList;}

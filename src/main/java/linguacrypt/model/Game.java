@@ -1,9 +1,12 @@
 package linguacrypt.model;
 
-import linguacrypt.model.AI.AIAgent;
-import linguacrypt.model.AI.AISpy;
-import linguacrypt.model.statistique.GameStat;
-import linguacrypt.model.statistique.PlayerStat;
+import linguacrypt.model.players.*;
+import linguacrypt.model.players.AI.*;
+import linguacrypt.ApplicationContext;
+import linguacrypt.model.game.*;
+import linguacrypt.model.statistique.*;
+
+
 import linguacrypt.utils.StatLoader;
 import linguacrypt.utils.ThemeLoader;
 import linguacrypt.view.Observer;
@@ -12,8 +15,10 @@ import java.io.ObjectInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+
+import javafx.application.Application;
+
 import java.util.List;
-import linguacrypt.model.Theme;
 
 public class Game implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -182,7 +187,7 @@ public class Game implements Serializable {
         return this.gConfig;
     }
 
-    public int addPlayer(int teamId,Player player) throws IOException, ClassNotFoundException {
+    public int addPlayer(int teamId, Player player) throws IOException, ClassNotFoundException {
         boolean alreadyExists = false;
         ArrayList<Player> playerList = gConfig.getPlayerList();
         if (playerList == null){
@@ -275,5 +280,44 @@ public class Game implements Serializable {
 
 
     public long getStartTime() {return startTime;}
+
+    public int getRedRemaining(){
+        int c = 0;
+        for (int i = 0 ;i< grid.getGrid().length;i++){
+            for (int j = 0 ;j< grid.getGrid()[i].length;j++){
+                if (grid.getCard(i,j).getCouleur()==2 && !grid.getCard(i,j).isSelected()){
+                    c++;
+                }
+            }
+        }
+        return c;
+    }
+    public int getBlueRemaining(){
+        int c = 0;
+        for (int i = 0 ;i< grid.getGrid().length;i++){
+            for (int j = 0 ;j< grid.getGrid()[i].length;j++){
+                if (grid.getCard(i,j).getCouleur()==1 && !grid.getCard(i,j).isSelected()){
+                    c++;
+                }
+            }
+        }
+        return c;
+    }
+
+    public Player getPlayerByNickname(String nickname) {
+        for (Player player : ApplicationContext.getInstance().getGame().getBlueTeam().getPlayers()) {
+            if (player.getName().equals(nickname)) {
+                return player;
+            }
+        }
+        for (Player player : ApplicationContext.getInstance().getGame().getRedTeam().getPlayers()) {
+            if (player.getName().equals(nickname)) {
+                return player;
+            }
+        }
+        System.out.println(nickname + "not found");
+        return null; // Not found
+    }
+
 
 }

@@ -1,24 +1,26 @@
 package linguacrypt;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import linguacrypt.controller.*;
 import linguacrypt.model.Game;
 import linguacrypt.networking.Client;
+import linguacrypt.networking.Message;
+import linguacrypt.networking.MessageType;
 import linguacrypt.networking.Server;
 import linguacrypt.view.EditTeamView;
-import linguacrypt.view.GameView;
+import linguacrypt.view.gameView.GameView;
 import linguacrypt.view.LobbyView;
 import linguacrypt.view.MainMenuView;
 import linguacrypt.view.MultiplayerMenuView;
 import linguacrypt.view.ProfileMenuView;
-import linguacrypt.view.*;
+import linguacrypt.view.gameView.SoloGameView;
 
 public class ApplicationContext {
 
@@ -61,7 +63,8 @@ public class ApplicationContext {
 
     /** Modèles */
     private Game game;
-
+    public final int cardHeight = 75;
+    public final int cardWidth = 150;
     //endregion
 
     //region Constructeur
@@ -154,6 +157,56 @@ public class ApplicationContext {
         }
     }
 
+    public void  broadcastGameUpdate(){
+
+        //server-side broadcast to all client.
+        if (this.getServer() != null) {
+            System.out.println("Updating the game...");
+        Message message = new Message(MessageType.GAME_UPDATE, this.getServer().getHostNickname(), "Updating the game...");
+            server.synchronizeAllUsersWithGame();
+        // Serialize the game instance
+        Game game = this.getGame();
+        try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                ObjectOutputStream oos = new ObjectOutputStream(bos)) {
+            oos.writeObject(game);
+            oos.flush();
+
+            // Add the serialized game to the message
+            message.setSerializedGame(bos.toByteArray());
+        } catch (IOException e) {
+            System.out.println("Error serializing game: " + e.getMessage());
+            return;
+        }
+
+        // Broadcast the GAME_UPDATE message to all clients
+        this.getServer().broadcastMessage(message);
+    
+        }else if(this.getClient() != null){
+            //on the client side the message passes through the server
+
+        System.out.println("Updating the game...");
+        Message message = new Message(MessageType.GAME_UPDATE, this.getClient().getUser().getNickname(), "Updating the game...");
+
+        // Serialize the game instance
+        Game game = ApplicationContext.getInstance().getGame();
+        try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                ObjectOutputStream oos = new ObjectOutputStream(bos)) {
+            oos.writeObject(game);
+            oos.flush();
+
+            // Add the serialized game to the message
+            message.setSerializedGame(bos.toByteArray());
+        } catch (IOException e) {
+            System.out.println("Error serializing game: " + e.getMessage());
+            return;
+        }
+
+        // Broadcast the GAME_UPDATE message to all clients
+        this.getClient().sendMessage(message);
+        }
+        
+    }
+
     //region Getters et Setters
 
     public Stage getPrimaryStage() {return primaryStage;}
@@ -180,6 +233,9 @@ public class ApplicationContext {
         editTeamController.setGame(game);
         profileMenuController.setGame(game);
         profileMenuView.setGame(game);
+        soloGameController.setGame(game);
+        soloGameView.setGame(game);
+        soloGameView.setTimer();
     }
 
     public Game getGame(){

@@ -1,4 +1,6 @@
-package linguacrypt.model;
+package linguacrypt.model.players;
+
+import linguacrypt.model.Game;
 
 import java.io.Serializable;
 import java.util.ArrayList;

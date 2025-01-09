@@ -2,7 +2,7 @@ package linguacrypt.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import linguacrypt.model.Theme;
+import linguacrypt.model.game.Theme;
 
 import java.io.*;
 import java.lang.reflect.Type;

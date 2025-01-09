@@ -1,12 +1,11 @@
 package linguacrypt.controller;
 
-import linguacrypt.model.AI.AIAgent;
-import linguacrypt.model.AI.AISpy;
+import linguacrypt.model.players.AI.AIAgent;
 import linguacrypt.model.Game;
-import linguacrypt.model.Hint;
-import linguacrypt.view.EndOfTurnDialog;
-import linguacrypt.view.GameView;
-import linguacrypt.view.SoloGameView;
+import linguacrypt.model.game.Hint;
+import linguacrypt.view.DialogBox.EndOfTurnDialog;
+import linguacrypt.view.gameView.GameViewUtils;
+import linguacrypt.view.gameView.SoloGameView;
 
 import java.io.IOException;
 import java.util.List;
@@ -111,8 +110,30 @@ public class SoloGameController {
         game.notifierObservateurs();
     }
 
-    public void giveHint(){
-        game.setTurnBegin(1);
+    public void giveHint(String hint, String count) {
+        if (count == null || count.isEmpty()){
+            GameViewUtils.showError("Mettez au moins 0.");
+            game.setTurnBegin(0);
+            game.notifierObservateurs();
+            return;
+        }
+        int number = Integer.parseInt(count);
+        if (hint==null || hint.isEmpty()){
+            GameViewUtils.showError("Un mot doit être donner.");
+            game.setTurnBegin(0);
+            game.notifierObservateurs();
+            return;
+        }
+        if (hint.trim().isEmpty() || hint.contains(" ")) {
+            GameViewUtils.showError("Le mot doit être unique et sans espaces.");
+            game.setTurnBegin(0);
+            game.notifierObservateurs();
+            return;
+        }
+        game.setTurnBegin(2);
+        game.setCurrentHint(hint);
+
+        game.setCurrentNumberWord(number);
         game.notifierObservateurs();
     }
 }

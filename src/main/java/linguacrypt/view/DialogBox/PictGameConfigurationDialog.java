@@ -1,4 +1,4 @@
-package linguacrypt.view;
+package linguacrypt.view.DialogBox;
 
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -10,7 +10,7 @@ import java.util.Optional;
 
 import javafx.application.Platform;
 import linguacrypt.model.GameConfiguration;
-import linguacrypt.model.Theme;
+import linguacrypt.model.game.Theme;
 import linguacrypt.utils.ThemeLoader;
 
 /**
@@ -98,7 +98,7 @@ public class PictGameConfigurationDialog {
                     throw new IllegalArgumentException("Max team members must be between " + playerPerTeam +" and " + (nbPlayers - 2));
                 }
                 if (gridSize < 5 || gridSize > config.getMaxGridSize()) {
-                    throw new IllegalArgumentException("Grid size must be between 5 and " + config.getMaxGridSize() +".");
+                    throw new IllegalArgumentException("Grid size must be between 5 and " + config.getPictMaxGridSize() +".");
                 }
                 if (timeTurn != -1 && (timeTurn < 0 || timeTurn > config.getMaxTimeTurn())) {
                     throw new IllegalArgumentException("Time per turn must be -1 or a positive value <= " + config.getMaxTimeTurn());

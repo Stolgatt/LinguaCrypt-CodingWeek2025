@@ -1,14 +1,13 @@
 package linguacrypt.controller;
 
-import javafx.event.ActionEvent;
 import linguacrypt.ApplicationContext;
 import linguacrypt.model.Game;
 import linguacrypt.model.GameConfiguration;
-import linguacrypt.view.CustomThemeDialog;
-import linguacrypt.view.GameConfigurationDialog;
+import linguacrypt.view.DialogBox.CustomThemeDialog;
+import linguacrypt.view.DialogBox.GameConfigurationDialog;
 import linguacrypt.view.MainMenuView;
-import linguacrypt.view.PictGameConfigurationDialog;
-import linguacrypt.view.SoloModeConfigurationDialog;
+import linguacrypt.view.DialogBox.PictGameConfigurationDialog;
+import linguacrypt.view.DialogBox.SoloModeConfigurationDialog;
 
 public class MainMenuController {
 
@@ -31,7 +30,7 @@ public class MainMenuController {
                 if (dialog.showGameConfigurationDialog()) {
                     config.setWordTheme(dialog.getSelectedTheme());
                     context.setGame(new Game(config));
-                    context.getRoot().setCenter(context.getEditTeamNode());
+                    context.getRoot().setCenter(context.getGameNode());
                 }
                 break;
             case 1: // Picture Game Mode
