@@ -69,8 +69,15 @@ public class GameView implements Observer {
     private BiConsumer<String, String> onGiveHint;
     private BiConsumer<Integer, Integer> onCardClicked;
 
+    Image frontWhite = new Image(getClass().getResourceAsStream("/image/front_white.png"));
+    Image frontBlue = new Image(getClass().getResourceAsStream("/image/front_blue.png"));
+    Image frontRed = new Image(getClass().getResourceAsStream("/image/front_red.png"));
+    Image frontBlack = new Image(getClass().getResourceAsStream("/image/front_black.png"));
+
     Image redBack = new Image(getClass().getResourceAsStream("/image/backs_part_4.png"));
     Image blueBack = new Image(getClass().getResourceAsStream("/image/backs_part_1.png"));
+    Image whiteBack = new Image(getClass().getResourceAsStream("/image/backs_part_2.png"));
+    Image blackBack = new Image(getClass().getResourceAsStream("/image/black-back.png"));
 
     @FXML
     private void initialize() {
@@ -129,8 +136,6 @@ public class GameView implements Observer {
         }
         game.notifierObservateurs();
     }
-
-
 
     private void initializePictureGrid(Grid grid) {
         // Parcours et affichage des cartes dans la grille
@@ -217,24 +222,24 @@ public class GameView implements Observer {
                         cardLabel.setTextFill(Color.WHITE);
                     }
                     image = switch (grid.getCard(row, col).getCouleur()) {
-                        case 0 -> new Image(getClass().getResourceAsStream("/image/front_white.png"));
-                        case 1 -> new Image(getClass().getResourceAsStream("/image/front_blue.png"));
-                        case 2 -> new Image(getClass().getResourceAsStream("/image/front_red.png"));
-                        case 3 -> new Image(getClass().getResourceAsStream("/image/front_black.png"));
+                        case 0 -> frontWhite;
+                        case 1 -> frontBlue;
+                        case 2 -> frontRed;
+                        case 3 -> frontBlack;
                         default -> null;
                     };
                 } else if (grid.getCard(row, col).isSelected()) {
                     cardLabel.setText("");
                     image = switch (grid.getCard(row, col).getCouleur()) {
-                        case 0 -> new Image(getClass().getResourceAsStream("/image/backs_part_2.png"));
-                        case 1 -> new Image(getClass().getResourceAsStream("/image/backs_part_1.png"));
+                        case 0 -> whiteBack;
+                        case 1 -> blueBack;
                         case 2 -> redBack;
-                        case 3 -> new Image(getClass().getResourceAsStream("/image/black-back.png"));
+                        case 3 -> blackBack;
                         default -> null;
                     };
                 } else {
                     cardLabel.setText(grid.getCard(row, col).getWord());
-                    image = new Image(getClass().getResourceAsStream("/image/front_white.png"));
+                    image = frontWhite;
                 }
 
                 ImageView imageView = new ImageView(image);
@@ -275,62 +280,6 @@ public class GameView implements Observer {
         if (game.getIsWin()!=-1){
             EndGameDialog.showEndGameDialog(game);
         }
-    }
-
-    public void drawSpyDialogueBox() {
-        spyDialog = new Dialog<>();
-        spyDialog.setTitle("Spy Dialogue");
-
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setAlignment(Pos.CENTER);
-
-        TextField wordField = new TextField();
-        wordField.setPromptText("Entrez un mot");
-
-        TextField numberField = new TextField();
-        numberField.setPromptText("Entrez un entier positif");
-
-        grid.add(new Label("Mot:"), 0, 0);
-        grid.add(wordField, 1, 0);
-        grid.add(new Label("Entier positif:"), 0, 1);
-        grid.add(numberField, 1, 1);
-
-        spyDialog.getDialogPane().setContent(grid);
-
-        ButtonType okButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
-        spyDialog.getDialogPane().getButtonTypes().addAll(okButtonType);
-
-        spyDialog.setResultConverter(dialogButton -> {
-            if (dialogButton == okButtonType) {
-                String word = wordField.getText();
-                String numberText = numberField.getText();
-                try {
-                    int number = Integer.parseInt(numberText);
-                    if (word.trim().isEmpty() || word.contains(" ")) {
-                        GameViewUtils.showError("Le mot doit être unique et sans espaces.");
-                        return null;
-                    }
-                    if (number > 0) {
-                        game.setCurrentHint(word);
-                        game.setCurrentNumberWord(number);
-                        game.setTurnBegin(2);
-
-                        resetTimer();
-                        return null;
-                    } else {
-                        GameViewUtils.showError("Le nombre doit être un entier positif.");
-                        return null;
-                    }
-                } catch (NumberFormatException e) {
-                    GameViewUtils.showError("Veuillez entrer un entier valide.");
-                }
-            }
-            return null;
-        });
-        spyDialog.showAndWait();
-        game.notifierObservateurs();
     }
 
     public void nextTurn() {

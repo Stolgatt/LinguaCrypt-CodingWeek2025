@@ -26,12 +26,33 @@
         </GridPane>
     </center>
     <bottom>
-        <HBox alignment="CENTER" style="-fx-padding: 20;">
-            <Button fx:id="btnNextTurn" text="Tour Suivant" />
-            <Button fx:id="btnGuess" text="Donner l'indice" />
+        <HBox alignment="CENTER" style="-fx-padding: 20; -fx-spacing: 20;">
+            <TextField fx:id="hintField" promptText="Entrez l'indice"
+                       prefWidth="400.0" style="-fx-background-radius: 10px; -fx-background-color: white;" />
+            <TextField fx:id="countField" promptText="Saisissez un nombre"
+                       prefWidth="400.0" style="-fx-background-radius: 10px; -fx-background-color: white;" />
         </HBox>
+        <StackPane style="-fx-padding: 20;">
+
+            <Button fx:id="btnNextTurn" text="Tour Suivant"
+                    style="-fx-background-color: linear-gradient(to bottom, #28a745, #218838);
+               -fx-text-fill: white;
+               -fx-background-radius: 20px;
+               -fx-font-size: 18px;
+               -fx-pref-width: 150px;
+               -fx-pref-height: 50px;" />
+            <Button fx:id="btnGuess" text="Donner l'indice"
+                    style="-fx-background-color: linear-gradient(to bottom, #28a745, #218838);
+               -fx-text-fill: white;
+               -fx-background-radius: 20px;
+               -fx-font-size: 18px;
+               -fx-pref-width: 150px;
+               -fx-pref-height: 50px;"/>
+        </StackPane>
 
     </bottom>
+
+
     <right>
         <VBox>
             <Label text="Time left to play:"/>
