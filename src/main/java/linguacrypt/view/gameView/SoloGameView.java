@@ -1,4 +1,4 @@
-package linguacrypt.view;
+package linguacrypt.view.gameView;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -14,6 +14,8 @@ import linguacrypt.model.game.Grid;
 import linguacrypt.model.game.Card;
 import linguacrypt.view.DialogBox.EndGameDialog;
 import linguacrypt.view.DialogBox.EndOfTurnDialog;
+import linguacrypt.view.MenuBarView;
+import linguacrypt.view.Observer;
 
 import java.util.function.BiConsumer;
 
@@ -47,7 +49,7 @@ public class SoloGameView implements Observer {
     public void setGame(Game game) {
         this.game = game;
         game.ajouterObservateur(this);
-        initializeGrid(game.getGrid());
+        GameViewUtils.initializeWordGrid(gameGrid,game.getGrid(),onCardClicked);
         reagir();
     }
     public void setOnNextTurn(Runnable onNextTurn) {
@@ -70,23 +72,6 @@ public class SoloGameView implements Observer {
         });
     }
 
-    private void initializeGrid(Grid grid){
-        // Parcours et affichage des cartes dans la grille
-        for (int row = 0; row < grid.getGrid().length; row++) {
-            for (int col = 0; col < grid.getGrid()[row].length; col++) {
-                Card card = grid.getCard(row, col);
-                Button cardButton = new Button(card.getWord());
-                cardButton.setPrefSize(100, 50);
-
-                // Ajout d'un événement clic
-                int finalRow = row;
-                int finalCol = col;
-                cardButton.setOnAction(e -> {if (onCardClicked != null) onCardClicked.accept(finalRow, finalCol);});
-
-                gameGrid.add(cardButton, col, row);
-            }
-        }
-    }
 
     public void reagir() {
         if (game.getgConfig().getGameMode()!=2){return;}
@@ -171,32 +156,11 @@ public class SoloGameView implements Observer {
                 drawSpyDialogueBox();
             }
         }
-        /*
-        else if (game.isTurnBegin()==2){
-            btnGuess.setVisible(false);
-            btnNextTurn.setVisible(true);
-        }
-        else{
-            btnNextTurn.setVisible(false);
-            btnGuess.setVisible(true);
-        }*/
-
         //draw the actual hint
         String message = game.hintToString();
         labelHint.setText("Indice pour ce tour : " + message);
 
         //check if game is over
-        /*
-        if (game.getIsWin() != -1 && game.getIsWin() != 2){
-            timerController.stopTimer();
-            drawWinningDialogueBox();
-            return;
-        }
-        if (game.getIsWin() == 2){
-            timerController.stopTimer();
-            drawLoosingDialogueBox();
-        }
-         */
         if (game.getIsWin()!=-1){
             EndGameDialog.showEndGameDialog(game);
         }

@@ -1,4 +1,4 @@
-package linguacrypt.view;
+package linguacrypt.view.gameView;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -16,6 +16,8 @@ import linguacrypt.model.Game;
 
 import linguacrypt.controller.MenuBarController;
 import linguacrypt.view.DialogBox.EndOfTurnDialog;
+import linguacrypt.view.MenuBarView;
+import linguacrypt.view.Observer;
 
 import java.util.function.BiConsumer;
 
@@ -90,35 +92,19 @@ public class GameView implements Observer {
         
         switch (GameConfiguration.getInstance().getGameMode()) {
             case 0:                                 // Words Game Mode
-                initializeWordGrid(grid);
+                GameViewUtils.initializeWordGrid(gameGrid,grid,onCardClicked);
                 break;
             case 1:                                 // Picture Game Mode
                 initializePictureGrid(grid);
                 break;
             default:
-                initializeWordGrid(grid);
+                GameViewUtils.initializeWordGrid(gameGrid,grid,onCardClicked);
                 break;
         }
         game.notifierObservateurs();
     }
 
-    private void initializeWordGrid(Grid grid){
-        // Parcours et affichage des cartes dans la grille
-        for (int row = 0; row < grid.getGrid().length; row++) {
-            for (int col = 0; col < grid.getGrid()[row].length; col++) {
-                Card card = grid.getCard(row, col);
-                Button cardButton = new Button(card.getWord());
-                cardButton.setPrefSize(100, 50);
 
-                // Ajout d'un événement clic
-                int finalRow = row;
-                int finalCol = col;
-                cardButton.setOnAction(e -> {if (onCardClicked != null) onCardClicked.accept(finalRow, finalCol);});
-
-                gameGrid.add(cardButton, col, row);
-            }
-        }
-    }
 
     private void initializePictureGrid(Grid grid) {
         // Parcours et affichage des cartes dans la grille
