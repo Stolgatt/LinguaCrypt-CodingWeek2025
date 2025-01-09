@@ -149,11 +149,11 @@ private ListView<HBox> listViewChat;
     }
 
     public void addPlayer(String playerName, int team) {
-        if (team == 0) {
-            blueTeamList.add(playerName);
-        } else if (team == 1) {
-            redTeamList.add(playerName);
-        }
+        //if (team == 0) {
+        //    blueTeamList.add(playerName);
+        //} else if (team == 1) {
+        //    redTeamList.add(playerName);
+        //}
         addChatMessage(playerName, " joined the " + (team == 0 ? "blue" : "red") + " team.\n", team);
     }
 

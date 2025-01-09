@@ -14,7 +14,7 @@ public class Server {
     private ArrayList<ClientHandler> clients = new ArrayList<>();
     private String hostNickname;
     private ApplicationContext context = ApplicationContext.getInstance();
-    private User serverUser; // Representing the host as a player
+    private User serverUser;
 
     public Server(String hostNickname) throws IOException {
         this.serverSocket = new ServerSocket(PORT);
@@ -22,7 +22,7 @@ public class Server {
 
         // Initialize the host as a player
         this.serverUser = new User(hostNickname, InetAddress.getLocalHost(), 0); // Blue team by default
-        addUserToGame(serverUser); // Add the server player to the game
+        addUserToGame(serverUser);
     }
 
     public void start() {
@@ -30,20 +30,15 @@ public class Server {
 
         // Notify connected clients about the host joining
         broadcastPlayerList();
-        broadcastMessage(new Message(MessageType.USER_JOINED, "Server", hostNickname + " (Host) joined the game.", 0));
 
-        // Handle client connections in a separate thread
         new Thread(() -> {
             try {
                 while (true) {
                     Socket clientSocket = serverSocket.accept();
                     System.out.println("New client connected: " + clientSocket.getInetAddress());
 
-                    // Create a new ClientHandler for the connected client
                     ClientHandler clientHandler = new ClientHandler(clientSocket);
                     clients.add(clientHandler);
-
-                    // Start the ClientHandler in a new thread
                     new Thread(clientHandler).start();
                 }
             } catch (IOException e) {
@@ -64,40 +59,6 @@ public class Server {
         }
     }
 
-    public void sendMessageAsHost(String content) {
-        // Create the message with the host's nickname and default blue team
-        Message message = new Message(MessageType.CHAT, hostNickname, content, 0); // Blue team by default
-
-        // Update the host's UI immediately
-        Platform.runLater(() -> context.getLobbyView().addChatMessage(
-            hostNickname, 
-            content, 
-            0 // Blue team
-        ));
-
-        // Broadcast the message to all clients
-        broadcastMessage(message, true); // true indicates the host already handled it locally
-    }
-
-    public void broadcastMessage(Message message) {
-        broadcastMessage(message, false);
-    }
-
-    private void broadcastMessage(Message message, boolean excludeHost) {
-        for (ClientHandler client : clients) {
-            client.sendMessage(message);
-        }
-
-        // Add the message locally for the host's view if not already handled
-        if (!excludeHost && message.getType() == MessageType.CHAT) {
-            Platform.runLater(() -> context.getLobbyView().addChatMessage(
-                message.getNickname(),
-                message.getContent(),
-                message.getTeam()
-            ));
-        }
-    }
-
     public void broadcastPlayerList() {
         Game game = context.getGame();
         if (game != null) {
@@ -110,6 +71,20 @@ public class Server {
             }
             Message playerListMessage = new Message(MessageType.PLAYER_LIST, "Server", playerList.toString());
             broadcastMessage(playerListMessage);
+        }
+    }
+
+    public void broadcastMessage(Message message) {
+        for (ClientHandler client : clients) {
+            client.sendMessage(message);
+        }
+
+        // Add the message locally for the host's view
+        if (message.getType() == MessageType.USER_JOINED || message.getType() == MessageType.CHAT) {
+            Platform.runLater(() -> context.getLobbyView().addChatMessage(
+                    message.getNickname(),
+                    message.getContent(),
+                    message.getTeam()));
         }
     }
 
@@ -137,10 +112,6 @@ public class Server {
             this.socket = socket;
         }
 
-        public User getUser() {
-            return user;
-        }
-
         @Override
         public void run() {
             try {
@@ -160,15 +131,18 @@ public class Server {
                     // Notify all clients of the updated player list
                     broadcastPlayerList();
 
-                    // Notify all clients that a user has joined
-                    broadcastMessage(new Message(MessageType.USER_JOINED, "Server", nickname + " joined the game.", teamId));
+                    // Broadcast the join message
+                    broadcastMessage(new Message(MessageType.USER_JOINED, nickname, " joined the game.", teamId));
+
+                    // Refresh the user list in the LobbyView
+                    Platform.runLater(() -> context.getLobbyView().refreshUserList());
                 }
 
                 // Handle messages from the client
                 while (!socket.isClosed()) {
                     Message message = (Message) input.readObject();
                     if (message.getType() == MessageType.CHAT) {
-                        broadcastMessage(message); // Broadcast chat messages
+                        broadcastMessage(message);
                     }
                 }
             } catch (IOException | ClassNotFoundException e) {
@@ -185,21 +159,18 @@ public class Server {
                     output.flush();
                 }
             } catch (IOException e) {
-                System.out.println("Error sending message to " + (user != null ? user.getNickname() : "Unknown") + ": " + e.getMessage());
+                System.out.println("Error sending message: " + e.getMessage());
             }
         }
 
         public void closeConnection() {
             try {
-                if (socket != null) {
+                if (socket != null)
                     socket.close();
-                }
-                if (input != null) {
+                if (input != null)
                     input.close();
-                }
-                if (output != null) {
+                if (output != null)
                     output.close();
-                }
                 clients.remove(this);
 
                 // Remove the user from the game
@@ -214,7 +185,6 @@ public class Server {
                         broadcastPlayerList();
                     }
                 }
-                System.out.println("Client disconnected: " + (user != null ? user.getNickname() : "Unknown"));
             } catch (IOException e) {
                 System.out.println("Error closing connection: " + e.getMessage());
             }
