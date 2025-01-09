@@ -6,7 +6,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.geometry.Insets;
 import javafx.application.Platform;
 import linguacrypt.model.GameConfiguration;
-import linguacrypt.model.Game.Theme;
+import linguacrypt.model.game.Theme;
 
 import java.util.Optional;
 import java.util.List;

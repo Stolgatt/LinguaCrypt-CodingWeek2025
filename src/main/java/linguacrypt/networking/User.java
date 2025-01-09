@@ -1,6 +1,6 @@
 package linguacrypt.networking;
 
-import linguacrypt.model.Player.Player;
+import linguacrypt.model.players.Player;
 import linguacrypt.model.statistique.PlayerStat;
 
 import java.io.Serializable;

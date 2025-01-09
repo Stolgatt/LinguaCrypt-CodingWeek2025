@@ -9,7 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import linguacrypt.model.Game;
 import linguacrypt.model.GameConfiguration;
-import linguacrypt.model.Player.Player;
+import linguacrypt.model.players.Player;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;

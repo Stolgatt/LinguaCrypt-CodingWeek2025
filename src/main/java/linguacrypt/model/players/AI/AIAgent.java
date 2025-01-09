@@ -1,8 +1,8 @@
-package linguacrypt.model.Player.AI;
+package linguacrypt.model.players.AI;
 
-import linguacrypt.model.Game.Grid;
-import linguacrypt.model.Game.Hint;
-import linguacrypt.model.Player.Player;
+import linguacrypt.model.game.Grid;
+import linguacrypt.model.game.Hint;
+import linguacrypt.model.players.Player;
 import linguacrypt.model.statistique.PlayerStat;
 
 import java.io.IOException;

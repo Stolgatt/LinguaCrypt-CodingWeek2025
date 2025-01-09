@@ -1,6 +1,6 @@
 package linguacrypt.model;
 
-import linguacrypt.model.Player.Player;
+import linguacrypt.model.players.Player;
 import linguacrypt.model.statistique.GameStat;
 import linguacrypt.utils.StatLoader;
 

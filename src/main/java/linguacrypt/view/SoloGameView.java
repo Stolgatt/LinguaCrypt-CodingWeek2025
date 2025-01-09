@@ -10,7 +10,8 @@ import linguacrypt.ApplicationContext;
 import linguacrypt.controller.TimerController;
 import linguacrypt.model.*;
 import linguacrypt.model.Game;
-import linguacrypt.model.Game.Grid;
+import linguacrypt.model.game.Grid;
+import linguacrypt.model.game.Card;
 import linguacrypt.view.DialogBox.EndGameDialog;
 import linguacrypt.view.DialogBox.EndOfTurnDialog;
 

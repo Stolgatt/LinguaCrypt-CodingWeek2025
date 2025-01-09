@@ -1,8 +1,8 @@
 package linguacrypt.controller;
 
-import linguacrypt.model.Player.AI.AIAgent;
+import linguacrypt.model.players.AI.AIAgent;
 import linguacrypt.model.Game;
-import linguacrypt.model.Game.Hint;
+import linguacrypt.model.game.Hint;
 import linguacrypt.view.DialogBox.EndOfTurnDialog;
 import linguacrypt.view.SoloGameView;
 

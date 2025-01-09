@@ -10,7 +10,7 @@ import java.util.Optional;
 
 import javafx.application.Platform;
 import linguacrypt.model.GameConfiguration;
-import linguacrypt.model.Game.Theme;
+import linguacrypt.model.game.Theme;
 import linguacrypt.utils.ThemeLoader;
 
 /**

@@ -8,7 +8,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import linguacrypt.ApplicationContext;
 import linguacrypt.model.Game;
-import Team;
+import linguacrypt.model.players.Team;
+
 
 import java.io.IOException;
 

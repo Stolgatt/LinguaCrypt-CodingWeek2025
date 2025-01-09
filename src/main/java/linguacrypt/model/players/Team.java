@@ -1,4 +1,4 @@
-package linguacrypt.model.Player;
+package linguacrypt.model.players;
 
 import linguacrypt.model.Game;
 

@@ -7,8 +7,8 @@ import javafx.scene.layout.GridPane;
 import linguacrypt.ApplicationContext;
 import linguacrypt.model.Game;
 import linguacrypt.model.GameConfiguration;
-import linguacrypt.model.Player.Player;
-import linguacrypt.model.Game.Theme;
+import linguacrypt.model.players.Player;
+import linguacrypt.model.game.Theme;
 import linguacrypt.model.statistique.PlayerStat;
 import linguacrypt.utils.ThemeLoader;
 

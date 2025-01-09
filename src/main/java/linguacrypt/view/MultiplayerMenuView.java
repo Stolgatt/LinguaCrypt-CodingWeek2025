@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 import linguacrypt.ApplicationContext;
 import linguacrypt.model.Game;
 import linguacrypt.model.GameConfiguration;
-import linguacrypt.model.Game.Theme;
+import linguacrypt.model.game.Theme;
 import linguacrypt.networking.Client;
 import linguacrypt.networking.Server;
 import linguacrypt.utils.ThemeLoader;

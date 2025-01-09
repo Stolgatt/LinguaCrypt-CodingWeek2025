@@ -9,10 +9,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import linguacrypt.ApplicationContext;
 import linguacrypt.controller.TimerController;
-import Card;
 import linguacrypt.model.GameConfiguration;
-import linguacrypt.model.Game.Grid;
+import linguacrypt.model.game.Grid;
+import linguacrypt.model.game.Card;
 import linguacrypt.model.Game;
+
 import linguacrypt.controller.MenuBarController;
 import linguacrypt.view.DialogBox.EndOfTurnDialog;
 

@@ -1,10 +1,11 @@
 package linguacrypt.model;
 
-import linguacrypt.model.Player.AI.AIAgent;
-import linguacrypt.model.Player.AI.AISpy;
-import linguacrypt.model.Player.Player;
-import linguacrypt.model.statistique.GameStat;
-import linguacrypt.model.statistique.PlayerStat;
+import linguacrypt.model.players.*;
+import linguacrypt.model.players.AI.*;
+import linguacrypt.model.game.*;
+import linguacrypt.model.statistique.*;
+
+
 import linguacrypt.utils.StatLoader;
 import linguacrypt.utils.ThemeLoader;
 import linguacrypt.view.Observer;

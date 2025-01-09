@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import javafx.application.Platform;
 import linguacrypt.ApplicationContext;
 import linguacrypt.model.Game;
-import linguacrypt.model.Player.Player;
+import linguacrypt.model.players.Player;
 
 public class Server {
     public static final int PORT = 9001;

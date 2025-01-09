@@ -11,8 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import linguacrypt.model.Game;
-import linguacrypt.model.Player.Player;
-import Team;
+import linguacrypt.model.players.*;
 import linguacrypt.model.statistique.PlayerStat;
 
 import java.io.IOException;

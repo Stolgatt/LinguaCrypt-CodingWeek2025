@@ -6,7 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import linguacrypt.ApplicationContext;
 import linguacrypt.model.Game;
-import linguacrypt.model.Player.Player;
+import linguacrypt.model.players.Player;
 import linguacrypt.networking.Client;
 import linguacrypt.networking.Message;
 import linguacrypt.networking.MessageType;

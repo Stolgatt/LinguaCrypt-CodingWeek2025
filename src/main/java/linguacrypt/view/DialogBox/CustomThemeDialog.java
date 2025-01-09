@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import linguacrypt.model.GameConfiguration;
-import linguacrypt.model.Game.Theme;
+import linguacrypt.model.game.Theme;
 import linguacrypt.utils.ThemeLoader;
 
 import java.util.List;

@@ -1,5 +1,5 @@
 
-import linguacrypt.model.Game.Grid;
+import linguacrypt.model.game.Grid;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
