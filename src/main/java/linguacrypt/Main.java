@@ -25,7 +25,7 @@ public class Main extends Application {
         applicationContext.setRoot(root);
         applicationContext.setPrimaryStage(primaryStage);
         root.setCenter(applicationContext.getMainMenuNode());
-        Scene scene = new Scene(root, 800, 800);
+        Scene scene = new Scene(root, 1000, 800);
         primaryStage.setScene(scene);
         primaryStage.setTitle("LinguaCrypt");
         primaryStage.show();

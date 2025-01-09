@@ -5,6 +5,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="linguacrypt.view.gameView.GameView">
     <top>
         <VBox>
@@ -21,7 +23,8 @@
         <GridPane fx:id="gameGrid"
                   hgap="10"
                   vgap="10"
-                  alignment="CENTER">
+                  alignment="CENTER"
+                  style="-fx-padding: 5;">
             <!-- Everything will be added dynamically -->
         </GridPane>
     </center>
@@ -33,13 +36,47 @@
 
     </bottom>
     <right>
-        <VBox fx:id="RedTeamDisplay">
-
-        </VBox>
+        <AnchorPane>
+            <VBox fx:id="RedTeamDisplay"
+                  style="-fx-background-color: #8F2B1C;
+                     -fx-background-radius: 10px;
+                     -fx-padding: 10px;
+                     -fx-min-height: 80px;
+                     -fx-max-height: 250px;
+                     -fx-pref-height: 200px;"
+                  AnchorPane.topAnchor="250.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+                <HBox fx:id="RedInfo" style="-fx-padding: 5; -fx-spacing: 10px;">
+                    <Label fx:id="nbMotRedRestant"/>
+                    <ImageView fx:id="imageViewRedInfo"/>
+                </HBox>
+                <Label fx:id="RedSpy" text="Espion" style="-fx-text-fill: #D74726;"/>
+                <Label fx:id="RedSpyName" text="" style="-fx-padding: 5;"/>
+                <Label fx:id="RedAgent" text="Agents" style="-fx-text-fill: #D74726;"/>
+                <VBox fx:id="RedAgentName" style="-fx-padding: 5;">
+                </VBox>
+            </VBox>
+        </AnchorPane>
     </right>
     <left>
-        <VBox fx:id="BlueTeamDisplay">
-
-        </VBox>
+        <AnchorPane>
+            <VBox fx:id="BlueTeamDisplay"
+                  style="-fx-background-color: #3284A3;
+                     -fx-background-radius: 10px;
+                     -fx-padding: 10px;
+                     -fx-min-height: 80px;
+                     -fx-max-height: 250px;
+                     -fx-pref-height: 200px;"
+                  AnchorPane.topAnchor="250.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+                <HBox fx:id="BlueInfo" style="-fx-padding: 5; -fx-spacing: 10px;">
+                    <Label fx:id="nbMotBlueRestant"/>
+                    <ImageView fx:id="imageViewBlueInfo"/>
+                </HBox>
+                <Label fx:id="BlueSpy" text="Espion" style="-fx-text-fill: #69B7CE;"/>
+                <Label fx:id="BlueSpyName" text="" style="-fx-padding: 5;"/>
+                <Label fx:id="BlueAgent" text="Agents" style="-fx-text-fill: #69B7CE;"/>
+                <VBox fx:id="BlueAgentName" style="-fx-padding: 5;">
+                </VBox>
+            </VBox>
+        </AnchorPane>
     </left>
 </BorderPane>

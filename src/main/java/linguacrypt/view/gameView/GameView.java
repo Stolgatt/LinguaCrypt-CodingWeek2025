@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import linguacrypt.ApplicationContext;
@@ -20,27 +21,38 @@ import linguacrypt.model.game.Card;
 import linguacrypt.model.Game;
 
 import linguacrypt.controller.MenuBarController;
+import linguacrypt.model.players.Player;
 import linguacrypt.view.DialogBox.EndGameDialog;
 import linguacrypt.view.DialogBox.EndOfTurnDialog;
 import linguacrypt.view.MenuBarView;
 import linguacrypt.view.Observer;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiConsumer;
 
 public class GameView implements Observer {
     Font customFont = Font.loadFont(GameViewUtils.class.getResourceAsStream("/fonts/cardFont.otf"), 14);
-    @FXML
-    private GridPane gameGrid; // Lié à game.fxml
-    @FXML
-    private Button btnNextTurn;
-    @FXML
-    private Label labelHint;
-    @FXML
-    private Button btnGuess;
-    @FXML
-    private MenuBarView menuBarController;
-    @FXML
-    private Label timerLabel;
+    @FXML private MenuBarView menuBarController;
+    @FXML private Label timerLabel;
+    @FXML private GridPane gameGrid; // Lié à game.fxml
+    @FXML private Button btnNextTurn;
+    @FXML private Button btnGuess;
+    @FXML private Label labelHint;
+
+    @FXML private ImageView imageViewRedInfo;
+    @FXML private Label nbMotRedRestant;
+    @FXML private Label RedSpy;
+    @FXML private Label RedAgent;
+    @FXML private Label RedSpyName;
+    @FXML private VBox RedAgentName;
+    @FXML private ImageView imageViewBlueInfo;
+    @FXML private Label nbMotBlueRestant;
+    @FXML private Label BlueSpy;
+    @FXML private Label BlueAgent;
+    @FXML private Label BlueSpyName;
+    @FXML private VBox BlueAgentName;
+
 
     private TimerController timerController;
 
@@ -51,6 +63,9 @@ public class GameView implements Observer {
     private Runnable onNextTurn;
     private Runnable OnGiveHint;
     private BiConsumer<Integer, Integer> onCardClicked;
+
+    Image redBack = new Image(getClass().getResourceAsStream("/image/backs_part_4.png"));
+    Image blueBack = new Image(getClass().getResourceAsStream("/image/backs_part_1.png"));
 
     @FXML
     private void initialize() {
@@ -164,10 +179,12 @@ public class GameView implements Observer {
 
             timerController.updateLabel();
         }
+        updateRedTeamVBox();
+        updateBlueTeamVBox();
+
         int turn = game.getTurn();
         Grid grid = game.getGrid();
         Node root = context.getGameNode();
-
         //BACKGROUND COLOR
         switch (turn) {
             case 0:
@@ -206,7 +223,7 @@ public class GameView implements Observer {
                     image = switch (grid.getCard(row, col).getCouleur()) {
                         case 0 -> new Image(getClass().getResourceAsStream("/image/backs_part_2.png"));
                         case 1 -> new Image(getClass().getResourceAsStream("/image/backs_part_1.png"));
-                        case 2 -> new Image(getClass().getResourceAsStream("/image/backs_part_4.png"));
+                        case 2 -> redBack;
                         case 3 -> new Image(getClass().getResourceAsStream("/image/black-back.png"));
                         default -> null;
                     };
@@ -358,5 +375,89 @@ public class GameView implements Observer {
             }
             resetTimer();
         });
+    }
+
+    public void updateRedTeamVBox() {
+        imageViewRedInfo.setImage(redBack);
+        imageViewRedInfo.setVisible(true);
+        imageViewRedInfo.setFitWidth(100);
+        imageViewRedInfo.setFitHeight(50);
+        imageViewRedInfo.setPreserveRatio(false);
+        imageViewRedInfo.setSmooth(true);
+        String spyName = "";
+        List<String> redAgentNames = new ArrayList<>();
+        for (Player p: game.getRedTeam().getPlayers()){
+            if (p.getIsSpy()){
+                spyName = p.getName();
+            }
+            else {
+                redAgentNames.add(p.getName());
+            }
+        }
+        RedSpy.setFont(Font.font(customFont.getName(), customFont.getSize() + 4));
+        RedAgent.setFont(Font.font(customFont.getName(), customFont.getSize() + 4));
+
+        RedSpyName.setFont(customFont);
+        RedSpyName.setTextFill(Color.WHITE);
+
+        nbMotRedRestant.setFont(customFont);
+        nbMotRedRestant.setTextFill(Color.WHITE);
+        nbMotRedRestant.setText(game.getRedRemaining() + "");
+
+        RedSpyName.setText(spyName);
+        RedAgentName.getChildren().clear();
+        for (String agentName : redAgentNames) {
+            Label agentLabel = new Label(agentName);
+            agentLabel.setFont(customFont);
+            agentLabel.setTextFill(Color.WHITE);
+            RedAgentName.getChildren().add(agentLabel);
+        }
+    }
+    public void updateBlueTeamVBox() {
+        // Mise à jour de l'image pour l'équipe bleue
+        imageViewBlueInfo.setImage(blueBack); // Assurez-vous que vous avez l'image blueBack correctement définie
+        imageViewBlueInfo.setVisible(true);
+        imageViewBlueInfo.setFitWidth(100);
+        imageViewBlueInfo.setFitHeight(50);
+        imageViewBlueInfo.setPreserveRatio(false);
+        imageViewBlueInfo.setSmooth(true);
+
+        // Variables pour le nom de l'espion et des agents bleus
+        String spyName = "";
+        List<String> blueAgentNames = new ArrayList<>();
+
+        // Récupérer les joueurs de l'équipe bleue
+        for (Player p : game.getBlueTeam().getPlayers()) {
+            if (p.getIsSpy()) {
+                spyName = p.getName(); // Si c'est l'espion, on le garde dans spyName
+            } else {
+                blueAgentNames.add(p.getName()); // Sinon, on ajoute l'agent à la liste
+            }
+        }
+
+        // Mise à jour de la police de l'espion et des agents
+        BlueSpy.setFont(Font.font(customFont.getName(), customFont.getSize() + 4));
+        BlueAgent.setFont(Font.font(customFont.getName(), customFont.getSize() + 4));
+
+        // Mise à jour de la police et du texte de l'espion
+        BlueSpyName.setFont(customFont);
+        BlueSpyName.setTextFill(Color.WHITE);
+
+        // Mise à jour de la police et du texte des mots restants
+        nbMotBlueRestant.setFont(customFont);
+        nbMotBlueRestant.setTextFill(Color.WHITE);
+        nbMotBlueRestant.setText(game.getBlueRemaining() + "");
+
+        // Mise à jour du nom de l'espion
+        BlueSpyName.setText(spyName);
+
+        // Vider les enfants de BlueAgentName et ajouter les agents bleus
+        BlueAgentName.getChildren().clear();
+        for (String agentName : blueAgentNames) {
+            Label agentLabel = new Label(agentName);
+            agentLabel.setFont(customFont);
+            agentLabel.setTextFill(Color.WHITE);
+            BlueAgentName.getChildren().add(agentLabel);
+        }
     }
 }
