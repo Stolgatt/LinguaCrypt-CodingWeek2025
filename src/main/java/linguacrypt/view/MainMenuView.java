@@ -128,7 +128,7 @@ public class MainMenuView {
 
         // Update buttons based on network mode
         playButton.setVisible(!isMultiplayer);
-        createSoloGameButton.setVisible(!isMultiplayer);
+        createSoloGameButton.setVisible(!isMultiplayer );
         multiButtons.setVisible(isMultiplayer);
         localButtons.setVisible(!isMultiplayer);
         hostButton.setVisible(isMultiplayer);
@@ -141,7 +141,7 @@ public class MainMenuView {
     private void selectGameMode(int mode) {
         // Set the game mode globally
         linguacrypt.model.GameConfiguration.getInstance().setGameMode(mode);
-
+        
         // Switch to main menu options
         gameModeSelectionBox.setVisible(false);
         mainMenuBox.setVisible(true);
