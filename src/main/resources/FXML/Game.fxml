@@ -10,6 +10,8 @@
         <VBox>
             <fx:include fx:id="menuBar" source="/FXML/menuBar.fxml"/>
             <HBox alignment="CENTER" style="-fx-padding: 20;">
+                <Label text="Time left to play:"/>
+                <Label fx:id="timerLabel" text="00:00"/>
                 <Label fx:id="labelHint" text="" />
             </HBox>
         </VBox>
@@ -31,9 +33,13 @@
 
     </bottom>
     <right>
-        <VBox>
-            <Label text="Time left to play:"/>
-            <Label fx:id="timerLabel" text="00:00"/>
+        <VBox fx:id="RedTeamDisplay">
+
         </VBox>
     </right>
+    <left>
+        <VBox fx:id="BlueTeamDisplay">
+
+        </VBox>
+    </left>
 </BorderPane>

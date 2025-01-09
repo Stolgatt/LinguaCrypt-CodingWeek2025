@@ -1,12 +1,17 @@
 package linguacrypt.view.gameView;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import linguacrypt.ApplicationContext;
 import linguacrypt.controller.TimerController;
 import linguacrypt.model.GameConfiguration;
@@ -23,7 +28,7 @@ import linguacrypt.view.Observer;
 import java.util.function.BiConsumer;
 
 public class GameView implements Observer {
-
+    Font customFont = Font.loadFont(GameViewUtils.class.getResourceAsStream("/fonts/cardFont.otf"), 14);
     @FXML
     private GridPane gameGrid; // Lié à game.fxml
     @FXML
@@ -166,10 +171,10 @@ public class GameView implements Observer {
         //BACKGROUND COLOR
         switch (turn) {
             case 0:
-                root.setStyle("-fx-background-color: rgba(173, 216, 230, 0.5);");
+                root.setStyle("-fx-background-image: url('image/bg_blue.jpg'); -fx-background-size: cover;");
                 break;
             case 1:
-                root.setStyle("-fx-background-color: rgba(240, 128, 128, 0.5);");
+                root.setStyle("-fx-background-image: url('image/bg-red.jpg'); -fx-background-size: cover;");
                 break;
             default:
                 root.setStyle("-fx-background-color: rgba(211, 211, 211, 0.5);");
@@ -180,28 +185,51 @@ public class GameView implements Observer {
         for (int row = 0; row < grid.getGrid().length; row++) {
             for (int col = 0; col < grid.getGrid()[row].length; col++) {
                 Button cardButton = (Button) gameGrid.getChildren().get(row * grid.getGrid().length + col);
-                // Update button text with loaded word
-                cardButton.setText(grid.getCard(row, col).getWord());
 
-                if (grid.getCard(row,col).isSelected() || game.isTurnBegin()==0 || game.isTurnBegin()==1){
-                    switch (grid.getCard(row,col).getCouleur()){
-                        case 0:
-                            cardButton.setStyle("-fx-background-color: #F5DEB3;");
-                            break;
-                        case 1:
-                            cardButton.setStyle("-fx-background-color: lightblue;");
-                            break;
-                        case 2:
-                            cardButton.setStyle("-fx-background-color: lightcoral;");
-                            break;
-                        case 3:
-                            cardButton.setStyle("-fx-background-color: darkgray;");
-                            break;
+                Label cardLabel = new Label(grid.getCard(row, col).getWord());
+                Image image;
+
+                if ((game.isTurnBegin() == 0 || game.isTurnBegin() == 1) && !grid.getCard(row, col).isSelected()) {
+                    cardLabel.setText(grid.getCard(row, col).getWord());
+                    if (grid.getCard(row, col).getCouleur() == 3){
+                        cardLabel.setTextFill(Color.WHITE);
                     }
+                    image = switch (grid.getCard(row, col).getCouleur()) {
+                        case 0 -> new Image(getClass().getResourceAsStream("/image/front_white.png"));
+                        case 1 -> new Image(getClass().getResourceAsStream("/image/front_blue.png"));
+                        case 2 -> new Image(getClass().getResourceAsStream("/image/front_red.png"));
+                        case 3 -> new Image(getClass().getResourceAsStream("/image/front_black.png"));
+                        default -> null;
+                    };
+                } else if (grid.getCard(row, col).isSelected()) {
+                    cardLabel.setText("");
+                    image = switch (grid.getCard(row, col).getCouleur()) {
+                        case 0 -> new Image(getClass().getResourceAsStream("/image/backs_part_2.png"));
+                        case 1 -> new Image(getClass().getResourceAsStream("/image/backs_part_1.png"));
+                        case 2 -> new Image(getClass().getResourceAsStream("/image/backs_part_4.png"));
+                        case 3 -> new Image(getClass().getResourceAsStream("/image/black-back.png"));
+                        default -> null;
+                    };
+                } else {
+                    cardLabel.setText(grid.getCard(row, col).getWord());
+                    image = new Image(getClass().getResourceAsStream("/image/front_white.png"));
                 }
-                else{
-                    cardButton.setStyle("");
-                }
+
+// Créer une ImageView pour l'image
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(100);
+                imageView.setFitHeight(50);
+                imageView.setPreserveRatio(false);
+                imageView.setSmooth(true);
+
+// Utiliser un StackPane pour superposer l'image et le texte
+                StackPane stackPane = new StackPane();
+                stackPane.setPrefSize(100, 50); // Taille du StackPane
+                stackPane.getChildren().addAll(imageView, cardLabel); // Ajouter l'image et le texte dans le StackPane
+                cardLabel.setTranslateY(10);
+                cardLabel.setFont(customFont);
+                cardButton.setGraphic(stackPane);
+                cardButton.setContentDisplay(ContentDisplay.CENTER);
             }
         }
 
