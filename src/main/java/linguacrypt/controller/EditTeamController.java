@@ -32,5 +32,6 @@ public class EditTeamController {
         context.getRoot().setCenter(context.getGameNode());
         game.setStartTime(System.currentTimeMillis());
         game.setNbTour(1);
+        game.notifierObservateurs();
     }
 }

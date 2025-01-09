@@ -3,6 +3,7 @@ package linguacrypt.controller;
 import linguacrypt.model.Game;
 import linguacrypt.view.DialogBox.EndOfTurnDialog;
 import linguacrypt.view.gameView.GameView;
+import linguacrypt.view.gameView.GameViewUtils;
 
 public class GameController {
     private Game game;
@@ -73,8 +74,30 @@ public class GameController {
         game.notifierObservateurs();
     }
 
-    public void giveHint(){
-        game.setTurnBegin(1);
+    public void giveHint(String hint, String count) {
+        if (count == null || count.isEmpty()){
+            GameViewUtils.showError("Mettez au moins 0.");
+            game.setTurnBegin(0);
+            game.notifierObservateurs();
+            return;
+        }
+        int number = Integer.parseInt(count);
+        if (hint==null || hint.isEmpty()){
+            GameViewUtils.showError("Un mot doit être donner.");
+            game.setTurnBegin(0);
+            game.notifierObservateurs();
+            return;
+        }
+        if (hint.trim().isEmpty() || hint.contains(" ")) {
+            GameViewUtils.showError("Le mot doit être unique et sans espaces.");
+            game.setTurnBegin(0);
+            game.notifierObservateurs();
+            return;
+        }
+        game.setTurnBegin(2);
+        game.setCurrentHint(hint);
+
+        game.setCurrentNumberWord(number);
         game.notifierObservateurs();
     }
 }

@@ -59,7 +59,8 @@ public class ApplicationContext {
 
     /** Modèles */
     private Game game;
-
+    public final int cardHeight = 75;
+    public final int cardWidth = 150;
     //endregion
 
     //region Constructeur
