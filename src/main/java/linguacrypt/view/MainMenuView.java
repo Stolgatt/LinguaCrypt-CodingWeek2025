@@ -8,7 +8,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import linguacrypt.model.GameConfiguration;
 import linguacrypt.ApplicationContext;
@@ -53,6 +55,9 @@ public class MainMenuView {
 
     @FXML
     private VBox multiButtons;
+
+    @FXML
+    private VBox localButtons;
 
     @FXML
     private Button profileMenuButton;
@@ -125,6 +130,7 @@ public class MainMenuView {
         playButton.setVisible(!isMultiplayer);
         createSoloGameButton.setVisible(!isMultiplayer);
         multiButtons.setVisible(isMultiplayer);
+        localButtons.setVisible(!isMultiplayer);
         hostButton.setVisible(isMultiplayer);
         joinButton.setVisible(isMultiplayer);
         hostButton.setOnAction(event -> context.getMPMenuView().showHostView());
@@ -139,6 +145,16 @@ public class MainMenuView {
         // Switch to main menu options
         gameModeSelectionBox.setVisible(false);
         mainMenuBox.setVisible(true);
+        if (mode == 1) {
+            // Pictogram mode: hide and unmanage "Play Solo"
+            createSoloGameButton.setVisible(false);
+            createSoloGameButton.setManaged(false);
+        } else {
+            // Other modes: show and manage "Play Solo"
+            createSoloGameButton.setVisible(true);
+            createSoloGameButton.setManaged(true);
+        }
+        
     }
 
     private void handleBackToGameModeButton(ActionEvent event) {
