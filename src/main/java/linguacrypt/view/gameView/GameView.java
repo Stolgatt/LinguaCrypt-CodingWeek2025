@@ -53,6 +53,8 @@ public class GameView implements Observer {
     @FXML private Label BlueAgent;
     @FXML private Label BlueSpyName;
     @FXML private VBox BlueAgentName;
+    @FXML private TextField hintField;
+    @FXML private TextField countField;
 
 
     private TimerController timerController;
@@ -64,7 +66,7 @@ public class GameView implements Observer {
     private int cardHeight = context.cardHeight;
     private int cardWidth = context.cardWidth;
     private Runnable onNextTurn;
-    private Runnable OnGiveHint;
+    private BiConsumer<String, String> onGiveHint;
     private BiConsumer<Integer, Integer> onCardClicked;
 
     Image redBack = new Image(getClass().getResourceAsStream("/image/backs_part_4.png"));
@@ -80,7 +82,7 @@ public class GameView implements Observer {
         });
         btnGuess.setOnAction(e -> {
             btnGuess.setVisible(false);
-            if (OnGiveHint != null) OnGiveHint.run();
+            if (onGiveHint != null) onGiveHint.accept(hintField.getText(), countField.getText());
         });
     }
 
@@ -170,8 +172,8 @@ public class GameView implements Observer {
     public void setOnNextTurn(Runnable onNextTurn) {
         this.onNextTurn = onNextTurn;
     }
-    public void setOnGiveHint(Runnable OnGiveHint) {
-        this.OnGiveHint = OnGiveHint;
+    public void setOnGiveHint(BiConsumer<String, String> onGiveHint) {
+        this.onGiveHint = onGiveHint;
     }
     public void setonCardClicked(BiConsumer<Integer, Integer> onCardClicked) {
         this.onCardClicked = onCardClicked;
@@ -180,7 +182,6 @@ public class GameView implements Observer {
     public void reagir() {
         if (game.getgConfig().getGameMode() == 2){return;}
         if(timerController != null){
-
             timerController.updateLabel();
         }
         updateRedTeamVBox();
@@ -252,23 +253,23 @@ public class GameView implements Observer {
             }
         }
 
-        //Check if button can be visible or not
-        if (game.isTurnBegin()==1){
-            drawSpyUI();
-            drawSpyDialogueBox();
-        }
-        else if (game.isTurnBegin()==2){
+        //Draw UI
+        if (game.isTurnBegin()==2){
             drawAgentUI();
+            btnNextTurn.setVisible(true);
+            btnGuess.setVisible(false);
+            hintField.setText("");
+            countField.setText("");
+            hintField.setVisible(false);
+            countField.setVisible(false);
         }
         else{
-            drawSpyUI();
             btnNextTurn.setVisible(false);
             btnGuess.setVisible(true);
+            hintField.setVisible(true);
+            countField.setVisible(true);
+            drawSpyUI();
         }
-
-        //draw the actual hint
-        String message = game.hintToString();
-        labelHint.setText("Indice pour ce tour : " + message);
 
         //check if game is over
         if (game.getIsWin()!=-1){
