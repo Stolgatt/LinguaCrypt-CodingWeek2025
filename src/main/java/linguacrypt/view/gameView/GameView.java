@@ -15,6 +15,7 @@ import linguacrypt.model.game.Card;
 import linguacrypt.model.Game;
 
 import linguacrypt.controller.MenuBarController;
+import linguacrypt.view.DialogBox.EndGameDialog;
 import linguacrypt.view.DialogBox.EndOfTurnDialog;
 import linguacrypt.view.MenuBarView;
 import linguacrypt.view.Observer;
@@ -222,14 +223,8 @@ public class GameView implements Observer {
         labelHint.setText("Indice pour ce tour : " + message);
 
         //check if game is over
-        if (game.getIsWin() != -1 && game.getIsWin() != 2){
-            timerController.stopTimer();
-            drawWinningDialogueBox();
-            return;
-        }
-        if (game.getIsWin() == 2){
-            timerController.stopTimer();
-            drawLoosingDialogueBox();
+        if (game.getIsWin()!=-1){
+            EndGameDialog.showEndGameDialog(game);
         }
     }
 
@@ -287,50 +282,6 @@ public class GameView implements Observer {
         });
         spyDialog.showAndWait();
         game.notifierObservateurs();
-    }
-
-    public void drawWinningDialogueBox() {
-        Dialog<Void> dialog = new Dialog<>();
-        dialog.setTitle("Winning Dialogue");
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setAlignment(Pos.CENTER);
-        String message = "";
-        if (game.isWinning() == 0){
-            message = "L'équipe bleue a gagné !";
-        }
-        else{
-            message = "L'équipe rouge a gagné !";
-        }
-        Label messageLabel = new Label(message);
-        grid.add(messageLabel, 0, 0);
-        dialog.getDialogPane().setContent(grid);
-        ButtonType okButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(okButtonType);
-        dialog.showAndWait();
-    }
-
-    public void drawLoosingDialogueBox() {
-        Dialog<Void> dialog = new Dialog<>();
-        dialog.setTitle("Loosing Dialogue");
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setAlignment(Pos.CENTER);
-        String message = "";
-        if (game.getTurn() == 0){
-            message = "L'équipe bleue a perdu ! Elle a trouvé l'assassin ...";
-        }
-        else{
-            message =  "L'équipe rouge a perdu ! Elle a trouvé l'assassin ...";
-        }
-        Label messageLabel = new Label(message);
-        grid.add(messageLabel, 0, 0);
-        dialog.getDialogPane().setContent(grid);
-        ButtonType okButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(okButtonType);
-        dialog.showAndWait();
     }
 
     public void nextTurn() {
