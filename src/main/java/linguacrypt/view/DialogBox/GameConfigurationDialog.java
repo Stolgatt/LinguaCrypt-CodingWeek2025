@@ -1,16 +1,16 @@
 package linguacrypt.view.DialogBox;
 
+import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.control.Alert.AlertType;
-import javafx.geometry.Insets;
-import javafx.application.Platform;
+import javafx.stage.StageStyle;
 import linguacrypt.model.GameConfiguration;
 import linguacrypt.model.game.Theme;
-
-import java.util.Optional;
-import java.util.List;
 import linguacrypt.utils.ThemeLoader;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * This class provides a dialog box for configuring game settings.
@@ -22,8 +22,7 @@ public class GameConfigurationDialog {
 
     /**
      * Displays a dialog box to configure game settings.
-     * The dialog pre-fills fields with default values from the GameConfiguration instance.
-     * Users can edit the values, and the configuration is updated upon confirmation.
+     * @return true if configuration is successfully saved, false otherwise.
      */
     public boolean showGameConfigurationDialog() {
         // Retrieve the current configuration instance
@@ -60,8 +59,8 @@ public class GameConfigurationDialog {
             List<Theme> themes = ThemeLoader.loadThemes(0);
             for (Theme theme : themes) {
                 themeComboBox.getItems().add(theme.getName());
-                themeComboBox.getSelectionModel().selectFirst();
             }
+            themeComboBox.getSelectionModel().selectFirst();
 
             // Add ComboBox to the dialog layout
             grid.add(new Label("Select Theme:"), 0, 5);
@@ -71,8 +70,12 @@ public class GameConfigurationDialog {
             Dialog<ButtonType> dialog = new Dialog<>();
             dialog.setTitle("Game Configuration");
             dialog.setHeaderText("Please configure the game settings");
+            dialog.initStyle(StageStyle.UTILITY);
             dialog.getDialogPane().setContent(grid);
             dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+            // Apply CSS for styling
+            dialog.getDialogPane().getStylesheets().add(getClass().getResource("/FXML/dialog-styles.css").toExternalForm());
 
             // Automatically focus the first input field
             Platform.runLater(difficultyField::requestFocus);
@@ -98,12 +101,12 @@ public class GameConfigurationDialog {
                 if (nbPlayers < 4) {
                     throw new IllegalArgumentException("Number of players must be at least 4.");
                 }
-                int playerPerTeam = (nbPlayers-1)/2 +1;
+                int playerPerTeam = (nbPlayers - 1) / 2 + 1;
                 if (maxTeam < playerPerTeam || maxTeam >= (nbPlayers - 2)) {
-                    throw new IllegalArgumentException("Max team members must be between " + playerPerTeam +" and " + (nbPlayers - 2));
+                    throw new IllegalArgumentException("Max team members must be between " + playerPerTeam + " and " + (nbPlayers - 2));
                 }
                 if (gridSize < 5 || gridSize > config.getMaxGridSize()) {
-                    throw new IllegalArgumentException("Grid size must be between 5 and " + config.getMaxGridSize() +".");
+                    throw new IllegalArgumentException("Grid size must be between 5 and " + config.getMaxGridSize());
                 }
                 if (timeTurn != -1 && (timeTurn < 0 || timeTurn > config.getMaxTimeTurn())) {
                     throw new IllegalArgumentException("Time per turn must be -1 or a positive value <= " + config.getMaxTimeTurn());
@@ -118,7 +121,7 @@ public class GameConfigurationDialog {
                 config.setTimeTurn(timeTurn);
 
                 // Show a success alert if the values are saved correctly
-                Alert successAlert = new Alert(AlertType.INFORMATION);
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                 successAlert.setTitle("Success");
                 successAlert.setHeaderText(null);
                 successAlert.setContentText("Configuration saved successfully!");
@@ -129,7 +132,7 @@ public class GameConfigurationDialog {
 
             } catch (IllegalArgumentException e) {
                 // Show an error alert if the input values are invalid
-                Alert errorAlert = new Alert(AlertType.ERROR);
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
                 errorAlert.setTitle("Error");
                 errorAlert.setHeaderText(null);
                 errorAlert.setContentText(e.getMessage());
