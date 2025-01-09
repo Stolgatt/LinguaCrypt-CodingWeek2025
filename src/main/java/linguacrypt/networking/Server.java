@@ -29,8 +29,6 @@ public class Server {
     public void start() {
         System.out.println("Server started on port " + PORT);
 
-        // Notify connected clients about the host joining
-        broadcastPlayerList();
 
         new Thread(() -> {
             try {
@@ -68,7 +66,7 @@ public class Server {
         return serverSocket;
     }
 
-    public void broadcastPlayerList() {
+    private void broadcastPlayerList() {
         Game game = context.getGame();
         if (game != null) {
             StringBuilder playerList = new StringBuilder();
@@ -78,6 +76,8 @@ public class Server {
             for (Player player : game.getRedTeam().getPlayers()) {
                 playerList.append("[Red] ").append(player.getName()).append(";");
             }
+            System.out.println("Server: Broadcasting Player List: " + playerList);
+    
             Message playerListMessage = new Message(MessageType.PLAYER_LIST, "Server", playerList.toString());
             broadcastMessage(playerListMessage);
         }
@@ -100,26 +100,43 @@ public class Server {
     private void addUserToGame(User user) {
         Game game = context.getGame();
         if (game != null) {
-            Player player = game.getPlayerByNickname(user.getNickname());
-            if (player == null) {
-                // Create a new Player for the user if it doesn't already exist
-                player = user.toPlayer(); // Initialize Player in User
+            Player existingPlayer = game.getPlayerByNickname(user.getNickname());
+            if (existingPlayer == null) {
+                Player player = user.toPlayer(); // Initialize Player in User
                 if (user.getTeamId() == 0) {
-                    game.getBlueTeam().addPlayer(player);
+                    if (!game.getBlueTeam().getPlayers().contains(player)) {
+                        game.getBlueTeam().addPlayer(player);
+                        System.out.println("Added to Blue team: " + player.getName());
+                    }
                 } else if (user.getTeamId() == 1) {
-                    game.getRedTeam().addPlayer(player);
+                    if (!game.getRedTeam().getPlayers().contains(player)) {
+                        game.getRedTeam().addPlayer(player);
+                        System.out.println("Added to Red team: " + player.getName());
+                    }
                 }
             } else {
-                // If the Player already exists, ensure the User's Player is linked
-                if (user.getPlayer() == null) {
-                    user.toPlayer();
-                }
-                user.getPlayer().copyFrom(player);
+                System.out.println("Player already exists: " + existingPlayer.getName());
             }
         }
-    
-        // Refresh the user list in the LobbyView
         Platform.runLater(() -> context.getLobbyView().refreshUserList());
+    }
+
+    public void synchronizeAllUsersWithGame() {
+        Game game = context.getGame();
+        if (game == null) return;
+    
+        for (ClientHandler client : clients) {
+            User user = client.getUser();
+            if (user != null) {
+                Player player = game.getPlayerByNickname(user.getNickname());
+                if (player != null) {
+                    if (user.getPlayer() == null) {
+                        user.toPlayer();
+                    }
+                    user.getPlayer().copyFrom(player);
+                }
+            }
+        }
     }
 
     private class ClientHandler extends Thread {
@@ -130,6 +147,10 @@ public class Server {
 
         public ClientHandler(Socket socket) {
             this.socket = socket;
+        }
+
+        public User getUser(){
+            return user;
         }
 
         @Override
@@ -148,11 +169,9 @@ public class Server {
                     Player player = context.getGame().getPlayerByNickname(nickname);
                     if (player == null) {
                         player = new Player(nickname, false, "", new PlayerStat());
-                        if (teamId == 0) {
-                            context.getGame().getBlueTeam().addPlayer(player);
-                        } else if (teamId == 1) {
-                            context.getGame().getRedTeam().addPlayer(player);
-                        }
+                        System.out.print("creating player in team " + teamId);
+                        context.getGame().addPlayer(teamId, player);
+                        
                     }
 
                     
@@ -166,10 +185,10 @@ public class Server {
                     broadcastPlayerList();
                     
                     // Broadcast the join message
-                    broadcastMessage(new Message(MessageType.USER_JOINED, nickname, " joined the game.", teamId));
+                    broadcastMessage(new Message(MessageType.USER_JOINED, nickname, " joined the team" + teamId, teamId));
                     
                     
-                    context.broadcastGameUpdate();
+                    //context.broadcastGameUpdate();
                     // Refresh the user list in the LobbyView
                     Platform.runLater(() -> context.getLobbyView().refreshUserList());
                 }
@@ -203,6 +222,8 @@ public class Server {
 
         public void broadcastGameUpdate() {
             if (context.getGame() != null) {
+
+                synchronizeAllUsersWithGame();
                 try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
                      ObjectOutputStream oos = new ObjectOutputStream(bos)) {
                     oos.writeObject(context.getGame());

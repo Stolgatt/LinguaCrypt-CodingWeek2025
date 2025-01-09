@@ -117,7 +117,7 @@ public class GameView implements Observer {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Platform.runLater(this::initializeGrid);
+    Platform.runLater(this::initializeGrid);
     Platform.runLater(this::updateRedTeamVBox);
     Platform.runLater(this::updateBlueTeamVBox);
     }
@@ -187,6 +187,16 @@ public class GameView implements Observer {
     }
 
     public void reagir() {
+
+        System.out.println("Client-Side Team Player Lists:");
+        System.out.println("Blue Team:");
+        for (Player player : game.getBlueTeam().getPlayers()) {
+            System.out.println("- " + player.getName());
+        }
+        System.out.println("Red Team:");
+        for (Player player : game.getRedTeam().getPlayers()) {
+            System.out.println("- " + player.getName());
+        }
 
         // Multiplayer check
         boolean isSpy;
@@ -294,8 +304,10 @@ public class GameView implements Observer {
             countField.setVisible(false);
             if((context.getServer() != null && context.getServer().getServerUser().getTeamId() != game.getTurn())
             || (context.getClient() != null && context.getClient().getUser().getTeamId() != game.getTurn())){
-                whoPlays.setText("Waiting" + ((game.getTurn() != 0) ? " Blue " : " Red ") + "team to play");
+                whoPlays.setText("Waiting" + ((game.getTurn() == 0) ? " Blue " : " Red ") + "team to play");
             }
+            whoPlays.setFont(Font.font(customFont.getName(), customFont.getSize() + 20));
+            whoPlays.setTextFill(Color.WHITE);
             labelHint.setText("");
         }else{
 
@@ -523,7 +535,7 @@ public class GameView implements Observer {
         whoPlays.setTextFill(Color.WHITE);
         if((context.getServer() != null && context.getServer().getServerUser().getTeamId() != game.getTurn())
         || (context.getClient() != null && context.getClient().getUser().getTeamId() != game.getTurn())){
-            whoPlays.setText("Waiting" + ((game.getTurn() != 0) ? " Blue " : " Red ") + "team to play");
+            whoPlays.setText("Waiting" + ((game.getTurn() == 0) ? " Blue " : " Red ") + "team to play");
         }
         labelHint.setText("");
     }

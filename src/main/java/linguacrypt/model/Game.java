@@ -310,7 +310,7 @@ public class Game implements Serializable {
                 return player;
             }
         }
-        for (Player player : ApplicationContext.getInstance().getGame().getBlueTeam().getPlayers()) {
+        for (Player player : ApplicationContext.getInstance().getGame().getRedTeam().getPlayers()) {
             if (player.getName().equals(nickname)) {
                 return player;
             }

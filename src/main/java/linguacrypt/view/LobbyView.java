@@ -110,7 +110,7 @@ private ListView<HBox> listViewChat;
     @FXML
     private void setRedSpy(){
 
-        ArrayList<Player> players = context.getGame().getBlueTeam().getPlayers();
+        ArrayList<Player> players = context.getGame().getRedTeam().getPlayers();
         for (Player player : players) {
             if(player.getName() == listViewRedTeam.getSelectionModel().getSelectedItem()){
                 player.setIsSpy(true);

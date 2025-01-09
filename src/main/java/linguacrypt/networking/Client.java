@@ -26,8 +26,7 @@ public class Client {
         this.input = new ObjectInputStream(socket.getInputStream());
 
         // Send a CONNECT message to the server
-        Message connectMessage = new Message(MessageType.CONNECT, user.getNickname(), "Joining the game");
-        connectMessage.setTeam(user.getTeamId()); // Include the team ID
+        Message connectMessage = new Message(MessageType.CONNECT, user.getNickname(), "Joining the game",user.getTeamId());
         sendMessage(connectMessage);
 
         // Start listening for incoming messages
@@ -64,7 +63,7 @@ public class Client {
                 System.out.println("Connection failed: " + message.getContent());
                 break;
             case USER_JOINED:
-                System.out.println(message.getNickname() + " joined the game.");
+                System.out.println(message.getNickname() + " joined the team" + message.getTeam());
                 Platform.runLater(() -> {
                     context.getLobbyView().addPlayer(message.getNickname(), message.getTeam());
                 });
@@ -116,24 +115,25 @@ public class Client {
                 }
                 break;
 
-            case GAME_UPDATE:
+                case GAME_UPDATE:
                 try (ByteArrayInputStream bis = new ByteArrayInputStream(message.getSerializedGame());
-                        ObjectInputStream ois = new ObjectInputStream(bis)) {
+                     ObjectInputStream ois = new ObjectInputStream(bis)) {
                     Game updatedGame = (Game) ois.readObject();
-
-                    // Update the client's local game instance
                     context.setGame(updatedGame);
-
-                    // Link the User's Player to the corresponding Player in the Game
+            
+                    // Synchronize the User's Player with the game's state
                     Player updatedPlayer = updatedGame.getPlayerByNickname(user.getNickname());
                     if (updatedPlayer != null) {
                         if (user.getPlayer() == null) {
-                            user.toPlayer(); // Initialize the Player in User
+                            user.toPlayer(); // Initialize Player in User if null
                         }
                         user.getPlayer().copyFrom(updatedPlayer);
                     }
-
-                    // Notify the game view to refresh
+            
+                    // Debugging: Print team members
+                    System.out.println("Client: Current Blue Team -> " + updatedGame.getBlueTeam().getPlayers());
+                    System.out.println("Client: Current Red Team -> " + updatedGame.getRedTeam().getPlayers());
+            
                     Platform.runLater(() -> context.getGame().notifierObservateurs());
                 } catch (IOException | ClassNotFoundException e) {
                     System.out.println("Error updating game: " + e.getMessage());

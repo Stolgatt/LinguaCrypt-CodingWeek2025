@@ -163,7 +163,7 @@ public class ApplicationContext {
         if (this.getServer() != null) {
             System.out.println("Updating the game...");
         Message message = new Message(MessageType.GAME_UPDATE, this.getServer().getHostNickname(), "Updating the game...");
-
+            server.synchronizeAllUsersWithGame();
         // Serialize the game instance
         Game game = this.getGame();
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
