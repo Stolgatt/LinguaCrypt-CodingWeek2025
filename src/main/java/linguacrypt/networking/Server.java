@@ -3,7 +3,6 @@ package linguacrypt.networking;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
-
 import javafx.application.Platform;
 import linguacrypt.ApplicationContext;
 import linguacrypt.model.Game;
@@ -22,7 +21,7 @@ public class Server {
         this.hostNickname = hostNickname;
 
         // Initialize the host as a player
-        this.serverUser = new User(hostNickname, InetAddress.getLocalHost(), 0); // Default team is 0
+        this.serverUser = new User(hostNickname, InetAddress.getLocalHost(), 0); // Blue team by default
         addUserToGame(serverUser); // Add the server player to the game
     }
 
@@ -31,6 +30,7 @@ public class Server {
 
         // Notify connected clients about the host joining
         broadcastPlayerList();
+        broadcastMessage(new Message(MessageType.USER_JOINED, "Server", hostNickname + " (Host) joined the game.", 0));
 
         // Handle client connections in a separate thread
         new Thread(() -> {
@@ -38,7 +38,7 @@ public class Server {
                 while (true) {
                     Socket clientSocket = serverSocket.accept();
                     System.out.println("New client connected: " + clientSocket.getInetAddress());
-                    
+
                     // Create a new ClientHandler for the connected client
                     ClientHandler clientHandler = new ClientHandler(clientSocket);
                     clients.add(clientHandler);
@@ -65,19 +65,36 @@ public class Server {
     }
 
     public void sendMessageAsHost(String content) {
-        // Simulate the host sending a chat message
-        Message message = new Message(MessageType.CHAT, hostNickname, content);
-        handleMessage(message, true); // Host messages are flagged as local
+        // Create the message with the host's nickname and default blue team
+        Message message = new Message(MessageType.CHAT, hostNickname, content, 0); // Blue team by default
+
+        // Update the host's UI immediately
+        Platform.runLater(() -> context.getLobbyView().addChatMessage(
+            hostNickname, 
+            content, 
+            0 // Blue team
+        ));
+
+        // Broadcast the message to all clients
+        broadcastMessage(message, true); // true indicates the host already handled it locally
     }
 
     public void broadcastMessage(Message message) {
+        broadcastMessage(message, false);
+    }
+
+    private void broadcastMessage(Message message, boolean excludeHost) {
         for (ClientHandler client : clients) {
             client.sendMessage(message);
         }
 
-        // Let the server (host) handle the message as well
-        if (message.getType() == MessageType.CHAT || message.getType() == MessageType.USER_JOINED) {
-            ApplicationContext.getInstance().getLobbyView().addChatMessage(message.getNickname(), message.getContent(), message.getTeam());
+        // Add the message locally for the host's view if not already handled
+        if (!excludeHost && message.getType() == MessageType.CHAT) {
+            Platform.runLater(() -> context.getLobbyView().addChatMessage(
+                message.getNickname(),
+                message.getContent(),
+                message.getTeam()
+            ));
         }
     }
 
@@ -96,10 +113,6 @@ public class Server {
         }
     }
 
-    public String getHostNickname() {
-        return hostNickname;
-    }
-
     private void addUserToGame(User user) {
         Game game = context.getGame();
         if (game != null) {
@@ -111,68 +124,6 @@ public class Server {
         }
 
         // Refresh the user list in the LobbyView
-    Platform.runLater(() -> context.getLobbyView().refreshUserList());
-    }
-
-    private void handleMessage(Message message, boolean isLocalHost) {
-        switch (message.getType()) {
-            case CHAT:
-                // Broadcast the chat message to all clients
-                System.out.println(message.getNickname() + ": " + message.getContent());
-
-                if (!isLocalHost) {
-                    // Rebroadcast the message to all other clients
-                    broadcastMessage(message);
-                }
-
-                // Add the chat message to the LobbyView's chat area
-                Platform.runLater(() -> {
-                    context.getLobbyView().addChatMessage(message.getNickname(), message.getContent(), message.getTeam());
-                });
-                break;
-
-            case USER_JOINED:
-                // Handle a client connecting to the game
-                String nickname = message.getNickname();
-                int teamId = message.getTeam(); // Get the team ID from the message
-
-                // Add the user to the appropriate team
-                User newUser = new User(nickname, null, teamId); // Assuming the InetAddress is not required here
-                addUserToTeam(newUser);
-
-                // Notify all clients of the new player
-                broadcastPlayerList();
-                broadcastMessage(new Message(MessageType.USER_JOINED, "Server", nickname + " joined the game."));
-
-                // Refresh user list on the server
-                Platform.runLater(() -> context.getLobbyView().refreshUserList());
-
-                System.out.println(nickname + " connected and joined team " + teamId);
-                break;
-
-            case PLAYER_LIST:
-                // Update player list (sent by the server to clients)
-                System.out.println("Player list updated.");
-                broadcastPlayerList();
-                break;
-
-            default:
-                System.out.println("Unhandled message type: " + message.getType());
-                break;
-        }
-    }
-
-    private void addUserToTeam(User user) {
-        Game game = context.getGame();
-        if (game != null) {
-            if (user.getTeamId() == 0) {
-                game.getBlueTeam().addPlayer(user.toPlayer());
-            } else if (user.getTeamId() == 1) {
-                game.getRedTeam().addPlayer(user.toPlayer());
-            }
-        }
-
-        // Refresh the LobbyView's user list
         Platform.runLater(() -> context.getLobbyView().refreshUserList());
     }
 
@@ -205,17 +156,20 @@ public class Server {
                     // Create and add the user
                     user = new User(nickname, socket.getInetAddress(), teamId);
                     addUserToGame(user);
-                    broadcastPlayerList(); // Notify all clients
 
-                    System.out.println(nickname + " joined team " + teamId);
-                    // Notify all connected clients
-                    broadcastMessage(new Message(MessageType.USER_JOINED, nickname, " joined the game."));
+                    // Notify all clients of the updated player list
+                    broadcastPlayerList();
+
+                    // Notify all clients that a user has joined
+                    broadcastMessage(new Message(MessageType.USER_JOINED, "Server", nickname + " joined the game.", teamId));
                 }
 
                 // Handle messages from the client
                 while (!socket.isClosed()) {
                     Message message = (Message) input.readObject();
-                    handleMessage(message, false); // Client messages are not local
+                    if (message.getType() == MessageType.CHAT) {
+                        broadcastMessage(message); // Broadcast chat messages
+                    }
                 }
             } catch (IOException | ClassNotFoundException e) {
                 System.out.println("Client disconnected: " + e.getMessage());
@@ -265,5 +219,9 @@ public class Server {
                 System.out.println("Error closing connection: " + e.getMessage());
             }
         }
+    }
+
+    public String getHostNickname() {
+        return hostNickname;
     }
 }

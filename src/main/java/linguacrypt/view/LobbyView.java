@@ -79,35 +79,36 @@ private ListView<HBox> listViewChat;
     }
 
     @FXML
-private void sendMessage() {
-    String message = textFieldChatMessage.getText().trim();
-
-    if (!message.isEmpty()) {
-        textFieldChatMessage.clear();
-
-        Message msg = new Message(
-            MessageType.CHAT,
-            context.getClient() != null
-                ? context.getClient().getUser().getNickname()
-                : context.getServer().getHostNickname(),
-            message
-        );
-
-        int teamId = context.getClient() != null
-            ? context.getClient().getUser().getTeamId()
-            : 0; // Default to blue team for the host
-
-        // Add the message to the local chat view
-        addChatMessage(msg.getNickname(), msg.getContent(), teamId);
-
-        // Broadcast or send the message
-        if (context.getServer() != null) {
-            context.getServer().broadcastMessage(msg);
-        } else if (context.getClient() != null) {
-            context.getClient().sendMessage(msg);
+    private void sendMessage() {
+        String message = textFieldChatMessage.getText().trim();
+    
+        if (!message.isEmpty()) {
+            textFieldChatMessage.clear();
+    
+            // Create the message object
+            Message msg = new Message(
+                MessageType.CHAT,
+                context.getClient() != null
+                    ? context.getClient().getUser().getNickname()
+                    : context.getServer().getHostNickname(),
+                message
+            );
+    
+            // Set the team ID
+            int teamId = context.getClient() != null
+                ? context.getClient().getUser().getTeamId()
+                : 0; // Default to blue team for the host
+    
+            msg.setTeam(teamId);
+    
+            // Send the message (but do NOT add it to the local chat view here)
+            if (context.getServer() != null) {
+                context.getServer().broadcastMessage(msg); // Server will broadcast to all clients, including itself
+            } else if (context.getClient() != null) {
+                context.getClient().sendMessage(msg); // Server will broadcast back to this client
+            }
         }
     }
-}
 
     @FXML
     private void startGame() {
