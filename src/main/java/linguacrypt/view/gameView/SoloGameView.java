@@ -4,8 +4,13 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import linguacrypt.ApplicationContext;
 import linguacrypt.controller.TimerController;
 import linguacrypt.model.*;
@@ -21,6 +26,7 @@ import java.util.function.BiConsumer;
 
 public class SoloGameView implements Observer {
     private Game game;
+    Font customFont = Font.loadFont(GameViewUtils.class.getResourceAsStream("/fonts/cardFont.otf"), 14);
 
     @FXML
     private GridPane gameGrid; // Lié à game.fxml
@@ -85,62 +91,56 @@ public class SoloGameView implements Observer {
         Node root = context.getGameNode();
 
         //BACKGROUND COLOR
-        switch (turn) {
-            case 0:
-                root.setStyle("-fx-background-color: rgba(173, 216, 230, 0.5);");
-                break;
-            case 1:
-                root.setStyle("-fx-background-color: rgba(240, 128, 128, 0.5);");
-                break;
-            default:
-                root.setStyle("-fx-background-color: rgba(211, 211, 211, 0.5);");
-                break;
-        }
-
+        root.setStyle("-fx-background-image: url('image/bg_blue.jpg'); -fx-background-size: cover;");
         //DRAW GRID
         for (int row = 0; row < grid.getGrid().length; row++) {
             for (int col = 0; col < grid.getGrid()[row].length; col++) {
                 Button cardButton = (Button) gameGrid.getChildren().get(row * grid.getGrid().length + col);
-                // Update button text with loaded word
-                cardButton.setText(grid.getCard(row, col).getWord());
 
-                if (grid.getCard(row,col).isSelected() || game.getBlueTeam().getPlayers().getFirst().getIsSpy()){
-                    switch (grid.getCard(row,col).getCouleur()){
-                        case 0:
-                            cardButton.setStyle("-fx-background-color: #F5DEB3;");
-                            break;
-                        case 1:
-                            cardButton.setStyle("-fx-background-color: lightblue;");
-                            break;
-                        case 2:
-                            cardButton.setStyle("-fx-background-color: lightcoral;");
-                            break;
-                        case 3:
-                            cardButton.setStyle("-fx-background-color: darkgray;");
-                            break;
-                    }
-                    if(game.getBlueTeam().getPlayers().getFirst().getIsSpy()){
-                        Card discoveredCard = game.getGrid().getCard(row,col);
-                        if (!discoveredCard.isSelected()){continue;}
-                        if (discoveredCard != null) {
-                            Label cardLabel = new Label(discoveredCard.getWord());
-                            if (discoveredCard.getCouleur()==1){
-                                cardLabel.setStyle("-fx-background-color: lightblue; -fx-border-color: black; -fx-padding: 5; -fx-border-radius: 5; -fx-background-radius: 5;");
-                            }
-                            else{
-                                cardLabel.setStyle("-fx-background-color: #F5DEB3; -fx-border-color: black; -fx-padding: 5; -fx-border-radius: 5; -fx-background-radius: 5;");
+                Label cardLabel = new Label(grid.getCard(row, col).getWord());
+                Image image = null;
 
-                            }
-                            cardLabel.setPrefSize(100, 30);
-                            cardLabel.setAlignment(Pos.CENTER);
+                if (grid.getCard(row,col).isSelected()) {
+                    cardLabel.setText("");
+                    image = switch (grid.getCard(row, col).getCouleur()) {
+                        case 0 -> new Image(getClass().getResourceAsStream("/image/backs_part_2.png"));
+                        case 1 -> new Image(getClass().getResourceAsStream("/image/backs_part_1.png"));
+                        case 2 -> new Image(getClass().getResourceAsStream("/image/backs_part_4.png"));
+                        case 3 -> new Image(getClass().getResourceAsStream("/image/black-back.png"));
+                        default -> null;
+                    };
+                }
+                else if(game.getBlueTeam().getPlayers().getFirst().getIsSpy()){
+                        cardLabel.setText(grid.getCard(row, col).getWord());
 
-                            motTrouve.getChildren().add(cardLabel);
+                        if (grid.getCard(row, col).getCouleur() == 3){
+                            cardLabel.setTextFill(Color.WHITE);
                         }
-                    }
+                        image = switch (grid.getCard(row, col).getCouleur()) {
+                            case 0 -> new Image(getClass().getResourceAsStream("/image/front_white.png"));
+                            case 1 -> new Image(getClass().getResourceAsStream("/image/front_blue.png"));
+                            case 2 -> new Image(getClass().getResourceAsStream("/image/front_red.png"));
+                            case 3 -> new Image(getClass().getResourceAsStream("/image/front_black.png"));
+                            default -> null;
+                        };
+                        motTrouve.getChildren().add(cardLabel);
                 }
                 else{
-                    cardButton.setStyle("");
+                    image = new Image(getClass().getResourceAsStream("/image/front_white.png"));
                 }
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(100);
+                imageView.setFitHeight(50);
+                imageView.setPreserveRatio(false);
+                imageView.setSmooth(true);
+
+                StackPane stackPane = new StackPane();
+                stackPane.setPrefSize(100, 50);
+                stackPane.getChildren().addAll(imageView, cardLabel);
+                cardLabel.setTranslateY(10);
+                cardLabel.setFont(customFont);
+                cardButton.setGraphic(stackPane);
+                cardButton.setContentDisplay(ContentDisplay.CENTER);
             }
         }
         if (game.getBlueTeam().getPlayers().getFirst().getIsSpy()){

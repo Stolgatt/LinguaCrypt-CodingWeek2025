@@ -277,4 +277,26 @@ public class Game implements Serializable {
 
     public long getStartTime() {return startTime;}
 
+    public int getRedRemaining(){
+        int c = 0;
+        for (int i = 0 ;i< grid.getGrid().length;i++){
+            for (int j = 0 ;j< grid.getGrid()[i].length;j++){
+                if (grid.getCard(i,j).getCouleur()==2 && !grid.getCard(i,j).isSelected()){
+                    c++;
+                }
+            }
+        }
+        return c;
+    }
+    public int getBlueRemaining(){
+        int c = 0;
+        for (int i = 0 ;i< grid.getGrid().length;i++){
+            for (int j = 0 ;j< grid.getGrid()[i].length;j++){
+                if (grid.getCard(i,j).getCouleur()==1 && !grid.getCard(i,j).isSelected()){
+                    c++;
+                }
+            }
+        }
+        return c;
+    }
 }
