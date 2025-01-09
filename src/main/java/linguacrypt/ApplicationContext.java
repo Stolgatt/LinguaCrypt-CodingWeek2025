@@ -180,6 +180,8 @@ public class ApplicationContext {
         editTeamController.setGame(game);
         profileMenuController.setGame(game);
         profileMenuView.setGame(game);
+        soloGameController.setGame(game);
+        soloGameView.setGame(game);
     }
 
     public Game getGame(){
