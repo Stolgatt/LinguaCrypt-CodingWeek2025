@@ -16,6 +16,7 @@ import linguacrypt.networking.MessageType;
 import linguacrypt.networking.Server;
 import linguacrypt.view.EditTeamView;
 import linguacrypt.view.EditThemeView;
+import linguacrypt.view.gameView.EndGameView;
 import linguacrypt.view.gameView.GameView;
 import linguacrypt.view.LobbyView;
 import linguacrypt.view.LocalMenuView;
@@ -67,6 +68,9 @@ public class ApplicationContext {
         private Node lobbyNode;
     private LobbyView lobbyView;
     private SoloGameView soloGameView;
+
+    private Node EndGameNode;
+    private EndGameView endGameView;
 
     /** Modèles */
     private Game game;
@@ -142,6 +146,11 @@ public class ApplicationContext {
         SoloGameNode = soloGameLoader.load();
         soloGameView = soloGameLoader.getController();
         soloGameController = new SoloGameController(game, soloGameView);
+
+        FXMLLoader endGameLoader = new FXMLLoader(getClass().getResource("/FXML/EndGame.fxml"));
+        EndGameNode = endGameLoader.load();
+        endGameView = endGameLoader.getController();
+
 
         FXMLLoader profileMenuLoader = new FXMLLoader(getClass().getResource("/FXML/ProfileMenu.fxml"));
         ProfileMenuNode = profileMenuLoader.load();
@@ -262,6 +271,7 @@ public class ApplicationContext {
         profileMenuView.setGame(game);
         soloGameController.setGame(game);
         soloGameView.setGame(game);
+        endGameView.setGame(game);
     }
 
     public Game getGame(){
@@ -273,6 +283,8 @@ public class ApplicationContext {
     }
     //endregion
 
+    public Node getEndGameNode(){return EndGameNode;}
+    public EndGameView getEndGameView(){return endGameView;}
     public Node getMainMenuNode() {
         return MainMenuNode;
     }

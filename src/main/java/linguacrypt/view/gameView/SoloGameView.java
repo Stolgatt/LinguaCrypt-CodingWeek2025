@@ -13,7 +13,6 @@ import javafx.scene.text.Font;
 import linguacrypt.ApplicationContext;
 import linguacrypt.controller.TimerController;
 import linguacrypt.model.*;
-import linguacrypt.model.Game;
 import linguacrypt.model.game.Grid;
 import linguacrypt.view.DialogBox.EndGameDialog;
 import linguacrypt.view.DialogBox.EndOfTurnDialog;
@@ -167,7 +166,9 @@ public class SoloGameView implements Observer {
 
         //check if game is over
         if (game.getIsWin()!=-1){
-            EndGameDialog.showEndGameDialog(game);
+            context.getEndGameView().showGameResult();
+            context.getRoot().setCenter(context.getEndGameNode());
+
         }
     }
 

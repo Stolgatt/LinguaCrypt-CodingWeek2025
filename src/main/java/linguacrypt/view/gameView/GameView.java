@@ -314,7 +314,9 @@ public class GameView implements Observer {
         }
         // check if game is over
         if (game.getIsWin() != -1) {
-            EndGameDialog.showEndGameDialog(game);
+            context.getEndGameView().showGameResult();
+            context.getRoot().setCenter(context.getEndGameNode());
+
         }
     }
 
