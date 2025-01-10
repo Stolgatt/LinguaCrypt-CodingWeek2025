@@ -141,7 +141,7 @@ public class SoloGameView implements Observer {
                 StackPane stackPane = new StackPane();
                 stackPane.setPrefSize(cardWidth, cardHeight);
                 stackPane.getChildren().addAll(imageView, cardLabel);
-                cardLabel.setTranslateY(10);
+                cardLabel.setTranslateY(cardHeight/5);
                 cardLabel.setFont(customFont);
                 cardButton.setGraphic(stackPane);
                 cardButton.setContentDisplay(ContentDisplay.CENTER);

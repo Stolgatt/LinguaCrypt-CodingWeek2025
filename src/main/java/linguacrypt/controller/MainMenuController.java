@@ -39,10 +39,8 @@ public class MainMenuController {
                 }
                 break;
             case 2: // Solo Game Mode
-                SoloModeConfigurationDialog soloDialog = new SoloModeConfigurationDialog();
-                if (soloDialog.showSoloGameConfigurationDialog()) {
-                    context.getRoot().setCenter(context.getSoloGameNode());
-                }
+                context.getLocalMenuView().showSoloView();
+                context.getRoot().setCenter(context.getLocalNode());
                 break;
             default:
                 config.setGameMode(0);

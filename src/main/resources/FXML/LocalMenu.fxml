@@ -46,8 +46,8 @@
 
             <!-- Create and Back Buttons -->
             <HBox spacing="20.0" alignment="CENTER">
-                <Button text="MenuPrincipal" onAction="#goBackToMainMenu" style="-fx-background-color: #ffc107; -fx-text-fill: black; -fx-background-radius: 15px;" prefWidth="120.0" />
-                <Button fx:id="buttonCreateRoom" text="Start" onAction="#createNormal" style="-fx-background-color: #17a2b8; -fx-text-fill: white; -fx-background-radius: 15px;" prefWidth="120.0" />
+                <Button fx:id="buttonCreateRoom" text="Create Room" onAction="#createNormal" style="-fx-background-color: #17a2b8; -fx-text-fill: white; -fx-background-radius: 15px;" prefWidth="120.0" />
+                <Button text="Back" onAction="#goBackToMainMenu" style="-fx-background-color: #ffc107; -fx-text-fill: black; -fx-background-radius: 15px;" prefWidth="120.0" />
             </HBox>
         </VBox>
 
@@ -99,8 +99,8 @@
 
             <!-- Join and Back Buttons -->
             <HBox spacing="20.0" alignment="CENTER">
-                <Button text="MenuPrincipal" onAction="#goBackToMainMenu" style="-fx-background-color: #ffc107; -fx-text-fill: black; -fx-background-radius: 15px;" prefWidth="120.0" />
                 <Button fx:id="buttonJoinRoom" text="Start" onAction="#createSolo" style="-fx-background-color: #17a2b8; -fx-text-fill: white; -fx-background-radius: 15px;" prefWidth="120.0" />
+                <Button text="MenuPrincipal" onAction="#goBackToMainMenu" style="-fx-background-color: #ffc107; -fx-text-fill: black; -fx-background-radius: 15px;" prefWidth="120.0" />
             </HBox>
         </VBox>
     </children>
