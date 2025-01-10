@@ -195,7 +195,7 @@ public class LocalMenuView {
         gConfig.setGridSize(gridSize);
         gConfig.setTimeTurn(timer);
         context.setGame(new Game(gConfig));
-        context.getRoot().setCenter(context.getGameNode());
+        context.getRoot().setCenter(context.getEditTeamNode());
     }
 
 
