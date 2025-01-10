@@ -28,13 +28,13 @@ public class EditTeamView implements Observer {
     private VBox RedTeam;
     @FXML
     private VBox BlueTeam;
-    
+
     @FXML
     private Button launchGameButton;
     @FXML
     private Button addPlayerBtn;
-    
-    
+
+
     @FXML
     private Label teamBlueTitle;
     @FXML
@@ -59,7 +59,7 @@ public class EditTeamView implements Observer {
         addPlayerBtn.setOnAction(e -> {
             drawAddPlayerDialogueBox();
         });
-        
+
     }
 
     public void setOnStartGame(Consumer<javafx.event.ActionEvent> onStartGame) {
