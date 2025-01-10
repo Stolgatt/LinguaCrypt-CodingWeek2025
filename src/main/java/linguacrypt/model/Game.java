@@ -45,16 +45,19 @@ public class Game implements Serializable {
         switch (gConfig.getGameMode()) {
             case 0:                     // Words Game Mode
                 this.themeWords = loadThemeWords(gConfig.getWordTheme());
+                gConfig.setGridSize(getFinalGridSize(gConfig.getGridSize(),themeWords.size()));
                 this.grid = new Grid(gConfig.getGridSize(), themeWords, 0);
                 setUpGame();
                 break;
             case 1:                     // Picture Game Mode
-            this.themeWords = loadThemeWords(gConfig.getPictTheme());
-            this.grid = new Grid(gConfig.getGridSize(), themeWords, 1);
+                this.themeWords = loadThemeWords(gConfig.getPictTheme());
+                gConfig.setGridSize(getFinalGridSize(gConfig.getGridSize(),themeWords.size()));
+                this.grid = new Grid(gConfig.getGridSize(), themeWords, 1);
                 setUpGame();
                 break;
             case 2:                     // Solo Game Mode
                 this.themeWords = loadThemeWords(gConfig.getWordTheme());
+                gConfig.setGridSize(getFinalGridSize(gConfig.getGridSize(),themeWords.size()));
                 this.grid = new Grid(gConfig.getGridSize(), themeWords, 2);
                 break;
             default:
@@ -116,6 +119,7 @@ public class Game implements Serializable {
     //Init Game
     public void setUpGame(){
         turn = random.nextInt(2);
+
         grid.initGrid(turn);
         grid.printGrid();
         teams[0] = new Team("Equipe Bleue",gConfig.getMaxTeamMember(),this,0);
@@ -316,6 +320,15 @@ public class Game implements Serializable {
         }
         System.out.println(nickname + "not found");
         return null; // Not found
+    }
+    private int getFinalGridSize(int gridSize, int themeWordsSize) {
+        int finalGridSize = gridSize;
+        if (gridSize * gridSize > themeWordsSize) {
+            System.err.println("\nThere is not enough pictures in the category to fit this size of grid. Adjusting grid size...");
+            finalGridSize = (int) Math.sqrt(themeWordsSize);
+            finalGridSize = Math.max(finalGridSize, 1);
+        }
+        return finalGridSize;
     }
 
 

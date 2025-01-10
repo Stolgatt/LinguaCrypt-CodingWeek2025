@@ -54,7 +54,6 @@ public class ProfileMenuView implements Observer {
     }
 
     public void setGame(Game game) {
-        System.out.println("ALloooo\n");
         this.game = game;
         game.ajouterObservateur(this);
         reagir();
@@ -62,6 +61,11 @@ public class ProfileMenuView implements Observer {
     public void setOnMenuPrincipal(Consumer<ActionEvent> onMenuPrincipal) {this.onMenuPrincipal = onMenuPrincipal;}
 
     public void reagir() {
+        ArrayList<String> playerNames = new ArrayList<>();
+        for (Player p : GameConfiguration.getInstance().getPlayerList()) {
+            playerNames.add(p.getName());
+        }
+        comboBox.setItems(FXCollections.observableArrayList(playerNames));
         String playerName = comboBox.getValue();
         if (playerName == null) {
             return;

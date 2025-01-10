@@ -123,7 +123,7 @@ public class LocalMenuView {
 
     @FXML
     private void increaseGridSize() {
-        if (gridSize < 15) {
+        if (gridSize < 7) {
             gridSize++;
             labelGridSize.setText(String.valueOf(gridSize));
         }
@@ -195,7 +195,7 @@ public class LocalMenuView {
         gConfig.setGridSize(gridSize);
         gConfig.setTimeTurn(timer);
         context.setGame(new Game(gConfig));
-        context.getRoot().setCenter(context.getEditTeamNode());
+        context.getRoot().setCenter(context.getGameNode());
     }
 
 

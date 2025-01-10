@@ -96,6 +96,12 @@ public class GameController {
             game.notifierObservateurs();
             return;
         }
+        if (!count.matches("\\d+")) {
+            GameViewUtils.showError("Veuillez entrer uniquement des chiffres.");
+            game.setTurnBegin(0);
+            game.notifierObservateurs();
+            return;
+        }
         int number = Integer.parseInt(count);
         if (hint==null || hint.isEmpty()){
             GameViewUtils.showError("Un mot doit être donner.");
