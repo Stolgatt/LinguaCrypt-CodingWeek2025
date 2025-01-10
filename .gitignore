@@ -12,3 +12,4 @@ themes.dat
 gradle/
 gradlew
 gradlew.bat
+*.dat

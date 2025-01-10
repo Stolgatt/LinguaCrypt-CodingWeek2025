@@ -27,19 +27,19 @@ public class MainMenuController {
         switch (config.getGameMode()) {
             case 0: // Words Game Mode
                 context.getLocalMenuView().showGameView();
+                context.getLocalMenuView().loadExistingThemes();
                 context.getRoot().setCenter(context.getLocalNode());
 
                 break;
             case 1: // Picture Game Mode
-                PictGameConfigurationDialog pictDialog = new PictGameConfigurationDialog();
-                if (pictDialog.showGameConfigurationDialog()) {
-                    config.setPictTheme(pictDialog.getSelectedTheme());
-                    context.setGame(new Game(config));
-                    context.getRoot().setCenter(context.getEditTeamNode());
-                }
+            context.getLocalMenuView().showGameView();
+            context.getLocalMenuView().loadExistingThemes();
+            context.getRoot().setCenter(context.getLocalNode());
+
                 break;
             case 2: // Solo Game Mode
                 context.getLocalMenuView().showSoloView();
+                context.getLocalMenuView().loadExistingThemes();
                 context.getRoot().setCenter(context.getLocalNode());
                 break;
             default:

@@ -69,7 +69,6 @@ public class StatLoader {
             while (true) {
                 try {
                     Player player = (Player) ois.readObject();
-                    System.out.println(player.getName() + " " + player.getStat().displayStat());
                     playerList.add(player);
                 } catch (EOFException e) {
                     break;

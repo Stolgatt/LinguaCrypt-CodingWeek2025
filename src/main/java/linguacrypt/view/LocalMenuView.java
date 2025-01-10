@@ -67,6 +67,14 @@ public class LocalMenuView {
 
     }
 
+    public void loadExistingThemes() {
+        comboBoxTheme.getItems().clear();
+        List<Theme> themes = ThemeLoader.loadThemes(GameConfiguration.getInstance().getGameMode());
+        for (Theme theme : themes) {
+            comboBoxTheme.getItems().add(theme.getName());
+        }
+    }
+
     @FXML
     public void showGameView() {
         context.getRoot().setCenter(context.getMPMenuNode());
@@ -181,6 +189,8 @@ public class LocalMenuView {
         else if (gConfig.getGameMode() == 1){
             gConfig.setPictTheme(comboBoxTheme.getSelectionModel().getSelectedItem());
         }
+        gConfig.setGridSize(gridSize);
+        gConfig.setTimeTurn(timer);
         context.setGame(new Game(gConfig));
         context.getRoot().setCenter(context.getEditTeamNode());
     }
