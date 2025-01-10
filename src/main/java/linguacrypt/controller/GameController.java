@@ -125,7 +125,7 @@ public class GameController {
 
         game.setCurrentHint(hint);
         game.setCurrentNumberWord(number);
-
+        view.resetTimer();
     
         context.broadcastGameUpdate();
         game.notifierObservateurs();

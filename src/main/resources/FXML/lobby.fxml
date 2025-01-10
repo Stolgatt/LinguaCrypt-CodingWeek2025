@@ -17,14 +17,14 @@
             <!-- User Lists -->
             <HBox spacing="20.0" alignment="CENTER">
                 <VBox spacing="10.0" alignment="TOP_CENTER">
-                    <Label text="Blue Team:" textFill="WHITE" />
+                    <Label text="Equipe Rouge:" textFill="WHITE" />
                     <ListView fx:id="listViewBlueTeam" style="-fx-background-color: #f2f2f2; -fx-background-radius: 10px; -fx-border-color: black; -fx-border-radius: 10px;" prefHeight="200.0" />
-                    <Button fx:id="setBlueSpy" text="Set as Spy" onAction="#setBlueSpy" style="-fx-background-color: linear-gradient(to bottom, #007bff, #0056b3); -fx-text-fill: white; -fx-background-radius: 20px;" />
+                    <Button fx:id="setBlueSpy" text="Définir en tant qu'espion" onAction="#setBlueSpy" style="-fx-background-color: linear-gradient(to bottom, #007bff, #0056b3); -fx-text-fill: white; -fx-background-radius: 20px;" />
                 </VBox>
                 <VBox spacing="10.0" alignment="TOP_CENTER">
                     <Label text="Red Team:" textFill="WHITE" />
                     <ListView fx:id="listViewRedTeam" style="-fx-background-color: #f2f2f2; -fx-background-radius: 10px; -fx-border-color: black; -fx-border-radius: 10px;" prefHeight="200.0" />
-                    <Button fx:id="setRedSpy" text="Set As Spy" onAction="#setRedSpy" style="-fx-background-color: linear-gradient(to bottom, #007bff, #0056b3); -fx-text-fill: white; -fx-background-radius: 20px;" />
+                    <Button fx:id="setRedSpy" text="Définir en tant qu'espion" onAction="#setRedSpy" style="-fx-background-color: linear-gradient(to bottom, #007bff, #0056b3); -fx-text-fill: white; -fx-background-radius: 20px;" />
                 </VBox>
             </HBox>
 
@@ -32,14 +32,14 @@
             <Label text="Chat:" textFill="WHITE" />
             <ListView fx:id="listViewChat" style="-fx-background-color: #f2f2f2; -fx-background-radius: 10px; -fx-border-color: black; -fx-border-radius: 10px;" prefHeight="250.0" />
             <HBox spacing="10.0" alignment="CENTER">
-                <TextField fx:id="textFieldChatMessage" promptText="Type your message..." prefWidth="400.0" style="-fx-background-radius: 10px; -fx-background-color: white;" />
-                <Button fx:id="buttonSendMessage" text="Set As Spy" onAction="#sendMessage" style="-fx-background-color: linear-gradient(to bottom, #007bff, #0056b3); -fx-text-fill: white; -fx-background-radius: 20px;" />
+                <TextField fx:id="textFieldChatMessage" promptText="Ecris un message..." prefWidth="400.0" style="-fx-background-radius: 10px; -fx-background-color: white;" />
+                <Button fx:id="buttonSendMessage" text="Envoyer" onAction="#sendMessage" style="-fx-background-color: linear-gradient(to bottom, #007bff, #0056b3); -fx-text-fill: white; -fx-background-radius: 20px;" />
             </HBox>
 
             <!-- Control Buttons -->
             <HBox spacing="20.0" alignment="CENTER">
-                <Button fx:id="buttonStartGame" text="Start Game" onAction="#startGame" style="-fx-background-color: linear-gradient(to bottom, #28a745, #218838); -fx-text-fill: white; -fx-background-radius: 20px;" />
-                <Button fx:id="buttonBack" text="Back" onAction="#goBackToMainMenu" style="-fx-background-color: linear-gradient(to bottom, #ffc107, #e0a800); -fx-text-fill: black; -fx-background-radius: 20px;" />
+                <Button fx:id="buttonStartGame" text="Commencer la partie" onAction="#startGame" style="-fx-background-color: linear-gradient(to bottom, #28a745, #218838); -fx-text-fill: white; -fx-background-radius: 20px;" />
+                <Button fx:id="buttonBack" text="Retour" onAction="#goBackToMainMenu" style="-fx-background-color: linear-gradient(to bottom, #ffc107, #e0a800); -fx-text-fill: black; -fx-background-radius: 20px;" />
             </HBox>
         </VBox>
     </children>

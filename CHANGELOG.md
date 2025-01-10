@@ -6,6 +6,8 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+
+
 ## [0.3.4] - 2025-01-08
 
 ### Ajouté
