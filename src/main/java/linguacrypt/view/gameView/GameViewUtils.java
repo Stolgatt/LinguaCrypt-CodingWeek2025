@@ -30,12 +30,12 @@ public class GameViewUtils {
                 cardButton.setStyle("-fx-padding: 0; -fx-background-color: transparent;"); // Supprime les marges et le fond
 
                 // Créer un Label pour afficher le texte
-                Label label = new Label(card.getWord());
-                Font customFont = Font.loadFont(GameViewUtils.class.getResourceAsStream("/fonts/cardFont.otf"), 14); // 14 est la taille de la police
-                label.setFont(customFont);
-
-                // Ajouter le Label comme graphique du bouton
-                cardButton.setGraphic(label);
+               // Label label = new Label(card.getWord());
+               // Font customFont = Font.loadFont(GameViewUtils.class.getResourceAsStream("/fonts/cardFont.otf"), 14); // 14 est la taille de la police
+               // label.setFont(customFont);
+//
+               // // Ajouter le Label comme graphique du bouton
+               // cardButton.setGraphic(label);
 
                 // Ajouter un événement clic
                 int finalRow = row;

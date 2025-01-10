@@ -318,15 +318,15 @@ public class GameView implements Observer {
         }
     }
 
-    public void reagirDrawPictGrid(Grid grid){
+    public void reagirDrawPictGrid(Grid grid) {
         for (int row = 0; row < grid.getGrid().length; row++) {
             for (int col = 0; col < grid.getGrid()[row].length; col++) {
                 Button cardButton = (Button) gameGrid.getChildren().get(row * grid.getGrid().length + col);
                 // Update button text with loaded word
                 cardButton.setText(grid.getCard(row, col).getWord());
 
-                if (grid.getCard(row,col).isSelected() || game.isTurnBegin()==0 || game.isTurnBegin()==1){
-                    switch (grid.getCard(row,col).getCouleur()){
+                if (grid.getCard(row, col).isSelected() || game.isTurnBegin() == 0 || game.isTurnBegin() == 1) {
+                    switch (grid.getCard(row, col).getCouleur()) {
                         case 0:
                             cardButton.setStyle("-fx-background-color: #F5DEB3;");
                             break;
@@ -340,14 +340,12 @@ public class GameView implements Observer {
                             cardButton.setStyle("-fx-background-color: darkgray;");
                             break;
                     }
-                }
-                else{
+                } else {
                     cardButton.setStyle("");
                 }
             }
         }
     }
-
 
     private void reagirDrawWordGrid(Grid grid, boolean isMulti, boolean isSpy) {
         for (int row = 0; row < grid.getGrid().length; row++) {
