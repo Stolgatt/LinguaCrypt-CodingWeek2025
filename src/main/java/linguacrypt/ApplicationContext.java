@@ -18,6 +18,7 @@ import linguacrypt.view.EditTeamView;
 import linguacrypt.view.EditThemeView;
 import linguacrypt.view.gameView.GameView;
 import linguacrypt.view.LobbyView;
+import linguacrypt.view.LocalMenuView;
 import linguacrypt.view.MainMenuView;
 import linguacrypt.view.MultiplayerMenuView;
 import linguacrypt.view.ProfileMenuView;
@@ -45,6 +46,7 @@ public class ApplicationContext {
     private Node multplayerMenuNode;
     private Node SoloGameNode;
     private Node editThemeNode;
+    private Node LocalNode;
     /** Références aux contrôleurs. */
     private MainMenuController mainMenuController;
     private EditTeamController editTeamController;
@@ -59,6 +61,7 @@ public class ApplicationContext {
     private GameView gameView;
     private ProfileMenuView profileMenuView;
     private MultiplayerMenuView multiplayerMenuView;
+    private LocalMenuView localMenuView;
     
 
         private Node lobbyNode;
@@ -153,6 +156,11 @@ public class ApplicationContext {
         FXMLLoader mpMenuloader = new FXMLLoader(getClass().getResource("/FXML/MultiplayerMenu.fxml"));
         multplayerMenuNode = mpMenuloader.load();
         multiplayerMenuView = mpMenuloader.getController();
+
+        FXMLLoader localMenuloader = new FXMLLoader(getClass().getResource("/FXML/LocalMenu.fxml"));
+        LocalNode = localMenuloader.load();
+        localMenuView = localMenuloader.getController();
+
 
         // Load Lobby components
         FXMLLoader lobbyLoader = new FXMLLoader(getClass().getResource("/FXML/lobby.fxml"));
@@ -287,6 +295,11 @@ public class ApplicationContext {
         return lobbyNode;
     }
 
+
+    public LocalMenuView getLocalMenuView(){return localMenuView;}
+    public Node getLocalNode() {return LocalNode;}
+
+    
     public LobbyView getLobbyView() {
         return lobbyView;
     }

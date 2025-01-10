@@ -26,12 +26,9 @@ public class MainMenuController {
         GameConfiguration config = GameConfiguration.getInstance();
         switch (config.getGameMode()) {
             case 0: // Words Game Mode
-                GameConfigurationDialog dialog = new GameConfigurationDialog();
-                if (dialog.showGameConfigurationDialog()) {
-                    config.setWordTheme(dialog.getSelectedTheme());
-                    context.setGame(new Game(config));
-                    context.getRoot().setCenter(context.getGameNode());
-                }
+                context.getLocalMenuView().showGameView();
+                context.getRoot().setCenter(context.getLocalNode());
+
                 break;
             case 1: // Picture Game Mode
                 PictGameConfigurationDialog pictDialog = new PictGameConfigurationDialog();
