@@ -109,6 +109,12 @@ public class GameController {
             game.notifierObservateurs();
             return;
         }
+        if (!game.getGrid().isWordValid(hint)){
+            GameViewUtils.showError("Le mot ne doit pas être ou contenir un mot de la grille.");
+            game.setTurnBegin(0);
+            game.notifierObservateurs();
+            return;
+        }
         if (hint.trim().isEmpty() || hint.contains(" ")) {
             GameViewUtils.showError("Le mot doit être unique et sans espaces.");
             game.setTurnBegin(0);

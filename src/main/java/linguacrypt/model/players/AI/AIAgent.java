@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class AIAgent extends Player {
     private int teamID;
+    private ArrayList<String> lastGuess = new ArrayList<>();
     public AIAgent(int teamID){
         super("Agent",false,"",new PlayerStat());
         this.teamID = teamID;
@@ -35,4 +36,23 @@ public class AIAgent extends Player {
         }
         return wordFound;
     }
+    public ArrayList<String> getLastGuess() {
+        return lastGuess;}
+    public void addGuess(String guess) {
+        lastGuess.add(guess);
+    }
+    public void clearLastGuess() {
+        lastGuess.clear();
+    }
+    public String guessToString(){
+        String s = "";
+        for (String word : lastGuess) {
+            s += word + ", ";
+        }
+        if (!s.isEmpty()){
+            s = s.substring(0, s.length()-2);
+        }
+        return s;
+    }
+
 }

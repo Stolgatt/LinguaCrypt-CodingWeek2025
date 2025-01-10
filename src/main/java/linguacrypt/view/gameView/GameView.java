@@ -285,7 +285,7 @@ public class GameView implements Observer {
             countField.setVisible(false);
             if ((context.getServer() != null && context.getServer().getServerUser().getTeamId() != game.getTurn())
                     || (context.getClient() != null && context.getClient().getUser().getTeamId() != game.getTurn())) {
-                whoPlays.setText("Waiting" + ((game.getTurn() == 0) ? " Blue " : " Red ") + "team to play");
+                whoPlays.setText("En attente de l'équipe " + ((game.getTurn() == 0) ? " Bleue " : " Rouge "));
             }
             whoPlays.setFont(Font.font(customFont.getName(), customFont.getSize() + 20));
             whoPlays.setTextFill(Color.WHITE);

@@ -164,6 +164,18 @@ public class Grid implements Serializable {
         return remainingWords;
     }
 
+    public boolean isWordValid(String word){
+        word = word.toLowerCase();
+        System.out.println("Word: " + word);
+        System.out.println(gridWords);
+        for (String w : gridWords) {
+            w = w.toLowerCase();
+            if (w.equals(word) || word.contains(w) || w.contains(word)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 
 }

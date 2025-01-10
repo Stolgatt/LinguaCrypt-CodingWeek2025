@@ -36,26 +36,24 @@ public class SoloGameController {
 
     public void nextTurnStep(){
         int currentTurnStep = game.isTurnBegin();
-        System.out.println("Nouvelle etape " + currentTurnStep);
         if (currentTurnStep == 2) {
             if (!game.getBlueTeam().getPlayers().get(0).getIsSpy()){
-               game.spyAIPlay();
-               game.increaseNbTour();
+                game.spyAIPlay();
+                game.increaseNbTour();
             }
             else {
-                System.out.println("AIAgent Play");
                 try {
                     List<String> words = ((AIAgent) game.getBlueTeam().getPlayers().get(1)).tryFindHint(new Hint(game.getCurrentHint(),game.getCurrentNumberWord()), game.getGrid());
-                    System.out.println("L'agent pense a " +words);
                     int id = 0;
                     if (words.isEmpty()) {
-                        System.out.println("N'a pas trouve de mot....");
                         game.setTurnBegin(0);
+                        System.out.println("EHEHEHEHE");
                     }
                     while (game.isTurnBegin()==2 && id<words.size()) {
                         for (int i = 0; i < game.getGrid().getGrid().length; i++) {
                             for (int j = 0; j < game.getGrid().getGrid()[0].length; j++) {
                                 if (game.getGrid().getCard(i,j).getWord().equals(words.get(id))){
+                                    ((AIAgent) game.getBlueTeam().getPlayers().get(1)).addGuess(words.get(id));
                                     CardClicked(i,j);
                                 }
                             }
@@ -117,6 +115,12 @@ public class SoloGameController {
             game.notifierObservateurs();
             return;
         }
+        if (!count.matches("\\d+")) {
+            GameViewUtils.showError("Veuillez entrer uniquement des chiffres.");
+            game.setTurnBegin(0);
+            game.notifierObservateurs();
+            return;
+        }
         int number = Integer.parseInt(count);
         if (hint==null || hint.isEmpty()){
             GameViewUtils.showError("Un mot doit être donner.");
@@ -130,10 +134,17 @@ public class SoloGameController {
             game.notifierObservateurs();
             return;
         }
+        if (!game.getGrid().isWordValid(hint)){
+            GameViewUtils.showError("Le mot ne doit pas être ou contenir un mot de la grille.");
+            game.setTurnBegin(0);
+            game.notifierObservateurs();
+            return;
+        }
+        ((AIAgent) game.getBlueTeam().getPlayers().get(1)).clearLastGuess();
         game.setTurnBegin(2);
         game.setCurrentHint(hint);
-
         game.setCurrentNumberWord(number);
         game.notifierObservateurs();
+        nextTurnStep();
     }
 }

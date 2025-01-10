@@ -11,9 +11,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import linguacrypt.ApplicationContext;
+import linguacrypt.controller.MenuBarController;
 import linguacrypt.controller.TimerController;
 import linguacrypt.model.*;
 import linguacrypt.model.game.Grid;
+import linguacrypt.model.players.AI.AIAgent;
 import linguacrypt.view.DialogBox.EndGameDialog;
 import linguacrypt.view.DialogBox.EndOfTurnDialog;
 import linguacrypt.view.MenuBarView;
@@ -26,7 +28,6 @@ public class SoloGameView implements Observer {
     Font customFont = Font.loadFont(GameViewUtils.class.getResourceAsStream("/fonts/cardFont.otf"), 14);
 
     @FXML private GridPane gameGrid; // Lié à game.fxml
-    @FXML private VBox motTrouve;
     @FXML private Button btnNextTurn;
     @FXML private Label labelHint;
     @FXML private Button btnGuess;
@@ -34,8 +35,16 @@ public class SoloGameView implements Observer {
     @FXML private Label timerLabel;
     @FXML private TextField hintFieldSolo;
     @FXML private TextField countFieldSolo;
+    @FXML private ImageView imageViewBlueInfo,imageTest;
+    @FXML private Label nbMotBlueRestant;
+    @FXML private Label BlueSpy;
+    @FXML private Label BlueAgent;
+    @FXML private Label BlueSpyName;
+    @FXML private Label BlueAgentName;
 
+    @FXML private Label whoPlays;
     private TimerController timerController;
+
 
     private Dialog<Void> spyDialog;
     private ApplicationContext context = ApplicationContext.getInstance();
@@ -56,6 +65,12 @@ public class SoloGameView implements Observer {
 
     public void setGame(Game game) {
         this.game = game;
+        try {
+            MenuBarController menuBarController = new MenuBarController(game);
+            this.menuBarController.setController(menuBarController);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         game.ajouterObservateur(this);
         GameViewUtils.initializeWordGrid(gameGrid,game.getGrid(),onCardClicked);
         reagir();
@@ -89,7 +104,6 @@ public class SoloGameView implements Observer {
 
             timerController.updateLabel();
         }
-        motTrouve.getChildren().clear();
         Grid grid = game.getGrid();
         Node root = context.getSoloGameNode();
 
@@ -126,7 +140,6 @@ public class SoloGameView implements Observer {
                             case 3 -> frontBlack;
                             default -> null;
                         };
-                        motTrouve.getChildren().add(cardLabel);
                 }
                 else{
                     image = frontWhite;
@@ -147,29 +160,37 @@ public class SoloGameView implements Observer {
             }
         }
 
+        drawUI();
+        whoPlays.setFont(Font.font(customFont.getName(), customFont.getSize() + 20));
+        whoPlays.setTextFill(Color.WHITE);
+
         if (game.getBlueTeam().getPlayers().getFirst().getIsSpy()){
             btnNextTurn.setVisible(false);
             btnGuess.setVisible(true);
             hintFieldSolo.setVisible(true);
             countFieldSolo.setVisible(true);
+            String message = ((AIAgent) game.getBlueTeam().getPlayers().get(1)).guessToString();
+            if (message.isEmpty()){
+                whoPlays.setText("L'agent a passé son tour.");
+            }
+            else{
+                whoPlays.setText("L'agent a deviné : " +message);
+            }
         }
         else{
             btnNextTurn.setVisible(true);
             btnGuess.setVisible(false);
             hintFieldSolo.setVisible(false);
             countFieldSolo.setVisible(false);
+            whoPlays.setText("L'espion vous a donné comme indice : " + game.hintToString());
         }
-
-        //draw the actual hint
-        String message = game.hintToString();
-        labelHint.setText("Indice pour ce tour : " + message);
 
         //check if game is over
         if (game.getIsWin()!=-1){
             context.getEndGameView().showGameResult();
             context.getRoot().setCenter(context.getEndGameNode());
-
         }
+
     }
 
 
@@ -223,5 +244,47 @@ public class SoloGameView implements Observer {
         });
     }
     public TimerController getTimerController() {return timerController;}
+    public void drawUI(){
+        imageViewBlueInfo.setImage(blueBack);
+        imageTest.setImage(blueBack);
+        imageViewBlueInfo.setVisible(true);
+        imageViewBlueInfo.setFitWidth(100);
+        imageTest.setFitWidth(100);
+        imageViewBlueInfo.setFitHeight(50);
+        imageTest.setFitHeight(50);
+        imageViewBlueInfo.setPreserveRatio(false);
+        imageTest.setPreserveRatio(false);
+        imageViewBlueInfo.setSmooth(true);
+
+        String spyName = "";
+        String agentName = "";
+        if (game.getBlueTeam().getPlayers().getFirst().getIsSpy()){
+            spyName = game.getBlueTeam().getPlayers().getFirst().getName();
+            agentName = game.getBlueTeam().getPlayers().get(1).getName();
+        }
+        else{
+            spyName = game.getBlueTeam().getPlayers().get(1).getName();
+            agentName = game.getBlueTeam().getPlayers().get(0).getName();
+        }
+
+
+        BlueSpy.setFont(Font.font(customFont.getName(), customFont.getSize() + 8));
+        BlueAgent.setFont(Font.font(customFont.getName(), customFont.getSize() + 8));
+
+        BlueSpyName.setFont(customFont);
+        BlueSpyName.setTextFill(Color.WHITE);
+        BlueSpyName.setText(spyName);
+
+        BlueAgentName.setFont(customFont);
+        BlueAgentName.setTextFill(Color.WHITE);
+        BlueAgentName.setText(agentName);
+
+
+        nbMotBlueRestant.setFont(customFont);
+        nbMotBlueRestant.setTextFill(Color.WHITE);
+        nbMotBlueRestant.setText(game.getBlueRemaining() + "");
+
+    }
+
 
 }

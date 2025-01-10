@@ -165,7 +165,7 @@ public class LocalMenuView {
     }
     @FXML
     private void decreaseAILevel() {
-        if (difficulty > 2) {
+        if (difficulty > 1) {
             difficulty -= 1;
             labelAIDifficultySolo.setText(String.valueOf(difficulty));
         }
@@ -173,7 +173,7 @@ public class LocalMenuView {
 
     @FXML
     private void increaseAILevel() {
-        if (timer < 2) {
+        if (difficulty < 3) {
             difficulty+= 1;
             labelAIDifficultySolo.setText(String.valueOf(difficulty));
         }
