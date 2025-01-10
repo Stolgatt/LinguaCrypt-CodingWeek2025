@@ -60,7 +60,18 @@ public class Game implements Serializable {
             default:
                 break;
         }
-
+        boolean isMulti;
+        ApplicationContext context = ApplicationContext.getInstance();
+        if (context.getServer() != null) {
+            isMulti = true;
+        } else if (context.getClient() != null) {
+            isMulti = true;
+        } else {
+            isMulti = false;
+        }
+        if (!isMulti) {
+            gameStat = new GameStat();
+        }
     }
 
     private List<String> loadThemeWords(String themeName) {

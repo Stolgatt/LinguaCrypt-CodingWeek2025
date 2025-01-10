@@ -73,7 +73,9 @@ public class LocalMenuView {
         for (Theme theme : themes) {
             comboBoxTheme.getItems().add(theme.getName());
         }
+        comboBoxTheme.getSelectionModel().selectFirst();
     }
+
 
     @FXML
     public void showGameView() {
@@ -178,6 +180,7 @@ public class LocalMenuView {
     }
     @FXML
     private void goBackToMainMenu() {
+        gConfig.setGameMode(0);
         context.getRoot().setCenter(context.getMainMenuNode());
     }
 

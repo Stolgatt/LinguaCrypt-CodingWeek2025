@@ -32,9 +32,9 @@ public class MainMenuController {
 
                 break;
             case 1: // Picture Game Mode
-            context.getLocalMenuView().showGameView();
-            context.getLocalMenuView().loadExistingThemes();
-            context.getRoot().setCenter(context.getLocalNode());
+                context.getLocalMenuView().showGameView();
+                context.getLocalMenuView().loadExistingThemes();
+                context.getRoot().setCenter(context.getLocalNode());
 
                 break;
             case 2: // Solo Game Mode
