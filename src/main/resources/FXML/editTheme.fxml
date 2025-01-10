@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import java.net.URL?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="linguacrypt.view.EditThemeView" style="-fx-background-image: url('/image/bg-red.jpg'); -fx-background-size: cover;" prefHeight="600.0" prefWidth="600.0">
+    <center>
+        <VBox alignment="TOP_LEFT" spacing="15.0" style="-fx-background-color: white; -fx-padding: 30; -fx-border-color: black; -fx-border-width: 2px; -fx-border-radius: 15px; -fx-background-radius: 15px;" maxWidth="400.0" maxHeight="400.0">
+            <Label fx:id ="editThemeTitle" text="Editer ou Ajouter un Thème de mot" style="-fx-font-size: 20px; -fx-font-weight: bold;" textFill="#333333"  />
+
+            <!-- Theme Selection -->
+            <Label text="Selectionner un thème existant:" textFill="#555555" />
+            <ComboBox fx:id="existingThemesComboBox" promptText="Select Theme" style="-fx-background-radius: 10px; -fx-background-color: #f2f2f2;" prefWidth="300.0" />
+
+            <!-- New Theme -->
+            <Label text="Nom du Nouveau Theme:" textFill="#555555" />
+            <TextField fx:id="themeNameField"
+                       promptText="Entrer le nom de votre nouveau theme (vide pour en modifier un)"
+                       style="-fx-background-radius: 10px; -fx-background-color: #f2f2f2; -fx-border-color: black; -fx-border-width: 1px; -fx-border-radius: 10px;"
+                       prefWidth="300.0" />
+            <!-- Word Box -->
+            <Label text="Liste de mot du thème (séparer par des virgules) :" textFill="#555555" />
+            <TextArea fx:id="wordsTextArea"
+                       promptText="Entrez les mots séparés par des virgules"
+                       style="-fx-background-radius: 10px; -fx-background-color: #f2f2f2; -fx-border-color: black; -fx-border-width: 1px; -fx-border-radius: 10px;"
+                       prefWidth="300.0"
+                       prefHeight="80.0" />
+
+            <!-- Bouton -->
+            <HBox spacing="20.0" alignment="CENTER">
+                <Button text="Retour" onAction="#goBackToMainMenu" style="-fx-background-color: #ffc107; -fx-text-fill: black; -fx-background-radius: 15px;" prefWidth="120.0" />
+                <Button text="Sauvegarder" onAction="#save" style="-fx-background-color: #17a2b8; -fx-text-fill: white; -fx-background-radius: 15px;" prefWidth="120.0" />
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

@@ -60,6 +60,7 @@ public class MainMenuController {
 
     private void handleAddCustomTheme() {
         // Add custom theme logic
-        new CustomThemeDialog();
+        context.getEditThemeView().loadExistingThemes();
+        context.getRoot().setCenter(context.getEditThemeNode());
     }
 }

@@ -15,6 +15,7 @@ import linguacrypt.networking.Message;
 import linguacrypt.networking.MessageType;
 import linguacrypt.networking.Server;
 import linguacrypt.view.EditTeamView;
+import linguacrypt.view.EditThemeView;
 import linguacrypt.view.gameView.GameView;
 import linguacrypt.view.LobbyView;
 import linguacrypt.view.MainMenuView;
@@ -43,12 +44,14 @@ public class ApplicationContext {
     private Node ProfileMenuNode;
     private Node multplayerMenuNode;
     private Node SoloGameNode;
+    private Node editThemeNode;
     /** Références aux contrôleurs. */
     private MainMenuController mainMenuController;
     private EditTeamController editTeamController;
     private GameController gameController;
     private ProfileMenuController profileMenuController;
     private SoloGameController soloGameController;
+    private EditThemeView editThemeView;
 
     /** Vues. */
     private MainMenuView mainMenuView;
@@ -56,6 +59,7 @@ public class ApplicationContext {
     private GameView gameView;
     private ProfileMenuView profileMenuView;
     private MultiplayerMenuView multiplayerMenuView;
+    
 
         private Node lobbyNode;
     private LobbyView lobbyView;
@@ -140,6 +144,11 @@ public class ApplicationContext {
         ProfileMenuNode = profileMenuLoader.load();
         profileMenuView = profileMenuLoader.getController();
         profileMenuController = new ProfileMenuController(game, profileMenuView);
+
+        FXMLLoader editThemeLoader = new FXMLLoader(getClass().getResource("/FXML/editTheme.fxml"));
+        editThemeNode = editThemeLoader.load();
+        editThemeView = editThemeLoader.getController();
+
 
         FXMLLoader mpMenuloader = new FXMLLoader(getClass().getResource("/FXML/MultiplayerMenu.fxml"));
         multplayerMenuNode = mpMenuloader.load();
@@ -265,6 +274,8 @@ public class ApplicationContext {
         return GameNode;
     }
 
+    public Node getEditThemeNode(){return editThemeNode;}
+
     public Node getProfileMenuNode() {return ProfileMenuNode;}
     public Node getMPMenuNode() {return multplayerMenuNode;}
 
@@ -294,6 +305,10 @@ public class ApplicationContext {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public EditThemeView getEditThemeView() {
+        return editThemeView;
     }
 
     //endregion
