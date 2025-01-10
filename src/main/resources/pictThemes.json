@@ -1,6 +1,6 @@
 [
   {
-    "name": "Default Theme",
+    "name": "Divers",
     "words": [
         "animals/picture_animals_1.png", "animals/picture_animals_2.png", "animals/picture_animals_3.png",
         "animals/picture_animals_4.png", "animals/picture_animals_5.png", "animals/picture_animals_6.png",
@@ -217,7 +217,7 @@
     ]
   },
   {
-    "name": "Animals",
+    "name": "Animaux",
     "words": [
       "animals/picture_animals_1.png", "animals/picture_animals_2.png", "animals/picture_animals_3.png",
       "animals/picture_animals_4.png", "animals/picture_animals_5.png", "animals/picture_animals_6.png",
@@ -249,7 +249,7 @@
     ]
   },
   {
-    "name": "Building",
+    "name": "Bâtiments",
     "words": [
       "building/picture_building_1.png", "building/picture_building_2.png", "building/picture_building_3.png",
       "building/picture_building_4.png", "building/picture_building_5.png", "building/picture_building_6.png",
@@ -273,7 +273,7 @@
     ]
   },
   {
-    "name": "Christmas",
+    "name": "Noël",
     "words": [
       "christmas/picture_christmas_1.png",
       "christmas/picture_christmas_2.png", "christmas/picture_christmas_3.png", "christmas/picture_christmas_4.png",
@@ -297,7 +297,7 @@
     ]
   },
   {
-    "name": "Food",
+    "name": "Nourriture",
     "words": [
       "food/picture_food_1.png",
       "food/picture_food_2.png", "food/picture_food_3.png", "food/picture_food_4.png",
@@ -354,7 +354,7 @@
     ]
   },
   {
-    "name": "Hobbies",
+    "name": "Loisirs",
     "words": [
       "hobbies/picture_hobbies_1.png", "hobbies/picture_hobbies_2.png", "hobbies/picture_hobbies_3.png",
       "hobbies/picture_hobbies_4.png", "hobbies/picture_hobbies_5.png", "hobbies/picture_hobbies_6.png",
@@ -373,7 +373,7 @@
     ]
   },
   {
-    "name": "People",
+    "name": "Métiers",
     "words": [
       "people/picture_people_1.png", "people/picture_people_2.png", "people/picture_people_3.png",
       "people/picture_people_4.png", "people/picture_people_5.png", "people/picture_people_6.png",
@@ -387,7 +387,7 @@
     ]
   },
   {
-    "name": "Space",
+    "name": "Espace",
     "words": [
       "space/picture_space_1.png",
       "space/picture_space_2.png", "space/picture_space_3.png", "space/picture_space_4.png",
@@ -410,7 +410,7 @@
     ]
   },
   {
-    "name": "Vehicles",
+    "name": "Véhicules",
     "words": [
       "vehicles/picture_vehicle_1.png", "vehicles/picture_vehicle_2.png", "vehicles/picture_vehicle_3.png",
       "vehicles/picture_vehicle_4.png", "vehicles/picture_vehicle_5.png", "vehicles/picture_vehicle_6.png",
@@ -427,7 +427,7 @@
     ]
   },
   {
-    "name": "Objects",
+    "name": "Objets",
     "words": [
         "objects/picture_object_1.png", "objects/picture_object_2.png", "objects/picture_object_3.png",
         "objects/picture_object_4.png", "objects/picture_object_5.png", "objects/picture_object_6.png",
@@ -480,7 +480,7 @@
     ]
   },
   {
-    "name": "Flags",
+    "name": "Drapeaux",
     "words": [
       "flags/picture_flags_1.png", "flags/picture_flags_2.png", "flags/picture_flags_3.png", "flags/picture_flags_4.png", 
       "flags/picture_flags_5.png", "flags/picture_flags_6.png", "flags/picture_flags_7.png", "flags/picture_flags_8.png",

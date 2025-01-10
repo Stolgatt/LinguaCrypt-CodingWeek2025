@@ -228,14 +228,23 @@ public class ApplicationContext {
         this.game = game; 
         editTeamView.setGame(game);
         gameView.setGame(game);
-        gameView.setTimer();
+        switch (game.getgConfig().getGameMode()) {
+            case 0:
+                gameView.setTimer();
+                break;
+            case 1: 
+            gameView.setTimer();
+            case 2:
+            soloGameView.setTimer();
+            default:
+                break;
+        }
         gameController.setGame(game);
         editTeamController.setGame(game);
         profileMenuController.setGame(game);
         profileMenuView.setGame(game);
         soloGameController.setGame(game);
         soloGameView.setGame(game);
-        soloGameView.setTimer();
     }
 
     public Game getGame(){

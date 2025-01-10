@@ -34,29 +34,49 @@ import java.util.function.BiConsumer;
 
 public class GameView implements Observer {
     Font customFont = Font.loadFont(GameViewUtils.class.getResourceAsStream("/fonts/cardFont.otf"), 14);
-    @FXML private MenuBarView menuBarController;
-    @FXML private Label timerLabel;
-    @FXML private GridPane gameGrid; // Lié à game.fxml
-    @FXML private Button btnNextTurn;
-    @FXML private Button btnGuess;
-    @FXML private Label whoPlays;
-    @FXML private Label labelHint;
+    @FXML
+    private MenuBarView menuBarController;
+    @FXML
+    private Label timerLabel;
+    @FXML
+    private GridPane gameGrid; // Lié à game.fxml
+    @FXML
+    private Button btnNextTurn;
+    @FXML
+    private Button btnGuess;
+    @FXML
+    private Label whoPlays;
+    @FXML
+    private Label labelHint;
 
-    @FXML private ImageView imageViewRedInfo;
-    @FXML private Label nbMotRedRestant;
-    @FXML private Label RedSpy;
-    @FXML private Label RedAgent;
-    @FXML private Label RedSpyName;
-    @FXML private VBox RedAgentName;
-    @FXML private ImageView imageViewBlueInfo;
-    @FXML private Label nbMotBlueRestant;
-    @FXML private Label BlueSpy;
-    @FXML private Label BlueAgent;
-    @FXML private Label BlueSpyName;
-    @FXML private VBox BlueAgentName;
-    @FXML private TextField hintField;
-    @FXML private TextField countField;
-
+    @FXML
+    private ImageView imageViewRedInfo;
+    @FXML
+    private Label nbMotRedRestant;
+    @FXML
+    private Label RedSpy;
+    @FXML
+    private Label RedAgent;
+    @FXML
+    private Label RedSpyName;
+    @FXML
+    private VBox RedAgentName;
+    @FXML
+    private ImageView imageViewBlueInfo;
+    @FXML
+    private Label nbMotBlueRestant;
+    @FXML
+    private Label BlueSpy;
+    @FXML
+    private Label BlueAgent;
+    @FXML
+    private Label BlueSpyName;
+    @FXML
+    private VBox BlueAgentName;
+    @FXML
+    private TextField hintField;
+    @FXML
+    private TextField countField;
 
     private TimerController timerController;
 
@@ -84,17 +104,19 @@ public class GameView implements Observer {
     private void initialize() {
         btnNextTurn.setOnAction(e -> {
             btnNextTurn.setVisible(false);
-            if (onNextTurn != null) onNextTurn.run();
+            if (onNextTurn != null)
+                onNextTurn.run();
 
             resetTimer();
         });
         btnGuess.setOnAction(e -> {
             btnGuess.setVisible(false);
-            if (onGiveHint != null) onGiveHint.accept(hintField.getText(), countField.getText());
+            if (onGiveHint != null)
+                onGiveHint.accept(hintField.getText(), countField.getText());
         });
     }
 
-    public void setTimer(){
+    public void setTimer() {
         // initialize timer controller
         int timeTurn = GameConfiguration.getInstance().getTimeTurn();
         if (timeTurn > 0) {
@@ -117,23 +139,23 @@ public class GameView implements Observer {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    Platform.runLater(this::initializeGrid);
-    Platform.runLater(this::updateRedTeamVBox);
-    Platform.runLater(this::updateBlueTeamVBox);
+        Platform.runLater(this::initializeGrid);
+        Platform.runLater(this::updateRedTeamVBox);
+        Platform.runLater(this::updateBlueTeamVBox);
     }
 
     private void initializeGrid() {
         Grid grid = game.getGrid();
-        
+
         switch (GameConfiguration.getInstance().getGameMode()) {
-            case 0:                                 // Words Game Mode
-                GameViewUtils.initializeWordGrid(gameGrid,grid,onCardClicked);
+            case 0: // Words Game Mode
+                GameViewUtils.initializeWordGrid(gameGrid, grid, onCardClicked);
                 break;
-            case 1:                                 // Picture Game Mode
+            case 1: // Picture Game Mode
                 initializePictureGrid(grid);
                 break;
             default:
-                GameViewUtils.initializeWordGrid(gameGrid,grid,onCardClicked);
+                GameViewUtils.initializeWordGrid(gameGrid, grid, onCardClicked);
                 break;
         }
         game.notifierObservateurs();
@@ -145,22 +167,22 @@ public class GameView implements Observer {
             for (int col = 0; col < grid.getGrid()[row].length; col++) {
                 // Récupérer la carte actuelle
                 Card card = grid.getCard(row, col);
-    
+
                 // Créer une image à partir de l'URL stockée dans la carte
-                Image image = new Image("pictures/"+card.getUrlImage());  
+                Image image = new Image("pictures/" + card.getUrlImage());
                 ImageView imageView = new ImageView(image);
-    
+
                 // Configurer la taille de l'image
                 imageView.setFitWidth(100);
 
                 imageView.setFitHeight(100); // Hauteur fixe
                 imageView.setPreserveRatio(true); // Conserver les proportions
-    
+
                 // Créer un bouton et ajouter l'image comme contenu
                 Button cardButton = new Button();
                 cardButton.setGraphic(imageView);
                 cardButton.setPrefSize(100, 100); // Taille fixe pour le bouton
-    
+
                 // Ajouter un événement clic sur le bouton
                 int finalRow = row;
                 int finalCol = col;
@@ -169,19 +191,21 @@ public class GameView implements Observer {
                         onCardClicked.accept(finalRow, finalCol);
                     }
                 });
-    
+
                 // Ajouter le bouton à la grille
                 gameGrid.add(cardButton, col, row);
             }
         }
-    }        
+    }
 
     public void setOnNextTurn(Runnable onNextTurn) {
         this.onNextTurn = onNextTurn;
     }
+
     public void setOnGiveHint(BiConsumer<String, String> onGiveHint) {
         this.onGiveHint = onGiveHint;
     }
+
     public void setonCardClicked(BiConsumer<Integer, Integer> onCardClicked) {
         this.onCardClicked = onCardClicked;
     }
@@ -201,21 +225,21 @@ public class GameView implements Observer {
         // Multiplayer check
         boolean isSpy;
         boolean isMulti;
-        if(context.getServer()!= null){
-            isMulti = true; 
+        if (context.getServer() != null) {
+            isMulti = true;
             isSpy = context.getServer().getServerUser().getPlayer().getIsSpy();
-        }else if(context.getClient() != null){
+        } else if (context.getClient() != null) {
             isMulti = true;
             isSpy = context.getClient().getUser().getPlayer().getIsSpy();
-        }else{
+        } else {
             isMulti = false;
             isSpy = false;
         }
 
-
-
-        if (game.getgConfig().getGameMode() == 2){return;}
-        if(timerController != null){
+        if (game.getgConfig().getGameMode() == 2) {
+            return;
+        }
+        if (timerController != null) {
             timerController.updateLabel();
         }
         updateRedTeamVBox();
@@ -224,7 +248,7 @@ public class GameView implements Observer {
         int turn = game.getTurn();
         Grid grid = game.getGrid();
         Node root = context.getGameNode();
-        //BACKGROUND COLOR
+        // BACKGROUND COLOR
         switch (turn) {
             case 0:
                 root.setStyle("-fx-background-image: url('image/bg_blue.jpg'); -fx-background-size: cover;");
@@ -237,7 +261,95 @@ public class GameView implements Observer {
                 break;
         }
 
-        //DRAW GRID
+        // DRAW GRID
+
+        switch (GameConfiguration.getInstance().getGameMode()) {
+            case 1:
+                reagirDrawPictGrid(grid);
+                break;
+            default:
+                reagirDrawWordGrid(grid, isMulti, isSpy);
+                break;
+        }
+
+        // Draw UI
+
+        // In multi, check if its the good team to play, if not : disable all button
+        if ((context.getServer() != null && context.getServer().getServerUser().getTeamId() != game.getTurn())
+                || (context.getClient() != null && context.getClient().getUser().getTeamId() != game.getTurn())) {
+            btnNextTurn.setVisible(false);
+            btnGuess.setVisible(false);
+            hintField.setText("");
+            countField.setText("");
+            hintField.setVisible(false);
+            countField.setVisible(false);
+            if ((context.getServer() != null && context.getServer().getServerUser().getTeamId() != game.getTurn())
+                    || (context.getClient() != null && context.getClient().getUser().getTeamId() != game.getTurn())) {
+                whoPlays.setText("Waiting" + ((game.getTurn() == 0) ? " Blue " : " Red ") + "team to play");
+            }
+            whoPlays.setFont(Font.font(customFont.getName(), customFont.getSize() + 20));
+            whoPlays.setTextFill(Color.WHITE);
+            labelHint.setText("");
+        } else {
+
+            if (game.isTurnBegin() == 2 || (isMulti && !isSpy)) {
+                drawAgentUI();
+                btnNextTurn.setVisible(true);
+                btnGuess.setVisible(false);
+                hintField.setText("");
+                countField.setText("");
+                hintField.setVisible(false);
+                countField.setVisible(false);
+            } else {
+                if (!isMulti || isSpy) {
+
+                    btnNextTurn.setVisible(false);
+                    btnGuess.setVisible(true);
+                    hintField.setVisible(true);
+                    countField.setVisible(true);
+                    drawSpyUI();
+                }
+            }
+
+        }
+        // check if game is over
+        if (game.getIsWin() != -1) {
+            EndGameDialog.showEndGameDialog(game);
+        }
+    }
+
+    public void reagirDrawPictGrid(Grid grid){
+        for (int row = 0; row < grid.getGrid().length; row++) {
+            for (int col = 0; col < grid.getGrid()[row].length; col++) {
+                Button cardButton = (Button) gameGrid.getChildren().get(row * grid.getGrid().length + col);
+                // Update button text with loaded word
+                cardButton.setText(grid.getCard(row, col).getWord());
+
+                if (grid.getCard(row,col).isSelected() || game.isTurnBegin()==0 || game.isTurnBegin()==1){
+                    switch (grid.getCard(row,col).getCouleur()){
+                        case 0:
+                            cardButton.setStyle("-fx-background-color: #F5DEB3;");
+                            break;
+                        case 1:
+                            cardButton.setStyle("-fx-background-color: lightblue;");
+                            break;
+                        case 2:
+                            cardButton.setStyle("-fx-background-color: lightcoral;");
+                            break;
+                        case 3:
+                            cardButton.setStyle("-fx-background-color: darkgray;");
+                            break;
+                    }
+                }
+                else{
+                    cardButton.setStyle("");
+                }
+            }
+        }
+    }
+
+
+    private void reagirDrawWordGrid(Grid grid, boolean isMulti, boolean isSpy) {
         for (int row = 0; row < grid.getGrid().length; row++) {
             for (int col = 0; col < grid.getGrid()[row].length; col++) {
                 Button cardButton = (Button) gameGrid.getChildren().get(row * grid.getGrid().length + col);
@@ -245,13 +357,10 @@ public class GameView implements Observer {
                 Label cardLabel = new Label(grid.getCard(row, col).getWord());
                 Image image;
 
-
-
-                
-
-                if (((((game.isTurnBegin() == 0 || game.isTurnBegin() == 1) && !isMulti)  || (isMulti && isSpy)) && !grid.getCard(row, col).isSelected()) ) {
+                if (((((game.isTurnBegin() == 0 || game.isTurnBegin() == 1) && !isMulti) || (isMulti && isSpy))
+                        && !grid.getCard(row, col).isSelected())) {
                     cardLabel.setText(grid.getCard(row, col).getWord());
-                    if (grid.getCard(row, col).getCouleur() == 3){
+                    if (grid.getCard(row, col).getCouleur() == 3) {
                         cardLabel.setTextFill(Color.WHITE);
                     }
                     image = switch (grid.getCard(row, col).getCouleur()) {
@@ -284,58 +393,11 @@ public class GameView implements Observer {
                 StackPane stackPane = new StackPane();
                 stackPane.setPrefSize(cardWidth, cardHeight);
                 stackPane.getChildren().addAll(imageView, cardLabel);
-                cardLabel.setTranslateY(cardHeight/5);
+                cardLabel.setTranslateY(cardHeight / 5);
                 cardLabel.setFont(customFont);
                 cardButton.setGraphic(stackPane);
                 cardButton.setContentDisplay(ContentDisplay.CENTER);
             }
-        }
-
-        //Draw UI
-
-        //In multi, check if its the good team to play, if not : disable all button
-        if( (context.getServer() != null && context.getServer().getServerUser().getTeamId() != game.getTurn())
-        || (context.getClient() != null && context.getClient().getUser().getTeamId() != game.getTurn())){
-            btnNextTurn.setVisible(false);
-            btnGuess.setVisible(false);
-            hintField.setText("");
-            countField.setText("");
-            hintField.setVisible(false);
-            countField.setVisible(false);
-            if((context.getServer() != null && context.getServer().getServerUser().getTeamId() != game.getTurn())
-            || (context.getClient() != null && context.getClient().getUser().getTeamId() != game.getTurn())){
-                whoPlays.setText("Waiting" + ((game.getTurn() == 0) ? " Blue " : " Red ") + "team to play");
-            }
-            whoPlays.setFont(Font.font(customFont.getName(), customFont.getSize() + 20));
-            whoPlays.setTextFill(Color.WHITE);
-            labelHint.setText("");
-        }else{
-
-            
-            if (game.isTurnBegin()==2 || (isMulti && !isSpy)){
-                drawAgentUI();
-                btnNextTurn.setVisible(true);
-                btnGuess.setVisible(false);
-                hintField.setText("");
-                countField.setText("");
-                hintField.setVisible(false);
-                countField.setVisible(false);
-            }
-            else{
-                if(!isMulti || isSpy){
-                    
-                    btnNextTurn.setVisible(false);
-                    btnGuess.setVisible(true);
-                    hintField.setVisible(true);
-                    countField.setVisible(true);
-                    drawSpyUI();
-                }
-            }
-            
-        }
-        //check if game is over
-        if (game.getIsWin()!=-1){
-            EndGameDialog.showEndGameDialog(game);
         }
     }
 
@@ -346,7 +408,7 @@ public class GameView implements Observer {
         game.notifierObservateurs();
     }
 
-    public TimerController getTimerController(){
+    public TimerController getTimerController() {
         return timerController;
     }
 
@@ -396,11 +458,10 @@ public class GameView implements Observer {
         imageViewRedInfo.setSmooth(true);
         String spyName = "";
         List<String> redAgentNames = new ArrayList<>();
-        for (Player p: game.getRedTeam().getPlayers()){
-            if (p.getIsSpy()){
+        for (Player p : game.getRedTeam().getPlayers()) {
+            if (p.getIsSpy()) {
                 spyName = p.getName();
-            }
-            else {
+            } else {
                 redAgentNames.add(p.getName());
             }
         }
@@ -423,6 +484,7 @@ public class GameView implements Observer {
             RedAgentName.getChildren().add(agentLabel);
         }
     }
+
     public void updateBlueTeamVBox() {
         imageViewBlueInfo.setImage(blueBack);
         imageViewBlueInfo.setVisible(true);
@@ -463,24 +525,22 @@ public class GameView implements Observer {
         }
     }
 
-    public void drawAgentUI(){
+    public void drawAgentUI() {
 
         String message;
         ArrayList<Player> players;
-        if (game.getTurn() == 0){
+        if (game.getTurn() == 0) {
             players = game.getBlueTeam().getPlayers();
-        }
-        else{
+        } else {
             players = game.getRedTeam().getPlayers();
         }
         players.removeIf(Player::getIsSpy);
-        if (players.size() == 1){
+        if (players.size() == 1) {
             message = "A toi de deviner : " + players.getFirst().getName() + ".";
-        }
-        else{
+        } else {
             message = "A vous de deviner : ";
-            for (Player player : players){
-                message += player.getName() +", ";
+            for (Player player : players) {
+                message += player.getName() + ", ";
             }
             message = message.substring(0, message.length() - 2) + ".";
         }
@@ -488,15 +548,15 @@ public class GameView implements Observer {
         whoPlays.setFont(Font.font(customFont.getName(), customFont.getSize() + 20));
         whoPlays.setTextFill(Color.WHITE);
 
-        if(game.getCurrentHint() == null){
+        if (game.getCurrentHint() == null) {
             whoPlays.setText("En attente de l'espion");
             message = "";
-        }else{
+        } else {
             message = "Votre espion vous a donné comme indice : " + game.hintToString();
         }
 
-        if((context.getServer() != null && context.getServer().getServerUser().getPlayer().getIsSpy())
-        || (context.getClient() != null && context.getClient().getUser().getPlayer().getIsSpy())){
+        if ((context.getServer() != null && context.getServer().getServerUser().getPlayer().getIsSpy())
+                || (context.getClient() != null && context.getClient().getUser().getPlayer().getIsSpy())) {
             whoPlays.setText("En attentes des agents");
             message = "";
         }
@@ -506,35 +566,34 @@ public class GameView implements Observer {
         btnNextTurn.setVisible(true);
     }
 
-    public void drawSpyUI(){
+    public void drawSpyUI() {
 
-        String message ="";
+        String message = "";
         Player spy = null;
-        if (game.getTurn() == 0){
-            for(Player p: game.getBlueTeam().getPlayers()){
-                if (p.getIsSpy()){
+        if (game.getTurn() == 0) {
+            for (Player p : game.getBlueTeam().getPlayers()) {
+                if (p.getIsSpy()) {
                     spy = p;
                     break;
                 }
             }
-        }
-        else{
-            for(Player p: game.getRedTeam().getPlayers()){
-                if (p.getIsSpy()){
+        } else {
+            for (Player p : game.getRedTeam().getPlayers()) {
+                if (p.getIsSpy()) {
                     spy = p;
                     break;
                 }
             }
         }
         message = "Choisis un indice pour tes Agents, ";
-        if (spy != null){
+        if (spy != null) {
             message += spy.getName() + ".";
         }
         whoPlays.setText(message);
         whoPlays.setFont(Font.font(customFont.getName(), customFont.getSize() + 20));
         whoPlays.setTextFill(Color.WHITE);
-        if((context.getServer() != null && context.getServer().getServerUser().getTeamId() != game.getTurn())
-        || (context.getClient() != null && context.getClient().getUser().getTeamId() != game.getTurn())){
+        if ((context.getServer() != null && context.getServer().getServerUser().getTeamId() != game.getTurn())
+                || (context.getClient() != null && context.getClient().getUser().getTeamId() != game.getTurn())) {
             whoPlays.setText("Waiting" + ((game.getTurn() == 0) ? " Blue " : " Red ") + "team to play");
         }
         labelHint.setText("");
