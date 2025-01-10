@@ -17,7 +17,7 @@
             <Label text="Normal" style="-fx-font-size: 20px; -fx-font-weight: bold;" textFill="#333333" />
 
             <!-- Max Team Size -->
-            <Label text="Max Team Size:" textFill="#555555" />
+            <Label text="Max Taille Equipe:" textFill="#555555" />
             <HBox spacing="10.0" alignment="CENTER">
                 <Button fx:id="buttonDecreaseTeamSize" text="-" onAction="#decreaseTeamSize" style="-fx-background-color: #cccccc; -fx-text-fill: black; -fx-background-radius: 10px;" />
                 <Label fx:id="labelTeamSize" text="4" style="-fx-font-size: 16px;" textFill="#333333" />
@@ -25,7 +25,7 @@
             </HBox>
 
             <!-- Grid Size -->
-            <Label text="Grid Size:" textFill="#555555" />
+            <Label text="Taille Grille:" textFill="#555555" />
             <HBox spacing="10.0" alignment="CENTER">
                 <Button fx:id="buttonDecreaseGridSize" text="-" onAction="#decreaseGridSize" style="-fx-background-color: #cccccc; -fx-text-fill: black; -fx-background-radius: 10px;" />
                 <Label fx:id="labelGridSize" text="5" style="-fx-font-size: 16px;" textFill="#333333" />
@@ -33,7 +33,7 @@
             </HBox>
 
             <!-- Timer -->
-            <Label text="Timer (s):" textFill="#555555" />
+            <Label text="Temps par tour (s):" textFill="#555555" />
             <HBox spacing="10.0" alignment="CENTER">
                 <Button fx:id="buttonDecreaseTimer" text="-" onAction="#decreaseTimer" style="-fx-background-color: #cccccc; -fx-text-fill: black; -fx-background-radius: 10px;" />
                 <Label fx:id="labelTimer" text="60" style="-fx-font-size: 16px;" textFill="#333333" />
@@ -46,8 +46,8 @@
 
             <!-- Create and Back Buttons -->
             <HBox spacing="20.0" alignment="CENTER">
-                <Button fx:id="buttonCreateRoom" text="Create Room" onAction="#createNormal" style="-fx-background-color: #17a2b8; -fx-text-fill: white; -fx-background-radius: 15px;" prefWidth="120.0" />
-                <Button text="Back" onAction="#goBackToMainMenu" style="-fx-background-color: #ffc107; -fx-text-fill: black; -fx-background-radius: 15px;" prefWidth="120.0" />
+                <Button text="Retour" onAction="#goBackToMainMenu" style="-fx-background-color: #ffc107; -fx-text-fill: black; -fx-background-radius: 15px;" prefWidth="120.0" />
+                <Button fx:id="buttonCreateRoom" text="Lancer" onAction="#createNormal" style="-fx-background-color: #17a2b8; -fx-text-fill: white; -fx-background-radius: 15px;" prefWidth="120.0" />
             </HBox>
         </VBox>
 
@@ -99,8 +99,8 @@
 
             <!-- Join and Back Buttons -->
             <HBox spacing="20.0" alignment="CENTER">
-                <Button fx:id="buttonJoinRoom" text="Start" onAction="#createSolo" style="-fx-background-color: #17a2b8; -fx-text-fill: white; -fx-background-radius: 15px;" prefWidth="120.0" />
-                <Button text="MenuPrincipal" onAction="#goBackToMainMenu" style="-fx-background-color: #ffc107; -fx-text-fill: black; -fx-background-radius: 15px;" prefWidth="120.0" />
+                <Button text="Retour" onAction="#goBackToMainMenu" style="-fx-background-color: #ffc107; -fx-text-fill: black; -fx-background-radius: 15px;" prefWidth="120.0" />
+                <Button fx:id="buttonJoinRoom" text="Lancer" onAction="#createSolo" style="-fx-background-color: #17a2b8; -fx-text-fill: white; -fx-background-radius: 15px;" prefWidth="120.0" />
             </HBox>
         </VBox>
     </children>

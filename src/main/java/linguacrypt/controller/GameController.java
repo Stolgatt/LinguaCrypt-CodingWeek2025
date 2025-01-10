@@ -69,6 +69,7 @@ public class GameController {
                         nextTurn();
                         view.resetTimer();
                     });
+                    return;
                 }
                 game.increaseTryCounter();
                 if (game.getCurrentTryCount() == game.getCurrentNumberWord() +1){
@@ -84,7 +85,6 @@ public class GameController {
 
         }
 
-        
         context.broadcastGameUpdate();
         game.notifierObservateurs();
     }

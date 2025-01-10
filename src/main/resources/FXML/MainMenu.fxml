@@ -34,7 +34,7 @@
                         style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 15 30; -fx-background-radius: 30; -fx-border-radius: 30; -fx-border-width: 2px; -fx-border-color: #388E3C;" minWidth="200.0" />
                 <Button text="Mode Image" fx:id="pictGameButton"
                         style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 15 30; -fx-background-radius: 30; -fx-border-radius: 30; -fx-border-width: 2px; -fx-border-color: #388E3C;" minWidth="200.0" />
-                <Button text="Back" fx:id="backToNetworkModeButton"
+                <Button text="Retour" fx:id="backToNetworkModeButton"
                         style="-fx-background-color: #ffc107; -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 15 30; -fx-background-radius: 30; -fx-border-radius: 30; -fx-border-width: 2px; -fx-border-color: #ffc107;" minWidth="200.0" />
             </VBox>
 

@@ -13,10 +13,9 @@
     <top>
         <VBox>
             <fx:include fx:id="menuBar" source="/FXML/menuBar.fxml"/>
-            <HBox alignment="CENTER" style="-fx-padding: 20;">
-                <Label text="Time left to play:"/>
-                <Label fx:id="timerLabel" text="00:00"/>
-
+            <HBox alignment="CENTER" style="-fx-spacing: 10; -fx-pref-width: 200px; -fx-margin-right: 20px;">
+                <Label text="Temps restant :" style="-fx-text-fill: white; -fx-font-size: 18px;"/>
+                <Label fx:id="timerLabel" text="00:00" style="-fx-text-fill: white; -fx-font-size: 30px;"/>
             </HBox>
         </VBox>
     </top>

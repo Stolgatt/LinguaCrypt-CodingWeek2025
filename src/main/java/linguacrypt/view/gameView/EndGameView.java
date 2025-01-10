@@ -31,7 +31,6 @@ public class EndGameView {
         setStat();
         try {
             game.updateStat();
-            game.updateGameStat();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

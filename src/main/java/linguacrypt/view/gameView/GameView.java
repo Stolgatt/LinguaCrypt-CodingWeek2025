@@ -594,7 +594,7 @@ public class GameView implements Observer {
         whoPlays.setTextFill(Color.WHITE);
         if ((context.getServer() != null && context.getServer().getServerUser().getTeamId() != game.getTurn())
                 || (context.getClient() != null && context.getClient().getUser().getTeamId() != game.getTurn())) {
-            whoPlays.setText("Waiting" + ((game.getTurn() == 0) ? " Blue " : " Red ") + "team to play");
+            whoPlays.setText("En attente de l'équipe " + ((game.getTurn() == 0) ? " Bleue " : " Rouge "));
         }
         labelHint.setText("");
     }

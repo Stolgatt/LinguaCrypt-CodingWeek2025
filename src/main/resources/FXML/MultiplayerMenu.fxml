@@ -15,11 +15,11 @@
             <Label text="Host Game" style="-fx-font-size: 20px; -fx-font-weight: bold;" textFill="#333333" />
 
             <!-- Nickname -->
-            <Label text="Nickname:" textFill="#555555" />
-            <TextField fx:id="textFieldNicknameHost" promptText="Enter your nickname" style="-fx-background-radius: 10px; -fx-background-color: #f2f2f2;" prefWidth="300.0" />
+            <Label text="Pseudonyme:" textFill="#555555" />
+            <TextField fx:id="textFieldNicknameHost" promptText="Entrez votre nom" style="-fx-background-radius: 10px; -fx-background-color: #f2f2f2;" prefWidth="300.0" />
 
             <!-- Max Team Size -->
-            <Label text="Max Team Size:" textFill="#555555" />
+            <Label text="Max Taille Equipe:" textFill="#555555" />
             <HBox spacing="10.0" alignment="CENTER">
                 <Button fx:id="buttonDecreaseTeamSize" text="-" onAction="#decreaseTeamSize" style="-fx-background-color: #cccccc; -fx-text-fill: black; -fx-background-radius: 10px;" />
                 <Label fx:id="labelTeamSize" text="4" style="-fx-font-size: 16px;" textFill="#333333" />
@@ -27,7 +27,7 @@
             </HBox>
 
             <!-- Grid Size -->
-            <Label text="Grid Size:" textFill="#555555" />
+            <Label text="Taille Grille:" textFill="#555555" />
             <HBox spacing="10.0" alignment="CENTER">
                 <Button fx:id="buttonDecreaseGridSize" text="-" onAction="#decreaseGridSize" style="-fx-background-color: #cccccc; -fx-text-fill: black; -fx-background-radius: 10px;" />
                 <Label fx:id="labelGridSize" text="5" style="-fx-font-size: 16px;" textFill="#333333" />
@@ -35,7 +35,7 @@
             </HBox>
 
             <!-- Timer -->
-            <Label text="Timer (s):" textFill="#555555" />
+            <Label text="Temps par tour (s):" textFill="#555555" />
             <HBox spacing="10.0" alignment="CENTER">
                 <Button fx:id="buttonDecreaseTimer" text="-" onAction="#decreaseTimer" style="-fx-background-color: #cccccc; -fx-text-fill: black; -fx-background-radius: 10px;" />
                 <Label fx:id="labelTimer" text="60" style="-fx-font-size: 16px;" textFill="#333333" />
@@ -44,35 +44,35 @@
 
             <!-- Theme Selection -->
             <Label text="Theme:" textFill="#555555" />
-            <ComboBox fx:id="comboBoxTheme" promptText="Select Theme" style="-fx-background-radius: 10px; -fx-background-color: #f2f2f2;" prefWidth="300.0" />
+            <ComboBox fx:id="comboBoxTheme" promptText="Choisissez un thème" style="-fx-background-radius: 10px; -fx-background-color: #f2f2f2;" prefWidth="300.0" />
 
             <!-- Create and Back Buttons -->
             <HBox spacing="20.0" alignment="CENTER">
-                <Button fx:id="buttonCreateRoom" text="Create Room" onAction="#createRoom" style="-fx-background-color: #17a2b8; -fx-text-fill: white; -fx-background-radius: 15px;" prefWidth="120.0" />
-                <Button text="Back" onAction="#goBackToMainMenu" style="-fx-background-color: #ffc107; -fx-text-fill: black; -fx-background-radius: 15px;" prefWidth="120.0" />
+                <Button text="Retour" onAction="#goBackToMainMenu" style="-fx-background-color: #ffc107; -fx-text-fill: black; -fx-background-radius: 15px;" prefWidth="120.0" />
+                <Button fx:id="buttonCreateRoom" text="Créer une salle" onAction="#createRoom" style="-fx-background-color: #17a2b8; -fx-text-fill: white; -fx-background-radius: 15px;" prefWidth="120.0" />
             </HBox>
         </VBox>
 
         <!-- Join View -->
         <VBox fx:id="joinView" alignment="TOP_CENTER" spacing="15.0" visible="false" style="-fx-background-color: white; -fx-padding: 20; -fx-border-color: black; -fx-border-width: 2px; -fx-border-radius: 15px; -fx-background-radius: 15px;" maxWidth="300.0" maxHeight="400.0">
-            <Label text="Join Game" style="-fx-font-size: 20px; -fx-font-weight: bold;" textFill="#333333" />
+            <Label text="Rejoindre" style="-fx-font-size: 20px; -fx-font-weight: bold;" textFill="#333333" />
 
             <!-- Nickname -->
-            <Label text="Nickname:" textFill="#555555" />
-            <TextField fx:id="textFieldNicknameJoin" promptText="Enter your nickname" style="-fx-background-radius: 10px; -fx-background-color: #f2f2f2;" prefWidth="300.0" />
+            <Label text="Pseudonyme:" textFill="#555555" />
+            <TextField fx:id="textFieldNicknameJoin" promptText="Entrez votre nom" style="-fx-background-radius: 10px; -fx-background-color: #f2f2f2;" prefWidth="300.0" />
 
             <!-- Address -->
-            <Label text="Address:" textFill="#555555" />
-            <TextField fx:id="textFieldAddress" promptText="Enter server address" style="-fx-background-radius: 10px; -fx-background-color: #f2f2f2;" prefWidth="300.0" />
+            <Label text="Addresse:" textFill="#555555" />
+            <TextField fx:id="textFieldAddress" promptText="Entrez l'adresse serveur" style="-fx-background-radius: 10px; -fx-background-color: #f2f2f2;" prefWidth="300.0" />
 
             <!-- Team Selection -->
-            <Label text="Team:" textFill="#555555" />
-            <ComboBox fx:id="comboBoxTeam" promptText="Select your team" style="-fx-background-radius: 10px; -fx-background-color: #f2f2f2;" prefWidth="300.0" />
+            <Label text="Equipe:" textFill="#555555" />
+            <ComboBox fx:id="comboBoxTeam" promptText="Choisissez votre équipe'" style="-fx-background-radius: 10px; -fx-background-color: #f2f2f2;" prefWidth="300.0" />
 
             <!-- Join and Back Buttons -->
             <HBox spacing="20.0" alignment="CENTER">
-                <Button fx:id="buttonJoinRoom" text="Join Room" onAction="#joinRoom" style="-fx-background-color: #17a2b8; -fx-text-fill: white; -fx-background-radius: 15px;" prefWidth="120.0" />
-                <Button text="Back" onAction="#goBackToMainMenu" style="-fx-background-color: #ffc107; -fx-text-fill: black; -fx-background-radius: 15px;" prefWidth="120.0" />
+                <Button text="Retour" onAction="#goBackToMainMenu" style="-fx-background-color: #ffc107; -fx-text-fill: black; -fx-background-radius: 15px;" prefWidth="120.0" />
+                <Button fx:id="buttonJoinRoom" text="Rejoindre la salle" onAction="#joinRoom" style="-fx-background-color: #17a2b8; -fx-text-fill: white; -fx-background-radius: 15px;" prefWidth="120.0" />
             </HBox>
         </VBox>
     </children>
