@@ -11,7 +11,7 @@
 
             <!-- Theme Selection -->
             <Label text="Selectionner un thème existant:" textFill="#555555" />
-            <ComboBox fx:id="existingThemesComboBox" promptText="Select Theme" style="-fx-background-radius: 10px; -fx-background-color: #f2f2f2;" prefWidth="300.0" />
+            <ComboBox fx:id="existingThemesComboBox" promptText="Choisissez un thème" style="-fx-background-radius: 10px; -fx-background-color: #f2f2f2;" prefWidth="300.0" />
 
             <!-- New Theme -->
             <Label text="Nom du Nouveau Theme:" textFill="#555555" />

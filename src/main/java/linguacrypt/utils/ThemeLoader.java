@@ -9,8 +9,8 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 public class ThemeLoader {
-    private static final String WORDS_THEME_SAVE_FILE_PATH = "/wordsThemes.dat"; // File to save word themes
-    private static final String PICT_THEME_SAVE_FILE_PATH = "/pictThemes.dat"; // File to save picture themes
+    private static final String WORDS_THEME_SAVE_FILE_PATH = "wordsThemes.dat"; // File to save word themes
+    private static final String PICT_THEME_SAVE_FILE_PATH = "pictThemes.dat"; // File to save picture themes
     private static final String DEFAULT_WORDS_THEME_FILE_PATH = "/wordThemes.json"; // File for word themes
     private static final String DEFAULT_PICTS_THEME_FILE_PATH = "/pictThemes.json"; // File for picture themes
 
