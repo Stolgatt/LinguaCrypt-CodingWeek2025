@@ -2,6 +2,8 @@
 
 LinguaCrypt est une implémentation avancée en Java du jeu de société **Codenames**, développée avec JavaFX et suivant le modèle architectural MVC (Modèle-Vue-Contrôleur). Cette version inclut des fonctionnalités telles que le mode multijoueur, une intelligence artificielle, et un système de thèmes personnalisés.
 
+Vidéo de présentation : https://youtu.be/EADEyPsou2U
+
 ## Sommaire
 1. [Introduction](#introduction)
 2. [Prérequis](#prérequis)
@@ -39,9 +41,9 @@ LinguaCrypt est un projet réalisé dans le cadre de la CodingWeek 2025. Il prop
 2. Téléchargez le fichier JAR de la dernière version stable.
 3. Exécutez le fichier JAR :
    ```bash
-   java -jar LinguaCrypt-<version>.jar
+   java --module-path path/to/sdk/lib  --add-modules javafx.controls,javafx.fxml -jar path/to/jar
    ```
-
+Attention il vous faudra un JRE récents pour l'exécuter.
 ## Documentation utilisateur
 ### Fonctionnement de l'application
 LinguaCrypt est un jeu au tour par tour opposant deux équipes : Bleu et Rouge. Chaque équipe a un maître-espion qui fournit des indices pour aider son équipe à découvrir leurs cartes sans toucher la carte "Assassin".
