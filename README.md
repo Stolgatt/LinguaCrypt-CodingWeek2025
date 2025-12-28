@@ -13,8 +13,9 @@ Vidéo de présentation : https://youtu.be/EADEyPsou2U
    - [Architecture du projet](#architecture-du-projet)
    - [Gestion du multijoueur](#gestion-du-multijoueur)
    - [IA et Mode Solo](#ia-et-mode-solo)
-6. [Structure du projet](#structure-du-projet)
-7. [Changelog](#changelog)
+6. [Illustrations](#illustrations)
+7. [Structure du projet](#structure-du-projet)
+8. [Changelog](#changelog)
 
 ## Introduction
 LinguaCrypt est un projet réalisé dans le cadre de la CodingWeek 2025. Il propose une adaptation fidèle et innovante de **Codenames** avec des fonctionnalités  comme le mode multijoueur en ligne, des statistiques avancées, et une expérience utilisateur intuitive.
@@ -115,6 +116,13 @@ Cette architecture garantit une synchronisation efficace et une expérience flui
 - **Mode Solo** :
   - Fonctionne sans connexion réseau, en utilisant un contrôleur local (`SoloGameController`).
   - Permet une expérience rapide et adaptée pour un seul joueur.
+
+## Illustrations
+
+![Illustration partie classique - tour du joueur qui donne l'indice](assets/LinguaCrypt_1.png)
+
+![]()
+
 
 ## Structure du projet
 ```
