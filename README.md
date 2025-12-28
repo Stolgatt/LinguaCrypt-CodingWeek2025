@@ -121,6 +121,8 @@ Cette architecture garantit une synchronisation efficace et une expérience flui
 
 ![Illustration partie classique - tour du joueur qui donne l'indice](assets/LinguaCrypt_1.png)
 
+<img src="assets/LinguaCrypt_1.png" alt="Description" width="600">
+
 ![]()
 
 
