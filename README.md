@@ -119,9 +119,23 @@ Cette architecture garantit une synchronisation efficace et une expérience flui
 
 ## Illustrations
 
-![Illustration partie classique - tour du joueur qui donne l'indice](assets/LinguaCrypt_1.png)
+__Le Menu__
 
-![]()
+<img src="assets/LinguaCrypt_Menu.png" alt="Menu du jeu" width="800">
+
+__Le mode classique__
+
+<img src="assets/LinguaCrypt_4.png" alt="Le mode classique, dans la phase où un joueur doit donner un indice à ses coéquipiers" width="800">
+
+<img src="assets/LinguaCrypt_2.png" alt="Le mode classique, dans la phase où les autres joueurs doivent deviner les mots liés à l'indice" width="800">
+
+__Le mode Images__
+
+<img src="assets/LinguaCrypt_1.png" alt="Le mode de jeu avec des images aux lieu des mots" width="800">
+
+__Le mode Solo, avec une IA__
+
+<img src="assets/LinguaCrypt_3.png" alt="Le mode de jeu solo, qui permet de jouer en tant qu'espion ou en tant qu'agent, avec une IA dans l'autre rôle" width="800">
 
 
 ## Structure du projet

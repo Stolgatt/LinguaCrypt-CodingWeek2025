@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="linguacrypt.view.EditTeamView" style="-fx-background-image: url('/image/bg-red.jpg'); -fx-background-size: cover;" prefHeight="600.0" prefWidth="600.0">
+    <center>
+        <HBox spacing="20" maxHeight="200" alignment="CENTER">
+            <VBox fx:id="BlueTeam" prefWidth="200" prefHeight="150"
+                  style="-fx-background-color: lightblue; -fx-padding: 20; -fx-border-color: black; -fx-border-width: 2px; -fx-border-radius: 15px; -fx-background-radius: 15px;">
+                <HBox alignment="CENTER" prefWidth="200">
+                    <Label fx:id="teamBlueTitle" />
+                </HBox>
+                <VBox fx:id="BlueTeamPlayer">
+
+                </VBox>
+            </VBox>
+
+            <VBox fx:id="RedTeam" prefWidth="200" prefHeight="150"
+                  style="-fx-background-color: lightcoral; -fx-padding: 20; -fx-border-color: black; -fx-border-width: 2px; -fx-border-radius: 15px; -fx-background-radius: 15px;">
+                <HBox alignment="CENTER" prefWidth="200">
+                    <Label fx:id="teamRedTitle" />
+                </HBox>
+                <VBox fx:id="RedTeamPlayer">
+
+                </VBox>
+            </VBox>
+        </HBox>
+
+    </center>
+    <bottom>
+        <HBox spacing="20" alignment="CENTER" style="-fx-padding: 10;">
+            <Button text="Ajouter un Joueur" fx:id="addPlayerBtn"
+                    style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 15 30; -fx-background-radius: 30; -fx-border-radius: 30; -fx-border-width: 2px; -fx-border-color: #388E3C;" minWidth="100.0" />
+            <Button text="Start" fx:id="launchGameButton"
+                    style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 15 30; -fx-background-radius: 30; -fx-border-radius: 30; -fx-border-width: 2px; -fx-border-color: #388E3C;" minWidth="100.0" />
+        </HBox>
+    </bottom>
+</BorderPane>

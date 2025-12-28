@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<?import javafx.scene.image.ImageView?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="linguacrypt.view.gameView.SoloGameView">
+    <top>
+        <VBox>
+            <fx:include fx:id="menuBar" source="/FXML/menuBar.fxml"/>
+            <HBox alignment="CENTER" style="-fx-spacing: 10; -fx-pref-width: 200px; -fx-margin-right: 20px;">
+                <Label text="Temps restant :" style="-fx-text-fill: white; -fx-font-size: 18px;"/>
+                <Label fx:id="timerLabel" text="00:00" style="-fx-text-fill: white; -fx-font-size: 30px;"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox alignment="CENTER" spacing="10" style="-fx-padding: 20;">
+            <VBox alignment="CENTER">
+                <Label fx:id="whoPlays" text="" />
+                <Label fx:id="labelHint" text="" />
+            </VBox>
+            <GridPane fx:id="gameGrid"
+                      hgap="10"
+                      vgap="10"
+                      alignment="CENTER"
+                      style="-fx-padding: 5;">
+                <!-- Everything will be added dynamically -->
+            </GridPane>
+        </VBox>
+    </center>
+    <bottom>
+        <VBox>
+            <HBox alignment="CENTER" style="-fx-padding: 20; -fx-spacing: 20;">
+                <TextField fx:id="hintFieldSolo" promptText="Entrez l'indice"
+                           prefWidth="400.0" style="-fx-background-radius: 10px; -fx-background-color: white;" />
+                <TextField fx:id="countFieldSolo" promptText="Saisissez un nombre"
+                           prefWidth="400.0" style="-fx-background-radius: 10px; -fx-background-color: white;" />
+            </HBox>
+            <StackPane style="-fx-padding: 20;">
+
+                <Button fx:id="btnNextTurn" text="Tour Suivant"
+                        style="-fx-background-color: linear-gradient(to bottom, #28a745, #218838);
+                   -fx-text-fill: white;
+                   -fx-background-radius: 20px;
+                   -fx-font-size: 18px;
+                   -fx-pref-width: 150px;
+                   -fx-pref-height: 50px;" />
+                <Button fx:id="btnGuess" text="Donner l'indice"
+                        style="-fx-background-color: linear-gradient(to bottom, #28a745, #218838);
+                   -fx-text-fill: white;
+                   -fx-background-radius: 20px;
+                   -fx-font-size: 18px;
+                   -fx-pref-width: 150px;
+                   -fx-pref-height: 50px;"/>
+            </StackPane>
+        </VBox>
+    </bottom>
+
+
+    <right>
+        <AnchorPane>
+            <VBox
+                  style="-fx-background-color: #3284A3;
+                     -fx-background-radius: 10px;
+                     -fx-padding: 10px;
+                     -fx-min-height: 80px;
+                     -fx-max-height: 250px;
+                     -fx-pref-height: 200px;"
+                  AnchorPane.topAnchor="250.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+                visible="false">
+                <HBox style="-fx-padding: 5; -fx-spacing: 10px;">
+                    <ImageView fx:id="imageTest"/>
+                </HBox>
+
+            </VBox>
+        </AnchorPane>
+    </right>
+    <left>
+        <AnchorPane>
+            <VBox fx:id="BlueTeamDisplay"
+                  style="-fx-background-color: #3284A3;
+                     -fx-background-radius: 10px;
+                     -fx-padding: 10px;
+                     -fx-min-height: 80px;
+                     -fx-max-height: 250px;
+                     -fx-pref-height: 200px;"
+                  AnchorPane.topAnchor="250.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+                <HBox fx:id="BlueInfo" style="-fx-padding: 5; -fx-spacing: 10px;">
+                    <ImageView fx:id="imageViewBlueInfo"/>
+                    <Label fx:id="nbMotBlueRestant"/>
+                </HBox>
+                <Label fx:id="BlueSpy" text="Espion" style="-fx-text-fill: #69B7CE;"/>
+                <Label fx:id="BlueSpyName" text="" style="-fx-padding: 5;"/>
+                <Label fx:id="BlueAgent" text="Agents" style="-fx-text-fill: #69B7CE;"/>
+                <Label fx:id="BlueAgentName" text="" style="-fx-padding: 5;"/>
+
+            </VBox>
+        </AnchorPane>
+    </left>
+</BorderPane>

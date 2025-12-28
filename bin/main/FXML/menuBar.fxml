@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+
+<MenuBar xmlns:fx="http://javafx.com/fxml" 
+         fx:controller="linguacrypt.view.MenuBarView"
+         fx:id="menuBar">
+    <menus>
+        <Menu text="File">
+            <items>
+                <MenuItem text="Save Game" onAction="#handleSaveGame"/>
+                <MenuItem text="Load Game" onAction="#handleLoadGame"/>
+                <SeparatorMenuItem />
+                <MenuItem text="Exit" onAction="#handleExit"/>
+            </items>
+        </Menu>
+    </menus>
+</MenuBar> 

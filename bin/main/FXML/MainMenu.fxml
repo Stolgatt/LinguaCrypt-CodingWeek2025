@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="linguacrypt.view.MainMenuView"
+             style="-fx-background-image: url('/image/bg-red.jpg'); -fx-background-size: cover;" prefHeight="600.0" prefWidth="600.0">
+
+    <!-- Top Section: Title -->
+    <top>
+        <VBox alignment="CENTER" style="-fx-padding: 40 0 20 0;">
+            <Text text="LINGUACRYPT"
+                  style="-fx-font-size: 36px; -fx-fill: white; -fx-font-weight: bold;" />
+        </VBox>
+    </top>
+
+    <!-- Center Section: Dynamic Content -->
+    <center>
+        <StackPane fx:id="dynamicContent" alignment="CENTER">
+            <!-- Network Mode Selection -->
+            <VBox fx:id="networkModeSelectionBox" spacing="20" alignment="CENTER" visible="true">
+                <Button text="Local" fx:id="localButton"
+                        style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 15 30; -fx-background-radius: 30; -fx-border-radius: 30; -fx-border-width: 2px; -fx-border-color: #388E3C;" minWidth="200.0" />
+                <Button text="Multijoueur" fx:id="multiplayerButton"
+                        style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 15 30; -fx-background-radius: 30; -fx-border-radius: 30; -fx-border-width: 2px; -fx-border-color: #388E3C;" minWidth="200.0" />
+            </VBox>
+
+            <!-- Game Mode Selection -->
+            <VBox fx:id="gameModeSelectionBox" spacing="20" alignment="CENTER" visible="false">
+                <Button text="Mode Classique" fx:id="wordGameButton"
+                        style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 15 30; -fx-background-radius: 30; -fx-border-radius: 30; -fx-border-width: 2px; -fx-border-color: #388E3C;" minWidth="200.0" />
+                <Button text="Mode Image" fx:id="pictGameButton"
+                        style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 15 30; -fx-background-radius: 30; -fx-border-radius: 30; -fx-border-width: 2px; -fx-border-color: #388E3C;" minWidth="200.0" />
+                <Button text="Retour" fx:id="backToNetworkModeButton"
+                        style="-fx-background-color: #ffc107; -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 15 30; -fx-background-radius: 30; -fx-border-radius: 30; -fx-border-width: 2px; -fx-border-color: #ffc107;" minWidth="200.0" />
+            </VBox>
+
+            <!-- Main Menu Options -->
+            <VBox fx:id="mainMenuBox" spacing="20" alignment="CENTER" visible="false">
+                <!-- StackPane to manage Play/Host/Join Buttons -->
+                <StackPane fx:id="playModeButtons" alignment="CENTER">
+                <VBox fx:id="localButtons" visible="true" alignment="CENTER" spacing="20">
+                    <Button text="Jouer" fx:id="playButton"
+                        style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 15 30; -fx-background-radius: 30; -fx-border-radius: 30; -fx-border-width: 2px; -fx-border-color: #388E3C;" minWidth="200.0" />
+                    <Button text="Jouer solo" fx:id="createSoloGameButton"
+                        style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 15 30; -fx-background-radius: 30; -fx-border-radius: 30; -fx-border-width: 2px; -fx-border-color: #388E3C;" minWidth="200.0" />
+                </VBox>
+                    <VBox fx:id="multiButtons" visible="false" spacing="20" alignment="CENTER">
+                        <Button text="Héberger" fx:id="hostButton" visible="true"
+                        style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 15 30; -fx-background-radius: 30; -fx-border-radius: 30; -fx-border-width: 2px; -fx-border-color: #388E3C;" minWidth="200.0" />
+                        <Button text="Rejoindre" fx:id="joinButton" visible="true"
+                        style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 15 30; -fx-background-radius: 30; -fx-border-radius: 30; -fx-border-width: 2px; -fx-border-color: #388E3C;" minWidth="200.0" />
+                    </VBox>
+                </StackPane>
+                <Button text="Statistiques" fx:id="profileMenuButton"
+                        style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 15 30; -fx-background-radius: 30; -fx-border-radius: 30; -fx-border-width: 2px; -fx-border-color: #388E3C;" minWidth="200.0" />
+                <Button text="Modifier mots" fx:id="customThemeButton"
+                        style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 15 30; -fx-background-radius: 30; -fx-border-radius: 30; -fx-border-width: 2px; -fx-border-color: #388E3C;" minWidth="200.0" />
+                <Button text="Quitter le jeu" fx:id="exitButton" onAction="#handleExit"
+                        style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 15 30; -fx-background-radius: 30; -fx-border-radius: 30; -fx-border-width: 2px; -fx-border-color: #388E3C;" minWidth="200.0" />
+                <Button text="Retour" fx:id="backToGameModeButton"
+                        style="-fx-background-color: #ffc107; -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 15 30; -fx-background-radius: 30; -fx-border-radius: 30; -fx-border-width: 2px; -fx-border-color: #ffc107;" minWidth="200.0" />
+            </VBox>
+        </StackPane>
+    </center>
+</BorderPane>
